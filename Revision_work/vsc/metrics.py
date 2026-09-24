@@ -1,5 +1,4 @@
 import pandas as pd
-import numpy as np
 
 
 def compute_metrics(baseline_df: pd.DataFrame, eval_df: pd.DataFrame, mip_gap: float) -> pd.DataFrame:
@@ -15,10 +14,7 @@ def compute_metrics(baseline_df: pd.DataFrame, eval_df: pd.DataFrame, mip_gap: f
     merged["EVPI"] = merged["L_SO_star"] - merged["L_WS_star"]
 
     tolerance = mip_gap * merged["L_SO_star"].abs().clip(lower=1e-9)
-
-    # Create a list of Python bool objects
-    flags = [bool(merged["VSC"].iloc[i] < -tolerance.iloc[i]) for i in range(len(merged))]
-    merged["vsc_negative_flag"] = pd.Series(flags, index=merged.index, dtype=object)
+    merged["vsc_negative_flag"] = (merged["VSC"] < -tolerance).astype(object)
 
     return merged
 
