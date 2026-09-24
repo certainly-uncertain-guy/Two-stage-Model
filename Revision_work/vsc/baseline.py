@@ -23,6 +23,16 @@ def load_config() -> dict:
         model_params = yaml.safe_load(f)
     model_params["path_to_input"] = input_dir_str(INPUT_DIR_16)
     model_params["input1"], model_params["input2"] = prepare_input(model_params["path_to_input"])
+
+    # VSC-experiment-only override: config.yaml's time_limit (21600s/6h) was
+    # calibrated for the original correlated MEOW scenarios. Decorrelated
+    # scenarios are far harder to solve to the same 0.5% mip_gap (confirmed:
+    # a single mid-range budget didn't reach it even after the full 6h), so
+    # per-solve time is capped at 2h here instead, per explicit user
+    # instruction. config.yaml itself is left untouched so other notebooks
+    # (stochastic_model.ipynb, robust_model.ipynb, etc.) keep reproducing the
+    # manuscript's original settings.
+    model_params["time_limit"] = 7200
     return model_params
 
 
