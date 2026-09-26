@@ -1042,6 +1042,7 @@ def _plot_fig_b(out_dir, s, curves):
             ax.plot([1.0], [srow.loc[b, "L_star_slow"] / GW], marker="s", color=C["slow"], linestyle="none",
                     markersize=8, label="Re-optimized at λ=1")
         ax.set_title(f"Budget ${b}M", fontsize=10)
+        ax.set_ylim(0, 1.15 * srow.loc[b, "L_RO_star"] / GW)  # zero baseline: show effect size honestly
         ax.set_xlabel("λ (share of speed-25 mass moved to speed-05)", fontsize=8)
     axes[0].set_ylabel("Expected load-shed (GW)")
     axes[0].legend(prop={"size": 7}, frameon=False)
