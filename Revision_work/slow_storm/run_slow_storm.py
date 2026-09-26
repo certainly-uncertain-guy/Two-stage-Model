@@ -1,11 +1,12 @@
 """Orchestrator for the slow-storm sensitivity experiment.
 
     /opt/miniconda3/bin/python Revision_work/slow_storm/run_slow_storm.py pilot
-    /opt/miniconda3/bin/python Revision_work/slow_storm/run_slow_storm.py full
+    /opt/miniconda3/bin/python Revision_work/slow_storm/run_slow_storm.py full [BUDGETS]
     /opt/miniconda3/bin/python Revision_work/slow_storm/run_slow_storm.py report {pilot|full}
 
 Fixed-plan vectors (SO/RO/MV, all budgets) are shared by both modes. Only the
-re-optimized SLOW plan differs: pilot re-solves $20M/$40M/$60M, full all 9.
+re-optimized SLOW plan differs: pilot re-solves $20M/$40M/$60M, full all 9
+(or a comma-separated subset, e.g. `full 0,40,50,60,70,80`; rerun later to add the rest).
 Every solve is appended as it finishes, so rerunning resumes.
 """
 import sys
@@ -24,7 +25,7 @@ def _slow_plans(slow_df: pd.DataFrame) -> dict:
     return {int(r["budget"]): {s: float(r[f"x__{s}"]) for s in subs} for _, r in slow_df.iterrows()}
 
 
-def run(mode: str):
+def run(mode: str, slow_budgets: list = None):
     from baseline import load_config
     from certainty_baseline import get_baseline
     from slow_evaluate import evaluate_plans
@@ -46,7 +47,7 @@ def run(mode: str):
     print(f"[{mode}] fixed-plan vectors ready ({time.time() - t0:.0f}s)", flush=True)
 
     weights = slow_shift_weights(flood_columns(model_params["input1"]), 1.0)
-    budgets = PILOT_SLOW_BUDGETS if mode == "pilot" else ALL_BUDGETS
+    budgets = slow_budgets or (PILOT_SLOW_BUDGETS if mode == "pilot" else ALL_BUDGETS)
     t0 = time.time()
     slow_df = solve_weighted(model_params, weights, budgets, plans["SO"], out_dir)
     print(f"[{mode}] slow re-solves done ({time.time() - t0:.0f}s)", flush=True)
@@ -77,6 +78,8 @@ if __name__ == "__main__":
     args = sys.argv[1:]
     if len(args) == 1 and args[0] in ("pilot", "full"):
         run(args[0])
+    elif len(args) == 2 and args[0] == "full":
+        run("full", [int(b) for b in args[1].split(",")])
     elif len(args) == 2 and args[0] == "report" and args[1] in ("pilot", "full"):
         report_only(args[1])
     else:
