@@ -14,6 +14,7 @@ from slow_paths import SCENARIO_PREFIX
 from storm_weights import parse_scenario, slow_shift_weights, weighted_loss
 
 ABS_FLOOR = 1e-4
+EVAL_TOL = 1e-4  # gap of the fix-and-resolve evaluations
 MW_PER_UNIT = 100
 
 
@@ -108,9 +109,9 @@ def validation_checks(summary: pd.DataFrame, curves: pd.DataFrame, ro_uniform_cs
                       mip_gap: float) -> pd.DataFrame:
     rows = []
 
-    def add(check, budget, value, reference, passed):
+    def add(check, budget, value, reference, passed, informational=False):
         rows.append({"check": check, "budget": budget, "value": value,
-                     "reference": reference, "passed": bool(passed)})
+                     "reference": reference, "passed": bool(passed), "informational": informational})
 
     for _, r in summary.iterrows():
         b = r["budget"]
@@ -133,6 +134,13 @@ def validation_checks(summary: pd.DataFrame, curves: pd.DataFrame, ro_uniform_cs
                 r["L_star_slow"] <= r["L_slow_xMV"] + tol)
             add("solver objective == evaluated L_slow(x_slow)", b, r["L_star_slow_solver"], r["L_star_slow"],
                 abs(r["L_star_slow_solver"] - r["L_star_slow"]) <= tol)
+            # Informational (not pass/fail): both sides are 1e-4-gap evaluations and the
+            # re-solve is warm-started from x_SO, so any negative value is worth reporting.
+            tight = EVAL_TOL * abs(r["L_star_slow"]) + ABS_FLOOR
+            add("info: delta_mis >= 0 (re-solve beats uniform plan)", b, r["delta_mis"], 0.0,
+                r["delta_mis"] >= -tight, informational=True)
+            add("info: delta_rev >= 0 (else uniform baseline suboptimal)", b, r["delta_rev"], 0.0,
+                r["delta_rev"] >= -tight, informational=True)
 
     ro_star = summary.set_index("budget")["L_RO_star"]
     for _, c in curves[curves["plan"] == "RO"].iterrows():

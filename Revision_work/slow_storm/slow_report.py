@@ -151,9 +151,13 @@ def _decisions(out_dir, baseline_df, slow_df, flood):
 
 def _validation_report(out_dir, checks, s, bt):
     L = ["# Validation report: slow-storm sensitivity", ""]
-    bad = checks[~checks["passed"]]
-    L.append(f"{len(checks) - len(bad)}/{len(checks)} checks passed.")
+    gated = checks[~checks["informational"]]
+    bad = gated[~gated["passed"]]
+    info = checks[checks["informational"] & ~checks["passed"]]
+    L.append(f"{len(gated) - len(bad)}/{len(gated)} checks passed.")
     L += ["", "## Failed checks", "", "None." if bad.empty else f"{FENCE}\n{bad.to_string(index=False)}\n{FENCE}"]
+    L += ["", "## Informational flags (not pass/fail)", "",
+          "None." if info.empty else f"{FENCE}\n{info.to_string(index=False)}\n{FENCE}"]
     L += ["", "## All checks", "", FENCE, checks.to_string(index=False), FENCE]
     L += ["", "## Summary (raw units; divide by 10 for GW)", "", FENCE, s.to_string(index=False), FENCE]
     if bt is not None:

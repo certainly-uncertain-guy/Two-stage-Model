@@ -56,7 +56,7 @@ def run(mode: str, slow_budgets: list = None):
     vectors = pd.concat([fixed, slow_vec], ignore_index=True)
     s, checks = build_report(out_dir, model_params, baseline_df, vectors, slow_df)
     print(s.to_string(index=False))
-    print(f"[{mode}] validation: {int(checks['passed'].sum())}/{len(checks)} checks passed", flush=True)
+    print(f"[{mode}] validation: {int(checks.loc[~checks['informational'], 'passed'].sum())}/{int((~checks['informational']).sum())} checks passed", flush=True)
 
 
 def report_only(mode: str):
@@ -71,7 +71,7 @@ def report_only(mode: str):
                          read_rows(out_dir / "slow_plan_vectors.csv")], ignore_index=True)
     s, checks = build_report(out_dir, model_params, baseline_df, vectors, slow_df)
     print(s.to_string(index=False))
-    print(f"[report {mode}] validation: {int(checks['passed'].sum())}/{len(checks)} checks passed")
+    print(f"[report {mode}] validation: {int(checks.loc[~checks['informational'], 'passed'].sum())}/{int((~checks['informational']).sum())} checks passed")
 
 
 if __name__ == "__main__":

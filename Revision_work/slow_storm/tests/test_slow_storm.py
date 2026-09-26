@@ -163,6 +163,27 @@ def test_substation_changes_classifies():
     assert out.loc["2", "mean_flood_05"] == 6.0 and out.loc["2", "mean_flood_25"] == 0.0
 
 
+def test_validation_informs_small_negative_delta_mis():
+    v = _vectors()
+    v.loc[v["plan"] == "SLOW", [f"L__{s}" for s in SCEN]] = 1.002  # 0.2% worse than SO under p_slow
+    summ = build_summary(v, _slow_df(obj=1.002), _baseline(), pd.Series({20: 1.6}), WS)
+    checks = validation_checks(summ, lambda_curves(v, [0.0, 1.0]), pd.Series({20: 1.5}), mip_gap=0.005)
+    gated = checks[checks["check"] == "L*_slow <= L_slow(x_SO)"].iloc[0]
+    info = checks[checks["check"] == "info: delta_mis >= 0 (re-solve beats uniform plan)"].iloc[0]
+    assert gated["passed"] and not gated["informational"]  # within the spec's gap tolerance
+    assert not info["passed"] and info["informational"]
+
+
+def test_validation_informs_negative_delta_rev():
+    v = _vectors()
+    v.loc[v["plan"] == "SLOW", [f"L__{s}" for s in SCEN]] = 0.9  # better than SO even under uniform weights
+    summ = build_summary(v, _slow_df(obj=0.9), _baseline(), pd.Series({20: 1.6}), WS)
+    checks = validation_checks(summ, lambda_curves(v, [0.0, 1.0]), pd.Series({20: 1.5}), mip_gap=0.005)
+    info = checks[checks["check"] == "info: delta_rev >= 0 (else uniform baseline suboptimal)"].iloc[0]
+    assert not info["passed"] and info["informational"]
+    assert checks.loc[checks["informational"], "check"].str.startswith("info:").all()
+
+
 if __name__ == "__main__":
     for name, fn in list(globals().items()):
         if name.startswith("test_"):
