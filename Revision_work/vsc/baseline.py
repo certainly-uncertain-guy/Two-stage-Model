@@ -95,10 +95,9 @@ def reproduce_baseline(model_params: dict, budget_vector: list) -> pd.DataFrame:
     return df.reset_index()
 
 
-def _mean_value_bound(model_params: dict, budget_vector: list) -> list:
-    """Reproduces Bounds.ipynb's mean-value pipeline: solve EV on the rounded
-    mean scenario, then fix x to that solution and re-optimize on the full
-    16-scenario model."""
+def mean_value_solutions(model_params: dict, budget_vector: list) -> dict:
+    """EV-model decisions per budget: {budget: {substation: x}} (Bounds.ipynb's
+    mean-value pipeline, first half)."""
     from main_model import two_stage_model
 
     flood_df = model_params["input1"][model_params["input1"].columns[model_params["input1"].columns.str.startswith("max")]]
@@ -119,6 +118,16 @@ def _mean_value_bound(model_params: dict, budget_vector: list) -> list:
         ev_model.model.setParam("Method", model_params["solver_method"])
         ev_model.model.optimize()
         mean_solution[budget] = {sub: ev_model.x[sub].X for sub in ev_model.x}
+    return mean_solution
+
+
+def _mean_value_bound(model_params: dict, budget_vector: list) -> list:
+    """Reproduces Bounds.ipynb's mean-value pipeline: solve EV on the rounded
+    mean scenario, then fix x to that solution and re-optimize on the full
+    16-scenario model."""
+    from main_model import two_stage_model
+
+    mean_solution = mean_value_solutions(model_params, budget_vector)
 
     full_model = two_stage_model(model_params)
     full_model.model.setParam("LogToConsole", 0)

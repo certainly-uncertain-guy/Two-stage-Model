@@ -116,6 +116,18 @@ def test_parse_gurobi_log(tmp_path=None):
     assert abs(gap - 0.047076) < 1e-9
 
 
+def test_scenario_subset_input1_keeps_order_and_positions():
+    from common import scenario_subset_input1
+    df = pd.DataFrame({"BusNum": [1], "BusName": ["x"], "SubNum": [7], "SubName": ["p"],
+                       "Latitude": [0], "Longitude": [0], "generation_capacity_min": [0],
+                       "generation_capacity_max": [1], "load": [5],
+                       "max_flood_level_a": [1], "max_flood_level_b": [2], "max_flood_level_c": [3]})
+    out = scenario_subset_input1(df, ["max_flood_level_c", "max_flood_level_a"])
+    assert list(out.columns)[:9] == list(df.columns)[:9]
+    assert [c for c in out.columns if c.startswith("max")] == ["max_flood_level_c", "max_flood_level_a"]
+    assert out["max_flood_level_c"].tolist() == [3]
+
+
 if __name__ == "__main__":
     for name, fn in list(globals().items()):
         if name.startswith("test_"):

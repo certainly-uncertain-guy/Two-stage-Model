@@ -33,14 +33,19 @@ def short_name(scenario_col: str) -> str:
     return scenario_col.replace(SCENARIO_PREFIX, "")
 
 
-def single_scenario_input1(input1: pd.DataFrame, scenario_col: str) -> pd.DataFrame:
-    """input1 with every flood column dropped except `scenario_col`, which is
-    appended last. The non-flood columns keep their positions, which matters
-    because main_model indexes input1.values positionally (SubNum=2, gen min=6,
-    gen max=7, load=8)."""
+def scenario_subset_input1(input1: pd.DataFrame, scenario_cols: list) -> pd.DataFrame:
+    """input1 with every flood column dropped except `scenario_cols`, which are
+    appended last in the given order. The non-flood columns keep their positions,
+    which matters because main_model indexes input1.values positionally (SubNum=2,
+    gen min=6, gen max=7, load=8)."""
     out = input1.drop(columns=flood_columns(input1)).copy()
-    out[scenario_col] = input1[scenario_col]
+    for col in scenario_cols:
+        out[col] = input1[col]
     return out
+
+
+def single_scenario_input1(input1: pd.DataFrame, scenario_col: str) -> pd.DataFrame:
+    return scenario_subset_input1(input1, [scenario_col])
 
 
 def apply_solver_params(model, model_params: dict) -> None:
