@@ -1013,9 +1013,8 @@ def _plot_fig_a(out_dir, s):
     ax.plot(b, s["L_slow_xRO"] / GW, marker="^", color=C["ro"], label="Robust plan")
     ax.plot(b, s["L_RO_star"] / GW, linestyle="--", color=C["ro_star"], label="RO objective (bound)")
     ax.plot(b, s["L_slow_xSO"] / GW, marker="o", color=C["so"], label="Stochastic plan (uniform)")
-    have = s["L_star_slow"].notna()
-    ax.plot(b[have], s.loc[have, "L_star_slow"] / GW, marker="s", color=C["slow"],
-            label="Stochastic plan (re-optimized, slow)")
+    # NaN (not-yet-solved budgets) breaks the line instead of bridging across the gap
+    ax.plot(b, s["L_star_slow"] / GW, marker="s", color=C["slow"], label="Stochastic plan (re-optimized, slow)")
     ax.plot(b, s["WS_slow"] / GW, marker="o", color=C["ws"], label="Wait-and-see")
     ax.set_xlabel("Budget in Millions ($)", fontsize=11)
     ax.set_ylabel("Expected load-shed under slow weights (GW)", fontsize=10)
