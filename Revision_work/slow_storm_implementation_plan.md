@@ -969,7 +969,9 @@ SUMMARY.md is written by hand from these outputs."""
 import json
 from pathlib import Path
 
-import matplotlib
+from slow_paths import RM16_OUTPUT_DIR, WAIT_AND_SEE_JSON, flood_columns, short_name  # sys.path wiring first
+
+import matplotlib  # noqa: E402
 
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt  # noqa: E402
@@ -979,9 +981,9 @@ from certainty_metrics import parse_gurobi_log  # noqa: E402
 from certainty_report import _latex_table  # noqa: E402
 from slow_metrics import (budget_table, build_summary, lambda_curves, substation_changes,  # noqa: E402
                           validation_checks)
-from slow_paths import RM16_OUTPUT_DIR, WAIT_AND_SEE_JSON, flood_columns, short_name  # noqa: E402
 
 GW = 10
+FENCE = "`" * 3  # markdown code fence, built so this file can live inside a fenced plan
 LAMBDAS = [0.0, 0.25, 0.5, 0.75, 1.0]
 ALL_BUDGETS = [0, 10, 20, 30, 40, 50, 60, 70, 80]
 PANEL_BUDGETS = [20, 40, 60]
@@ -1117,11 +1119,11 @@ def _validation_report(out_dir, checks, s, bt):
     L = ["# Validation report: slow-storm sensitivity", ""]
     bad = checks[~checks["passed"]]
     L.append(f"{len(checks) - len(bad)}/{len(checks)} checks passed.")
-    L += ["", "## Failed checks", "", "None." if bad.empty else "```\n" + bad.to_string(index=False) + "\n```"]
-    L += ["", "## All checks", "", "```", checks.to_string(index=False), "```"]
-    L += ["", "## Summary (raw units; divide by 10 for GW)", "", "```", s.to_string(index=False), "```"]
+    L += ["", "## Failed checks", "", "None." if bad.empty else f"{FENCE}\n{bad.to_string(index=False)}\n{FENCE}"]
+    L += ["", "## All checks", "", FENCE, checks.to_string(index=False), FENCE]
+    L += ["", "## Summary (raw units; divide by 10 for GW)", "", FENCE, s.to_string(index=False), FENCE]
     if bt is not None:
-        L += ["", "## Near-optimal budget", "", "```", bt.to_string(index=False), "```"]
+        L += ["", "## Near-optimal budget", "", FENCE, bt.to_string(index=False), FENCE]
     (out_dir / "validation_report.md").write_text("\n".join(L) + "\n")
 
 
