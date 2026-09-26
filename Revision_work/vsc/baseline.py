@@ -15,7 +15,7 @@ from env_check import check_environment
 sys.path.insert(0, str(REPO_ROOT))
 
 
-def load_config() -> dict:
+def load_config(time_limit_override: int | None = 7200) -> dict:
     check_environment()
     from utils import prepare_input
 
@@ -32,7 +32,10 @@ def load_config() -> dict:
     # instruction. config.yaml itself is left untouched so other notebooks
     # (stochastic_model.ipynb, robust_model.ipynb, etc.) keep reproducing the
     # manuscript's original settings.
-    model_params["time_limit"] = 7200
+    # Other experiments (e.g. Revision_work/certainty/) pass None to keep
+    # config.yaml's time_limit unchanged.
+    if time_limit_override is not None:
+        model_params["time_limit"] = time_limit_override
     return model_params
 
 
