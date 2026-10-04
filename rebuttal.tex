@@ -1,0 +1,343 @@
+\documentclass[authoryear,preprint,review,12pt]{elsarticle}\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{enumerate}
+\usepackage{xcolor}
+\usepackage{fancyhdr}
+\usepackage{natbib}
+\usepackage{url}
+\usepackage{amsmath,amsfonts}
+\usepackage{array}
+\usepackage[caption=false,font=normalsize,labelfont=sf,textfont=sf]{subfig}
+\usepackage{optidef}
+\usepackage[margin=1in]{geometry}
+\usepackage{enumitem}
+\usepackage{setspace}
+\DeclareMathOperator{\prob}{Pr}
+\DeclareMathOperator*{\minimize}{minimize}
+\DeclareMathOperator*{\maximize}{maximize}
+
+\begin{document}
+
+\textbf{\large Response to Reviewers' Comments and Notes on Revision \#2}
+
+\section*{}
+
+\textcolor{blue}{We thank the editor and reviewers for their time and effort in providing feedback on our revised manuscript. We copy the reviewers' report verbatim below in \textcolor{black}{black} text and provide point-by-point responses in blue text following each item raised by the reviewers. In the process, we explain how we have addressed each concern by revising the paper. Based on the changes and detailed responses that follow, we believe we have addressed all the points raised in the reviews and improved the manuscript. We hope you find the revised manuscript satisfactory and responsive to the reviewers' concerns. We again thank you for the opportunity to revise our paper and look forward to receiving your subsequent feedback and suggestions.}
+
+
+\section*{Reviewer \#1}
+
+I have no other comments, good work.
+
+\textcolor{blue}{We thank the reviewer for genuinely constructive feedback in the previous round, which led us to the revised, strengthened paper. We are glad to see that the reviewer is satisfied with our revision and responses. We certainly appreciate the acknowledgment of our work.}
+
+
+
+
+\section*{Reviewer \#3}
+
+The revised manuscript still have some issues.
+
+\textcolor{blue}{We thank the reviewer for the new feedback. Our responses and highlights of our revisions to the paper are below. Section, figure, and table numbers refer to the revised manuscript, in which changes are shown in \textcolor{red}{red}.}
+
+\bigskip
+
+1. On the equal-probability assumption for the MEOW scenarios. The revised manuscript adds explanations regarding the maximum-entropy distribution, the lack of actual probability information, and the use of a robust model. However, it still does not provide a quantitative sensitivity analysis under different scenario weights. A robust model reflects only the worst-case scenario and cannot fully substitute for an examination of different probability weights. Therefore, I recommend that the authors further analyze how different weights for storm direction, translation speed, and intensity affect the hardening plan, the load loss, and the long-term budget.
+
+\textcolor{blue}{We thank the reviewer for pressing on this point, and we agree that the sensitivity of our recommendations to the scenario weights is an important question. Our response has two parts. First, we explain why the robust model already answers this question quantitatively for every possible weighting, not only for the worst-case scenario, and why the resulting bound is tight enough to be informative in our case study. Second, following the reviewer's recommendation, we have added a new Section 6.3 that reports two new sets of experiments with specific alternative weightings: one at the opposite extreme of the uniform distribution, in which the planner is certain about which storm will occur, and one in which probability shifts toward slower-moving storms, as is expected in the future. We report their effect on the load loss, the hardening plan, and the long-term budget, as the reviewer requested.}
+
+\medskip
+\textcolor{blue}{\textbf{(a) The robust model is equivalent to the worst expected load shed over every possible weighting.}}
+
+\textcolor{blue}{We believe the robust model deserves a broader reading than a single worst case scenario. For any first stage decision $x$,
+\begin{equation*}
+\maximize_{k \in \mathcal{K}} \mathcal{L}(x,k) \;=\; \maximize_{p \in \mathcal{P}} \sum_{k \in \mathcal{K}} p_k \mathcal{L}(x,k), \qquad \mathcal{P} = \Big\{ p \in \mathbb{R}^{|\mathcal{K}|}_{+} : \sum_{k \in \mathcal{K}} p_k = 1 \Big\},
+\end{equation*}
+because a linear function over the probability simplex attains its maximum at a vertex, and each vertex places all probability on a single scenario. Consequently, the robust objective $L^*_{\mathcal{RO}}$ is the optimal value of a distributionally robust problem whose ambiguity set contains every possible weighting of the retained scenarios, including every weighting by storm direction and forward speed that the reviewer describes. A sensitivity analysis over specific alternative weights examines a finite number of points inside this set, whereas the robust model provides a guarantee over all of them simultaneously.}
+
+\textcolor{blue}{This yields a quantitative bound that answers the reviewer's question directly. If the hardening plan recommended by the robust model is adopted, its expected load shed under any weighting whatsoever cannot exceed $L^*_{\mathcal{RO}}$. Figure 6 shows that $L^*_{\mathcal{RO}}$ is very close to the expected load shed of the stochastic solution under uniform weights for budgets of \$40M and above. Therefore, for these budgets, the decision maker can adopt a plan whose expected load shed under any true distribution is at most the value we report under uniform weights plus the small gap visible in Figure 6. Moreover, if the maximum and the uniform average of the scenario load sheds of the robust plan differ by $\epsilon$, then every scenario load shed lies within $|\mathcal{K}|\epsilon$ of the maximum, which follows from the equality condition of inequality (9c). Since this gap is nearly zero at budgets of \$40M and above, the robust plan performs almost identically in every scenario and is therefore, by construction, insensitive to how the scenarios are weighted. We have added this interpretation, as Equation (10), to Section 4.4.}
+
+\medskip
+\textcolor{blue}{\textbf{(b) The robust bound is not trivial.}}
+
+\textcolor{blue}{A bound that holds for every possible weighting would be of little practical use if it were loose, for example if it merely restated the load shed of the most damaging storm on an unprotected grid (5.60 GW in our case study). This is not the case here. Table R1 compares, for each budget, the robust guarantee $L^*_{\mathcal{RO}}$ with the best expected load shed achievable if the uniform distribution were known to be correct ($L^*_{\mathcal{SO}}$), and with the worst-case scenario load shed of the stochastic plan.}
+
+\begin{table}[htbp]
+\centering
+\color{blue}
+\caption{Robust guarantee versus the stochastic solution (GW).}
+\label{tab:r1}
+\begin{tabular}{|*{5}{>{\centering\arraybackslash}m{2.6cm}|}}
+\hline
+Budget (\$M) & $L^*_{\mathcal{SO}}$ & $L^*_{\mathcal{RO}}$ (bound, any weighting) & $L^*_{\mathcal{RO}} - L^*_{\mathcal{SO}}$ & Worst scenario, SO plan \\
+\hline
+0  & 4.462 & 5.603 & 1.141 & 5.603 \\
+10 & 2.220 & 2.581 & 0.361 & 3.250 \\
+20 & 1.374 & 1.571 & 0.197 & 2.179 \\
+30 & 0.830 & 0.992 & 0.162 & 1.150 \\
+40 & 0.480 & 0.526 & 0.046 & 0.747 \\
+50 & 0.235 & 0.254 & 0.019 & 0.394 \\
+60 & 0.060 & 0.062 & 0.002 & 0.062 \\
+70 & 0.002 & 0.002 & 0.000 & 0.002 \\
+\hline
+\end{tabular}
+\end{table}
+
+\textcolor{blue}{At \$40M, the robust plan guarantees an expected load shed of at most 0.53 GW under any weighting of the scenarios, only 0.05 GW above what the stochastic model achieves when the uniform distribution is assumed to be exactly right. At \$50M and \$60M, the difference is 0.02 GW and 0.002 GW. In other words, for budgets of \$40M and above, protection against every possible weighting costs almost nothing in expected performance. The bound also improves on the stochastic plan itself: the stochastic plan sheds up to 0.75 GW in its worst scenario at \$40M, compared to at most 0.53 GW for the robust plan. We have added this discussion to Section 6.2.}
+
+\medskip
+\textcolor{blue}{\textbf{(c) New experiment: the opposite extreme of being certain about one scenario.}}
+
+\textcolor{blue}{The uniform distribution represents a planner with no information about which storm will occur. To examine the opposite end of the spectrum, we considered a planner who is fully certain about one scenario $k$: they place all probability on $k$, solve the stochastic model, and implement the resulting hardening plan $x_k$. We repeated this for each of the 16 scenarios and each budget from \$0M to \$80M (144 solves). We then evaluated each plan $x_k$ on all 16 scenarios, i.e., computed its expected load shed $L_{\mathcal{SO}}(x_k)$ under the uniform distribution, exactly as the mean value solution $\bar{x}$ is evaluated in Section 6.1. Note that this is different from the wait-and-see bound: there, $x_k$ is scored only in the scenario it was built for, whereas here the planner commits to $x_k$ and any of the storms can occur. The results are in Figure R1, Table R2, and in the new Section 6.3 (Figure 8 and Table 2).}
+
+\begin{figure}[htbp]
+\centering
+% TODO: replace placeholder with certainty_results/full/certainty_bounds.pdf
+%\includegraphics[height=2.8in]{figures/certainty_bounds.pdf}
+\fbox{\parbox[c][2.8in][c]{0.6\textwidth}{\centering \textcolor{blue}{[Figure placeholder: certainty\_bounds.pdf]}}}
+\caption{\textcolor{blue}{Expected load shed under the uniform distribution of plans built assuming certainty about a single scenario (mean over the 16 choices, with the band showing the best and worst choices), compared with the mean value, stochastic, and wait-and-see solutions (same as Figure 8 in the revised manuscript).}}
+\label{fig:r1}
+\end{figure}
+
+\begin{table}[htbp]
+\centering
+\color{blue}
+\caption{Expected load shed (GW) under the uniform distribution: stochastic plan versus plans built assuming certainty about one scenario.}
+\label{tab:r2}
+\begin{tabular}{|*{6}{>{\centering\arraybackslash}m{2.2cm}|}}
+\hline
+Budget (\$M) & $L^*_{\mathcal{SO}}$ & Certain, mean over $k$ & Certain, best $k$ (luckiest) & Certain, worst $k$ & Mean value plan $L_{\mathcal{SO}}(\bar{x})$ \\
+\hline
+10 & 2.220 & 3.089 & 2.590 & 3.738 & 3.121 \\
+20 & 1.374 & 2.650 & 1.715 & 3.660 & 2.640 \\
+30 & 0.830 & 2.415 & 1.265 & 3.595 & 2.352 \\
+40 & 0.480 & 2.259 & 0.965 & 3.587 & 2.200 \\
+50 & 0.235 & 2.188 & 0.728 & 3.587 & 2.118 \\
+60 & 0.060 & 2.169 & 0.643 & 3.587 & 2.115 \\
+70 & 0.002 & 2.168 & 0.633 & 3.587 & 2.115 \\
+\hline
+\end{tabular}
+\end{table}
+
+\textcolor{blue}{The main findings are as follows.
+\begin{itemize}
+    \item \textbf{The stochastic plan outperforms even the luckiest certain plan.} Suppose the planner had picked, and been certain about, the scenario that turns out in hindsight to give the best plan (the west-north-west storm with a forward speed of 10 mph, at every budget from \$10M upward). That plan still sheds 0.97 GW in expectation at \$40M and 0.64 GW at \$60M, compared to 0.48 GW and 0.06 GW for the stochastic plan, i.e., twice and ten times as much. No single scenario's plan comes close to what hedging across all scenarios achieves, and which scenario is the luckiest can only be known in hindsight.
+    \item \textbf{On average, being certain is no better than planning for the mean flood.} Averaged over the 16 choices, the certain plans perform almost identically to the mean value solution, and both level off at about 2.1 to 2.2 GW from \$50M onward, because a certain planner stops investing once their own scenario is protected. The cost of being certain, relative to the stochastic plan, grows with the budget, from 0.87 GW at \$10M to 2.11 GW at \$60M.
+    \item \textbf{The certain plans harden different substations.} At \$20M, \$40M, and \$60M, the average Jaccard similarity between the sets of substations hardened by a certain plan and by the stochastic plan is only 0.51, 0.58, and 0.63, respectively.
+    \item \textbf{Certain planners badly misjudge their own risk.} Each certain plan has near-zero load shed in its own scenario but 3 to 5 GW in many other scenarios (Figure R2). At \$40M, the worst scenario of a certain plan sheds 4.48 GW on average, compared to 0.53 GW guaranteed by the robust plan.
+\end{itemize}}
+
+\begin{figure}[htbp]
+\centering
+% TODO: replace placeholder with certainty_results/full/cross_heatmap_40M.pdf
+%\includegraphics[height=3.2in]{figures/cross_heatmap_40M.pdf}
+\fbox{\parbox[c][3.2in][c]{0.6\textwidth}{\centering \textcolor{blue}{[Figure placeholder: cross\_heatmap\_40M.pdf]}}}
+\caption{\textcolor{blue}{Load shed (GW) at a budget of \$40M when the plan built for the scenario on the vertical axis is implemented and the scenario on the horizontal axis occurs. Diagonal cells correspond to the wait-and-see solutions.}}
+\label{fig:r2}
+\end{figure}
+
+\textcolor{blue}{Together with the robust analysis, this experiment brackets the uniform distribution from both sides: the worst-case weighting changes the expected performance only slightly for budgets of \$40M and above, whereas moving to the opposite extreme of certainty about one storm substantially degrades the plan.}
+
+\medskip
+\textcolor{blue}{\textbf{(d) New experiment: sensitivity to slower-moving storms.}}
+
+\textcolor{blue}{To examine a specific and physically motivated alternative weighting, we considered the observed slowdown in the forward (translation) speed of tropical cyclones, which may continue in the future. Within each of the four storm directions, we moved a fraction $\lambda \in \{0, 0.25, 0.5, 0.75, 1\}$ of the probability of the fastest scenario (25 mph) to the slowest scenario (5 mph), keeping the 10 and 15 mph scenarios at probability 1/16 each and each direction at a total probability of 1/4. At $\lambda = 1$, each 5 mph scenario has probability 2/16 and each 25 mph scenario has probability zero. This shift makes the scenario set more severe: the expected load shed of the unhardened grid increases from 4.46 GW to 4.65 GW. For every budget, we re-solved the stochastic model under the $\lambda = 1$ weights, using the same solver settings as in the manuscript, and compared the re-optimized plan with the plan obtained under uniform weights. The results are in Figures R3 to R5 and in Section 6.3 (Figure 9 and Table 2). We address each of the three aspects raised by the reviewer.}
+
+\begin{figure}[htbp]
+\centering
+% TODO: replace placeholder with slow_storm_results/full/fig_a_slow_bounds.pdf
+%\includegraphics[height=2.8in]{figures/fig_a_slow_bounds.pdf}
+\fbox{\parbox[c][2.8in][c]{0.6\textwidth}{\centering \textcolor{blue}{[Figure placeholder: fig\_a\_slow\_bounds.pdf]}}}
+\caption{\textcolor{blue}{Expected load shed under slow-storm weights ($\lambda = 1$) of the mean value, robust, and uniform-weight stochastic plans, the stochastic plan re-optimized under slow-storm weights, and the wait-and-see solution, together with the RO objective (same as Figure 9 in the revised manuscript).}}
+\label{fig:r3}
+\end{figure}
+
+\textcolor{blue}{\textit{Load loss.} Keeping the uniform-weight plan when storms are slower increases the expected load shed by at most 0.034 GW relative to the re-optimized plan (at \$20M; Table 2 of the revised manuscript). As a function of $\lambda$, the expected load shed of the uniform-weight plan increases linearly, and by at most 0.045 GW over the whole range $\lambda \in [0,1]$ for budgets of \$10M and above (Figure R4). The optimal expected load shed under slow-storm weights is within 0.011 GW of $L^*_{\mathcal{SO}}$ at every budget from \$20M upward.}
+
+\begin{figure}[htbp]
+\centering
+% TODO: replace placeholder with slow_storm_results/full/fig_b_lambda_sensitivity.pdf
+%\includegraphics[width=\textwidth]{figures/fig_b_lambda_sensitivity.pdf}
+\fbox{\parbox[c][2.0in][c]{0.9\textwidth}{\centering \textcolor{blue}{[Figure placeholder: fig\_b\_lambda\_sensitivity.pdf]}}}
+\caption{\textcolor{blue}{Expected load shed of the uniform-weight stochastic plan and the robust plan as a function of $\lambda$, the share of the 25 mph probability moved to the 5 mph scenarios, at budgets of \$20M, \$40M, and \$60M. The dashed line is the robust objective $L^*_{\mathcal{RO}}$, and the square marks the plan re-optimized at $\lambda = 1$.}}
+\label{fig:r4}
+\end{figure}
+
+\textcolor{blue}{\textit{Hardening plan.} The re-optimized plans harden nearly the same substations as the uniform-weight plans. The Jaccard similarity between the two sets of hardened substations is between 0.89 and 1.00 across budgets, and the number of hardened substations differs by at most one. At each budget, between 2 and 9 substations change, mostly through hardening height adjustments of 1 to 2 ft. These changes follow the reweighting: the slow-storm plan raises the hardening height at substations that flood more deeply in slow storms and lowers it at substations that flood more deeply in fast storms.}
+
+\textcolor{blue}{\textit{Long-term budget.} Using the approach of Section 6.4 with $\gamma = 10$, restoration times $h \in \{6, 12, 24, 48\}$ hours, and unit costs of load shed $\delta \in \{\$250, \$500, \$1000, \$3000, \$5000\}$ per MWh, the near-optimal budget is identical under uniform and slow-storm weights in 19 of the 20 combinations (Figure R5). The exception is $h = 6$ hours with $\delta = \$3000$ per MWh, where it moves from \$70M to \$60M. Adopting the uniform-weight budget when storms are in fact slower increases the total disaster management cost over the planning horizon by only \$0.1M to \$0.9M, on totals of \$40M to \$75M.}
+
+\begin{figure}[htbp]
+\centering
+% TODO: replace placeholder with slow_storm_results/full/fig_c_budget.pdf
+%\includegraphics[width=\textwidth]{figures/fig_c_budget.pdf}
+\fbox{\parbox[c][1.8in][c]{0.9\textwidth}{\centering \textcolor{blue}{[Figure placeholder: fig\_c\_budget.pdf]}}}
+\caption{\textcolor{blue}{Near-optimal hardening budget under uniform and slow-storm weights as a function of the unit cost of load shed, for restoration times of 6, 12, 24, and 48 hours ($\gamma = 10$).}}
+\label{fig:r5}
+\end{figure}
+
+\textcolor{blue}{Finally, consistent with part (a), the expected load shed of the robust plan remained below $L^*_{\mathcal{RO}}$ for every value of $\lambda$ and every budget (Figure R4). We also note one by-product of this experiment: at \$20M, the re-optimized plan is slightly better than the manuscript's stochastic plan even under uniform weights (1.366 GW versus 1.374 GW). This is within the 4.7\% optimality gap at which the original \$20M solve reached its time limit, and it does not affect any conclusion; we mention it in Section 6.3 because part of the 0.034 GW difference at \$20M reflects this gap.}
+
+\medskip
+\textcolor{blue}{\textbf{(e) Intensity and direction weights.}}
+
+\textcolor{blue}{All 16 retained scenarios represent Category 5 storms (Section 5.1), so intensity cannot be reweighted within this scenario set. In response to comment 4 below, we have added to Section 3.1 how multiple intensity classes can be incorporated: when each class has its own scenario set and expected number of occurrences, the total expected cost is again an expectation over the union of the scenario sets, with each scenario weighted by the relative frequency of its intensity class. Intensity weights therefore enter the models only through the scenario probabilities, and the robust bound in part (a) covers every such weighting of the scenarios included in the set. Regarding direction weights, the certainty experiment in part (c) includes the most extreme direction weightings, in which all probability is placed on one direction (and one forward speed), and part (a) covers every intermediate weighting.}
+
+\textcolor{blue}{In summary, we have added (i) the distributional interpretation of the robust model to Section 4.4, (ii) a discussion of the tightness of the robust bound to Section 6.2, and (iii) a new Section 6.3, with Figures 8 and 9 and Table 2, reporting the certainty and slow-storm experiments and their effect on the load loss, the hardening plan, and the long-term budget.}
+
+\bigskip
+
+2. On the effect of spatial correlation. Although the revised manuscript further emphasizes that the MEOW scenarios can preserve the spatial correlation of multiple substations being flooded simultaneously, the current analysis still mainly compares a multi-scenario model against an average-flood scenario model. This can only demonstrate the advantage of considering multiple MEOW scenarios relative to using an average flood scenario; it still cannot isolate the specific effect of spatial correlation on the hardening decisions and load-loss results. I recommend adding one more benchmark model.
+
+\textcolor{blue}{We thank the reviewer for this comment. We agree that the comparison between the stochastic model and the mean value model does not isolate the effect of spatial correlation, and we note that the manuscript does not present it as such. The value of the stochastic solution in Section 6.1 is the standard measure from the stochastic programming literature of the benefit of representing uncertainty through scenarios rather than through point estimates, and we interpret it only in that sense. After careful consideration, we respectfully believe that an additional benchmark isolating spatial correlation would not strengthen the paper's conclusions, for the following reasons.}
+
+\textcolor{blue}{First, spatial correlation is not a separable input in our framework. Each MEOW map is the outcome of a single physical simulation, in which the flood heights at all substations are produced jointly by the same storm. The correlation is therefore a property of the flood physics rather than a parameter that can be switched off while everything else is held fixed. A benchmark that removes it must replace the physical scenarios with synthetic ones, for example by sampling the flood height at each substation independently from its marginal distribution. Such synthetic scenarios describe flood patterns that no storm can produce, such as a substation under several feet of water next to a dry substation at the same elevation. A hardening plan optimized for them answers a different, physically inconsistent planning problem, and it is not an alternative that a utility would consider adopting.}
+
+\textcolor{blue}{Second, such a benchmark is not uniquely defined, so the effect it measures would depend on arbitrary construction choices rather than on the flood hazard. With 16 scenarios and 72 flood-exposed substations, independent sampling yields up to $16^{72}$ possible joint flood configurations. Any tractable benchmark must therefore choose a sampling scheme, a number of samples, and a dependence structure to impose (full independence, a copula with some chosen parameter, or fragility-curve sampling), and each choice gives a different estimate. The resulting number would conflate the effect of correlation with the effects of sampling error and of the chosen construction, and would not be a well-defined property of the grid or the storms.}
+
+\textcolor{blue}{Third, and most importantly, the claim of our paper does not depend on the magnitude of such an effect. Our contribution is methodological: we show how physically consistent, spatially correlated flood scenarios produced by a geoscience model can be coupled directly with a power flow model to make hardening decisions, so that the planner does not need to assume a dependence structure, as fragility-curve approaches must (Sections 2.3 and 5.1). Using the joint scenarios is the faithful representation of the hazard regardless of how much a simplified dependence assumption would change the decisions on a particular grid. How much correlation matters will vary across grids, regions, and hazards, and the proposed framework captures it automatically whenever it matters, without requiring the analyst to know this in advance.}
+
+\textcolor{blue}{For these reasons, we have not added the suggested benchmark. We hope the reviewer finds this reasoning acceptable, and we would be glad to clarify the wording in the manuscript if the reviewer feels that any passage suggests that the comparison with the mean value model isolates the effect of spatial correlation.}
+
+\bigskip
+
+3. On the inconsistency in the definition of long-term loss between the stochastic and robust models. The revised manuscript adds relevant explanations. The authors clarify the design rationale of the robust optimization model as a distribution-free counterpart to the stochastic optimization model, used to test the sensitivity of the uniform-distribution assumption, and they supplement this with a verification that the results of the two model classes converge under a high investment budget. However, the original comment regarding the consistency between the robust model's objective function and the long-term multi-storm planning framework has not been adequately addressed.
+
+\textcolor{blue}{We thank the reviewer for following up on this point, and we agree that our previous revision did not address it adequately. The reviewer is correct that, as previously written, the two long-term cost expressions were not on the same basis: $TC_{SO} = \gamma h \delta \mathbb{E}[\mathcal{L}]$ accounted for all $\gamma$ storms in the planning horizon, whereas $TC_{RO} = h \delta \mathcal{L}_{\max}$ accounted for a single worst-case storm. We have revised Section 3.1 to define the robust long-term cost over the same multi-storm planning horizon as
+\begin{equation*}
+    \textcolor{red}{TC_{RO} = \gamma h \delta \mathcal{L}_{\max}},
+\end{equation*}
+and to explain two interpretations of this expression, both of which are consistent with the multi-storm framework.}
+
+\textcolor{blue}{\textit{Pathwise worst case.} If each of the $\gamma$ storms in the planning horizon produces one of the flood scenarios, then, for a given hardening decision, the total load shed cost is largest when every storm produces the worst-case scenario, which gives $\gamma h \delta \mathcal{L}_{\max}$.}
+
+\textcolor{blue}{\textit{Worst-case expected cost over all distributions.} More importantly, the same expression is the largest \emph{expected} total cost over the planning horizon when the storms may follow any probability distribution over the scenarios, even one that changes from storm to storm. If the $t$-th storm follows distribution $p^t$, then
+\begin{equation*}
+    \sum_{t=1}^{\gamma} \sum_{k \in \mathcal{K}} p^t_k \, \mathcal{L}(x,k) \;\leq\; \gamma \max_{k \in \mathcal{K}} \mathcal{L}(x,k),
+\end{equation*}
+with equality when every $p^t$ places all its probability on a worst-case scenario. Hence, $TC_{RO}$ is exactly the robust counterpart of $TC_{SO}$: $TC_{SO}$ is the expected total cost over the planning horizon under one assumed distribution, and $TC_{RO}$ is the largest expected total cost over the same horizon over all distributions. This interpretation also shows that the robust model does not require the assumption that the storm-generating process is stationary over the planning horizon, which the stochastic model does require.}
+
+\textcolor{blue}{Since $\gamma h \delta$ is a positive constant, minimizing the per-storm worst-case load shed $\mathcal{L}_{\max}$ minimizes $TC_{RO}$, just as minimizing $\mathbb{E}[\mathcal{L}]$ minimizes $TC_{SO}$. Therefore, the robust hardening plan for any given budget is unchanged, and all robust results in the paper remain valid. We have also corrected the corresponding total disaster management cost for the robust model in Section 3.2 to $\textcolor{red}{\gamma h \delta \mathcal{L}_{\max} + I}$. No numerical result changes, since the long-term budget analysis in Section 6.4 and the Appendix is based on the stochastic model. The revised text in Section 3.1 reads:}
+
+\textcolor{red}{``For the robust version of the first problem, we make a similar argument on the same multi-storm basis. Suppose that each of the $\gamma$ storms in the planning horizon produces one of the flood scenarios, but no probability distribution over the scenarios is assumed, and the distribution may even differ from one storm to the next. For a given hardening decision, the total load shed cost during the planning horizon is then largest when every storm produces the scenario with the largest load shed [\ldots]. The same value is obtained as the largest \emph{expected} total cost over all probability distributions that the storms may follow, including distributions that change from storm to storm. [\ldots] Hence, $TC_{RO}$ is the robust counterpart of $TC_{SO}$ over the same planning horizon: it replaces the expected cost under a single assumed distribution with the largest expected cost over all distributions, and it does not require the steady-state assumption (2) above.''}
+
+\bigskip
+
+4. On the inconsistency in statistical basis between single-storm loss and the number of storms over the planning horizon. This issue is essentially not substantively resolved in the revised manuscript. The single-event load loss in the model is still computed from the filtered Category-5 storm scenarios, whereas the number of storms over the planning horizon is still estimated from the frequency of relevant storms that caused outages in recent years. The authors do not state whether this frequency specifically corresponds to Category-5 storms or to storms of equivalent intensity. If this frequency includes hurricanes and tropical storms of different intensities, combining it directly with the load loss under Category-5 storm scenarios may lead to biased estimates of the load loss over the planning horizon and of the hardening budget. I recommend that the authors clearly state the statistical meaning of $\gamma$ and ensure consistency between the storm scenario intensity and the storm occurrence frequency.
+
+\textcolor{blue}{We thank the reviewer for this careful observation, and we agree. The value $\gamma = 10$ used in the case study was based on the frequency of outage-causing storms of all intensities, whereas the per-storm load shed is computed from Category 5 scenarios. Combining the two overstates the load shed cost over the planning horizon and, therefore, the near-optimal budget. We have made the following revisions.}
+
+\textcolor{blue}{\textbf{(a) Statistical meaning of $\gamma$.} In Section 3.1, we now define $\gamma$ as the expected number of storms during the planning horizon whose flood impacts are represented by the scenario set used in the per-storm models, i.e., storms of an intensity comparable to that of the retained scenarios. In our case study, where all retained scenarios are Category 5 (as now also stated in Section 5.1), $\gamma$ is the expected number of storms producing Category 5 level storm surge flooding during the planning horizon.}
+
+\textcolor{blue}{\textbf{(b) Consistency when multiple intensities are considered.} We have added to Section 3.1 how the framework handles storms of several intensity classes consistently. If class $c$ has scenario set $\mathcal{K}_c$, scenario probabilities $p^c_k$, and expected number of occurrences $\gamma_c$, then
+\begin{equation*}
+    TC_{SO} = h \delta \sum_{c} \gamma_c \, \mathbb{E}[\mathcal{L} \mid c] = \gamma h \delta \sum_{c} \sum_{k \in \mathcal{K}_c} \frac{\gamma_c}{\gamma} \, p^c_k \, \mathcal{L}(x,k), \qquad \gamma = \sum_c \gamma_c,
+\end{equation*}
+which has the same form as before, with the expectation taken over the union of the scenario sets and each scenario weighted by the relative frequency of its intensity class. Hence, each intensity class is matched with its own occurrence frequency, and the stochastic and robust models apply without modification; only the scenario probabilities change.}
+
+\textcolor{blue}{\textbf{(c) Interpretation of the case study values.} In Section 6.4, we now state explicitly that $\gamma = 10$ counts outage-causing storms of all intensities and therefore represents a conservative, upper-end case in which every such storm is assumed to produce Category 5 level flooding. Since the near-optimal budget is non-decreasing in $\gamma$, the budgets reported for $\gamma = 10$ are upper-end estimates. An intensity-consistent value of $\gamma$ is considerably smaller, since no Category 5 hurricane has made landfall on the Texas coast in the historical record.}
+
+\textcolor{blue}{\textbf{(d) Results under an intensity-consistent $\gamma$.} Because $\gamma$, $h$, and $\delta$ enter the long-term problem only through their product $\omega = \gamma h \delta$ (Appendix), the near-optimal budget for any other value of $\gamma$ follows directly from the same stochastic model solutions, without re-solving the model. We have added the following examples to Section 6.4 for one Category 5 level storm over a 10-year horizon ($\gamma = 1$).}
+
+\begin{table}[htbp]
+\centering
+\color{blue}
+\caption{Near-optimal hardening budget for $\gamma = 10$ (as in the manuscript) and for the intensity-consistent value $\gamma = 1$.}
+\label{tab:r3}
+\begin{tabular}{|c|c|c|c|}
+\hline
+$\delta$ (\$/MWh) & $h$ (hours) & $\gamma = 10$ & $\gamma = 1$ \\
+\hline
+1000 & 6  & \$60M & \$10M \\
+1000 & 24 & \$70M & \$30M \\
+6000 (ERCOT VOLL) & 6  & \$70M & \$40M \\
+6000 (ERCOT VOLL) & 24 & \$70M & \$60M \\
+\hline
+\end{tabular}
+\end{table}
+
+\textcolor{blue}{Under an intensity-consistent storm frequency, the recommended budgets are lower, as the reviewer anticipated. However, a substantial hardening investment remains optimal when the unit cost of load loss is at the level estimated by ERCOT. We present the $\gamma = 10$ results in the manuscript as the upper-end case, and the Appendix (Figures 12 and 13) provides the near-optimal budget over a range of values of $\gamma$, so that a decision maker can use the value appropriate to the intensity of the scenario set. We have also qualified the corresponding statement about the ERCOT value of lost load in Section 6.4 and added a sentence to Section 5.1 noting that all retained scenarios represent Category 5 storms.}
+
+\bigskip
+
+\textcolor{blue}{\textbf{Summary of changes for Reviewer \#3.}
+\begin{itemize}
+    \item Section 3.1: statistical meaning of $\gamma$; consistent treatment of multiple intensity classes; robust long-term cost $TC_{RO} = \gamma h \delta \mathcal{L}_{\max}$ with its multi-storm interpretation (comments 3 and 4).
+    \item Section 3.2: robust total disaster management cost corrected to $\gamma h \delta \mathcal{L}_{\max} + I$ (comment 3).
+    \item Section 4.4: distributional interpretation of the robust model, Equation (10) (comment 1).
+    \item Section 5.1: all retained scenarios are Category 5 (comment 4).
+    \item Section 6.2: tightness of the robust bound (comment 1).
+    \item New Section 6.3, Figures 8 and 9, and Table 2: certainty and slow-storm sensitivity experiments (comment 1).
+    \item Section 6.4: interpretation of $\gamma = 10$ as an upper-end case, and near-optimal budgets for the intensity-consistent value $\gamma = 1$ (comment 4).
+    \item Section 7: summary of the new sensitivity findings.
+\end{itemize}}
+
+
+\textbf{EK: Previous comments and our responses for context}
+
+
+1.Please highlight the limitations of existing research and the contributions of this paper.
+
+% \textcolor{blue}{We have revised the paper to clearly state limitations of our research and highlight the contributions of the paper, in \textcolor{red}{Sections X.x and Y.y}, respectively. }
+
+\textcolor{blue}{We thank the reviewer for this comment. We would like to note that the manuscript contains dedicated content addressing both points raised. We want to make sure they are clearly presented in our revision.}
+
+\textcolor{blue}{The contributions of this paper are enumerated as a four-item list at the end of Section 1 (Introduction), covering: (1) the two scenario based optimization models (stochastic and robust) that couple a geoscience based flood model with a power flow model for substation hardening; (2) the extension of these per storm models to long term, multiple storm resilience investment planning and optimal budget determination; (3) the Texas Gulf Coast case study using a realistic grid with 663 buses and 1509 branches and NOAA storm surge flood maps; and (4) the method for approximating the optimal hardening budget across combinations of the long term planning parameters ($\gamma$, $h$, $\delta$) without solving the full model repeatedly.}
+
+\textcolor{blue}{The limitations of existing research are discussed in Section 2.3 (Research gap), where we review the studies most closely related to our flood focused approach and identify their specific shortcomings relative to our work, such as reliance on fragility curves that neglect spatially correlated flooding (24; 25), a focus on short term preparedness rather than long term hardening (24; 25; 26; 27; 28), and reliance on a single storm scenario set (16) rather than a broader range of storm characteristics.}
+
+\textcolor{blue}{We believe that both points are sufficiently covered in the revised version of the manuscript. However, if the reviewer feels these sections can be made clearer or stronger, we would be happy to revise them further, and we would appreciate any specific guidance for a more targeted revision.}
+
+2. The planning model in this paper adopts two optimization models, namely the stochastic model and the robust model. Both models are relatively simple, which may raise concerns or cause confusion for readers.
+
+% \textcolor{blue}{The models adopted in the paper build on the relatively well developed stochastic programming and robust optimization methodologies and borrows terminology, specific modeling and solution techniques from this field. We have now gone through the relevant parts of the paper and attempted our best to go through this material to eliminate potential points for confusion or concern. If there is still any remaining specific issues, we are happy to address them if we are given a chance.}
+
+\textcolor{blue}{We understand the reviewer's concern, which seems closely related to point 2, raised by Reviewer \#1. We reprise part of our response to that point here, and add to it. In particular, we believe that the two models represent two useful canonical cases, which provide insight into making long-term risky decisions.}
+
+\textcolor{blue}{Our primary goal in constructing this scenario set was to represent a full range of flooding scenarios that might be induced by future extreme weather events, in order to inform hardening decisions that address longer term risks. Historical flood scenarios are often incomplete due to gaps in actual measurements. In addition, the range of possible future storms is greater than what is seen in the historical record. NOAA MEOW maps are particularly suited to represent a range of outcomes.}
+
+\textcolor{blue}{We agree with the reviewer that once a set has been selected, it is hard to determine what the appropriate distribution should be. Our choices represent what we view as two insightful alternatives. Future users of our framework could select other approaches. We believe that applying a uniform distribution is reasonable since, from a Bayesian point of view, it represents the distribution which uses the fewest extraneous assumptions, yet still employs the full range. At the other extreme, our robust formulation takes the ``worst case'' view towards optimization and decision making, in effect only applying the worst-case outcome.}
+
+
+%\textcolor{blue}{We agree the two models are individually simple, but this is intentional and central to our methodology rather than a limitation. The stochastic model (SO) requires a probability distribution over flood scenarios. As is now explained in Section 5.1, we were unable to find a storm surge dataset for this region that carried a well specified probability distribution over individual scenarios, unlike wind hazard studies which benefit from decades of fragility curve calibration. Given this absence, and in order to avoid introducing an arbitrary or unsupported weighting scheme, we chose to treat the retained scenarios as equally likely. This choice follows directly from the maximum entropy principle: given only the support of a set of outcomes and no additional distributional information, the entropy maximizing distribution over that support, and therefore the distribution that assumes the least, is the uniform distribution. Any other weighting would require information we simply do not have, and would risk biasing the hardening recommendations toward assumptions that are not empirically grounded.}
+
+\textcolor{blue}{The robust model (RO) is included to test the sensitivity of our hardening recommendations to this uniform distribution assumption. RO requires no probability distribution at all and instead protects against the worst case scenario, making it the natural distribution free counterpart to SO. In Section 6.2, we compare the expected load shed performance of the RO optimal hardening decisions against the SO optimal decisions and find that they converge closely for investment budgets of \$40M and above. 
+%This convergence is itself an empirical result. 
+This indicates that our recommendations are unlikely to be an artifact of the uniform distribution assumption, since a fully distribution free model recommends nearly the same investments. }
+%In other words, RO serves as a robustness check confirming that the maximum entropy choice made for SO was a reasonable one, rather than simply as a second, independent decision rule.}
+
+\textcolor{blue}{
+%We have now gone through the relevant parts of the paper and attempted our best to go through this material to eliminate potential points for confusion or concern regarding the use of two models. 
+We have added text to Sections 3 and 6.2 to make the motivation for using both models explicit, and we hope this resolves the reviewer's concern.} 
+%If there is still any remaining specific issue, we are happy to address it if we are given a chance.}
+
+3. The disaster loss model for the transmission network considering flood impacts lacks key formulas and explanations.
+
+% \textcolor{blue}{We thank the reviewer for the comment. We were able to identify a handful of things that could be viewed in this category. We have worked through the paper to catch any missing formula, notation, or explanation and we have added them in our revision. We specifically searched the paper for formulas, notation, and symbols and made sure that they are defined and explained fully first time they are mentioned in the paper. We have tightened our explanations of important formulas and we believe that every potential item is now addressed.}
+
+\textcolor{blue}{We thank the reviewer for the comment. Going through the whole paper, we were able to identify a handful of things that could be viewed in this category. We have worked through the paper to catch any missing formula, notation, or explanation and we have added them in our revision. We specifically searched the paper for formulas, notation, and symbols and made sure that they are defined and explained fully first time they are mentioned in the paper. We have also tightened our explanations of important formulas and we believe that every potential item is now addressed. Specifically, we made the following additions.}
+\textcolor{blue}{
+\begin{enumerate}
+    \item \textcolor{blue}{In the recourse formulation of Section 4.3, the model was missing an explicit reference bus constraint. Since a DC power flow formulation determines phase angles only up to a common additive constant, a reference bus angle must be fixed for the angles to be uniquely determined in each scenario. We added constraint (7m), which sets the phase angle at the reference bus to zero in every scenario, along with a sentence explaining its purpose immediately after the constraint is introduced.}
+    \item \textcolor{blue}{In Section 3.1, we made explicit the formula for the total expected cost from load losses over the planning horizon, previously only given inline, by presenting it as a labeled equation, $TC_{SO} = \gamma h \delta \mathbb{E}[\mathcal{L}]$, with the notation explained immediately after.}
+    \textcolor{blue}{Also in Section 3.1, we did the same for the worst case counterpart used in the robust formulation, presenting $TC_{RO} = h \delta \mathcal{L}_{\max}$ as a labeled equation with its notation explained.}
+    \item \textcolor{blue}{In Section 3.2, we formalized the definition of the total disaster management cost, which had previously been described only in words. We added the equation $TDMC(I) = Z(I) + I$, together with $Z(I) = \gamma h \delta L_{\mathcal{SO}}^*(I)$, and explained that $Z(I)$ represents the expected total load shed cost at the optimal per storm load shed for a given budget $I$, while $I$ represents the mitigation investment itself. We also updated the later reference to this quantity in Section 6.3 to point directly to this formula rather than repeating it inline.}
+    \item \textcolor{blue}{In Section 6.1, we added a labeled equation for the value of the stochastic solution, $VSS = L_{\mathcal{SO}}(\bar{x}) - L_{\mathcal{SO}}^*$, placed right after the term is first introduced in the text.}
+    \item \textcolor{blue}{In the same subsection, we added a labeled equation for the expected value of perfect information, $EVPI = L_{\mathcal{SO}}^* - L_{\mathcal{WS}}^*$, again placed right after the term is first introduced.}
+    \item \textcolor{blue}{In the appendix, we formalized the combined long term planning parameter $\omega = \gamma h \delta$ as a labeled equation rather than leaving it only as an inline expression.}
+\end{enumerate}
+}
+
+
+\textcolor{blue}{We believe these additions, together with the tightened explanations accompanying each one, address the concern regarding missing key formulas and explanations in the disaster loss model.}
+
+4. The case study only presents load loss results and lacks the presentation of transmission network planning results.
+
+% \textcolor{blue}{We thank the reviewer for comment. We have tables, charts and maps depicting and explaining planning (in our case resilience hardening) results from the case study on \textcolor{red}{pages xx-yy}. It is not clear to us what exactly the reviewer is referring to as lacking presentation of transmission network planning results. Since our focus is ``resilience planning'' in the form of flood protection of substations, our plans involve hardening investments for substations and they are presented in the case study results section. However, if there is a specific planning aspect that we could include in our analysis of the results, we will gladly present it in the paper.}
+
+\textcolor{blue}{We thank the reviewer for the comment. Our case study, presented in Section 5 (pages 16 to 19 in the revised version of the paper) and Section 6 (pages 20 to 26), does include tables, charts, and maps that depict and explain the planning results, which in our setting take the form of resilience hardening decisions for substations. Table 1 summarizes the grid characteristics used in the case study, including the network reduction applied to the original ACTIVSg2000 grid. Figure 4 shows the resulting transmission network topology before and after this reduction. Figures 5 and 6 present the load shed obtained under the mean value, stochastic, wait and see, and robust solutions as a function of the hardening budget, which are the outputs of the substation hardening plans recommended by our two stage stochastic and robust models. Figures 7, 8, and 9 translate these hardening plans into total disaster management costs, showing the tradeoff between the hardening investment and the load shed cost for different budget levels and different values of the number of storms, the restoration time, and the unit cost of load shed. Figures 10 and 11 further generalize the near optimal hardening budget as a function of these long term planning parameters. We believe that these charts, maps and tables are sufficient to describe the process and outputs supporting important observations and insights. Therefore, it is not clear to us what specific aspect of transmission network planning results is lacking presentation. Since the focus of this paper is resilience planning in the form of flood protection of substations, our planning decisions are precisely the substation hardening investments, and we believe these are already presented and discussed throughout the case study results section in sufficient detail. However, if the reviewer can point to a specific planning aspect that we missed, we will be glad to include it in the paper.}
+
+%\bibliographystyle{abbrv}
+%\bibliography{cas-refs}
+
+\end{document}

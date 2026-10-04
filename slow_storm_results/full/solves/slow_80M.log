@@ -1,0 +1,44 @@
+
+Gurobi 13.0.3 (mac64[arm]) logging started Sat Sep 26 14:16:14 2026
+
+Set parameter LogFile to value "/Users/ashutosh/Desktop/Two-stage-Model/slow_storm_results/full/solves/slow_80M.log"
+Gurobi Optimizer version 13.0.3 build v13.0.3rc0 (mac64[arm] - Darwin 27.0.0 26A428)
+
+CPU model: Apple M1 Pro
+Thread count: 10 physical cores, 10 logical processors, using up to 10 threads
+
+Non-default parameters:
+TimeLimit  21600
+MIPGap  0.005
+Method  2
+LogToConsole  0
+
+Optimize a model with 158931 rows, 58612 columns and 442916 nonzeros (Min)
+Model fingerprint: 0x649b8d13
+Model has 7956 linear objective coefficients and an objective constant of 396.859633
+Variable types: 41976 continuous, 16636 integer (16274 binary)
+Coefficient statistics:
+  Matrix range     [1e-03, 1e+05]
+  Objective range  [6e-02, 1e-01]
+  Bounds range     [1e+00, 3e+00]
+  RHS range        [1e-02, 8e+07]
+
+Warning: Completing partial solution with 15912 unfixed non-continuous variables out of 16636
+User MIP start produced solution with objective 0 (0.91s)
+User MIP start produced solution with objective 1.13687e-13 (0.91s)
+Loaded user MIP start with objective 1.13687e-13
+MIP start from previous solve did not produce a new incumbent solution
+Processed MIP start in 1.03 seconds (1.36 work units)
+
+Presolve removed 139001 rows and 38403 columns
+Presolve time: 0.59s
+Presolved: 19930 rows, 20209 columns, 77964 nonzeros
+Variable types: 17793 continuous, 2416 integer (2408 binary)
+
+Explored 0 nodes (0 simplex iterations) in 1.66 seconds (2.24 work units)
+Thread count was 10 (of 10 available processors)
+
+Solution count 2: 1.13687e-13 1.13687e-13 
+
+Optimal solution found (tolerance 5.00e-03)
+Best objective 1.136868377216e-13, best bound 1.136868377216e-13, gap 0.0000%

@@ -1,0 +1,709 @@
+\documentclass[authoryear,preprint,review,12pt]{elsarticle}\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{enumerate}
+\usepackage{xcolor}
+\usepackage{fancyhdr}
+\usepackage{natbib}
+\usepackage{url}
+\usepackage{amsmath,amsfonts}
+\usepackage{array}
+\usepackage[caption=false,font=normalsize,labelfont=sf,textfont=sf]{subfig}
+\usepackage{optidef}
+\usepackage[margin=1in]{geometry}
+\usepackage{enumitem}
+\usepackage{setspace}
+\DeclareMathOperator{\prob}{Pr}
+\DeclareMathOperator*{\minimize}{minimize}
+\DeclareMathOperator*{\maximize}{maximize}
+\begin{document}
+\begin{frontmatter}
+\title{Investing in Long-Term Hardening of the Power Grid against Flooding via Mathematical Optimization}
+\author[inst1,inst2]{Ashutosh Shukla}
+\author[inst1]{Erhan Kutanoglu}
+\author[inst1]{John Hasenbein}
+\affiliation[inst1]{organization={The University of Texas at Austin},
+            addressline={204 East Dean Keeton Street}, 
+            city={Austin},
+            postcode={78712}, 
+            state={Texas},
+            country={USA}}
+\affiliation[inst2]{organization={BNSF Railway},
+            addressline={2650 Lou Menk Dr}, 
+            city={Fort Worth},
+            postcode={76131}, 
+            state={Texas},
+            country={USA}}
+%\begin{abstract}
+%We propose two scenario-based optimization models for transmission grid resilience planning that integrate output from a geoscience model with a power flow model. The models are used to identify an optimal substation hardening strategy against potential flooding from storms for a given investment budget, which, if implemented, enhances the resilience of the transmission grid, minimizing the load shed. The two optimization models differ in terms of capturing risk attitude: one minimizes the expected load shed for given scenarios and the other minimizes the worst-case load shed. We develop a case study for the Texas Gulf Coast using storm surge maps developed by the National Oceanic and Atmospheric Administration and a realistic regional transmission grid. For a reasonable choice of parameters, we show that a scenario-based representation of uncertainty offers a significant improvement in minimizing load shed as compared to using point estimates or average flood values. We further show that even for relatively low values of load loss and short power restoration times, it is optimal to make significant investments in substation hardening to deal with the storm surge risks. Finally, we develop a method to determine the approximate optimal resilience investment budget for any given combination of the unit cost of load loss, the expected number of storms in the planning horizon, and the power restoration time.  
+%\end{abstract}
+
+%Research highlights
+% \begin{highlights}
+% \item placeholder
+% \end{highlights}
+
+%\begin{keyword}
+%Infrastructure Resilience \sep Stochastic Programming \sep Flood Mitigation \sep Power Grid Resilience \sep Storm Surge \sep Hurricanes
+%\end{keyword}
+\end{frontmatter}
+
+%\doublespacing
+\section{Introduction}
+In recent years, hurricanes and tropical storms have caused significant damage to critical infrastructures such as transportation systems, healthcare services, and the power grid. Hurricanes Maria, Irma, and Harvey together cost nearly \$265B which was more than 85\% of total weather-related disaster costs in the U.S. in 2017 \cite{billion_nerc}. Harvey became not only the longest-lasting hurricane with a record level of rainfall but also the costliest at \$130B, part of which was due to power outages. Harvey damaged 90+ substations, downed 800+ transmission assets, 6000+ distribution poles, and 800+ miles of power lines, with a peak power generation loss of 11GW, affecting over 2 million people \cite{NERC2018}. More recently, in 2024, Hurricane Beryl made landfall in Texas that was not as costly as the 2017 storms at \$32B but caused prolonged power outages that affected 2.7M households and businesses in the heavily populated Houston area. 
+
+The transmission grid is repeatedly impacted by hurricanes and tropical storms due to annual hurricane seasons (e.g., June 1 - November 30 for the Atlantic ocean) primarily due to strong winds and flooding caused by heavy rainfall and storm surge. The cost of such disasters has increased in states like Texas which is exposed to the Atlantic basin. One way to mitigate such effects is to permanently harden the grid assets that are at risk of storm damage, possibly caused by frequent storms over a long time period. To guide decision making for long term resilience planning, a growing body of research has looked into different aspects of the underlying problem, mostly focusing on the effect of wind fields on transmission lines and towers. However, to the best of our knowledge, the literature is quite scant on long-term resilience planning models that assess and mitigate the impact of flooding on grid assets. To fill this gap, we analyze the effectiveness of long-term hardening-based resilience investments to reduce the impact of flooding on grid assets, particularly on transmission substations. Towards this high-level goal of improving the long-term grid resilience via permanent hardening, we make the following contributions:
+
+\begin{enumerate}[nosep,noitemsep,leftmargin=0.5cm]
+    \item We consider two scenario-based optimization models (stochastic and robust) for transmission grid resilience planning under flood uncertainty. Both models integrate output from a geoscience-based flood model with a power flow model and recommend a plan for substation hardening to relieve the flood impacts of potential storms. This is in contrast to related models that rely on statistical models (e.g., fragility curves) and cannot easily capture the impact of correlated flooding. \textcolor{blue}{This distinguishes our approach from recent resilience planning studies that instead couple investment decisions with operational flexibility resources such as vehicle to grid coordination, or that use parametric linear programming to size a single flexible resource or to characterize the security margin of a given operating state, rather than to select a discrete infrastructure hardening plan under spatially correlated flood hazard.} Moreover, the planning models are independent of the flood model so they can be coupled with other models.
+    
+    \item Although both models recommend a substation hardening solution for a given budget, we show how the same models can be used to determine a long-term resilience investment strategy against multiple storms that are likely to occur during a relatively long planning horizon and to specify an optimal budget that should be allocated for substation hardening by finding the optimum tradeoff between the resilience investment costs and the storm-related costs during the planning horizon. To do so, we take into account the expected number of storms in the planning horizon, the power restoration time per storm, and the unit cost of load loss.
+
+    \item Next, we develop a case study using a synthetic but realistic transmission grid consisting of 663 buses and 1509 branches representing the actual grid in the Texas Gulf Coast region. To represent flood uncertainty, we use the storm-surge-based flood maps developed by the National Oceanic and Atmospheric Administration (NOAA). Using these datasets as input to our models, we quantify the impact of the critical parameters including the investment budget and the unit cost of load loss, illustrate the value of the stochastic solution and the value of perfect information, and compare stochastic and robust optimal solutions. We also show how the optimal investment budget is affected by the unit cost of load loss, the expected number of storms in the planning horizon, and the power restoration time.
+
+    \item Lastly, we show that by solving relatively few instances of the models with parameterized budget levels, we can develop a method to determine the approximate optimal substation hardening budget for any given combination of the unit cost of load loss, the expected number of storms in the horizon, and the power restoration time.    
+\end{enumerate}
+
+These features can help power utilities and grid operators address concerns like the unpredictable nature of load loss, the potential for substation flooding, and the potential reduction in generator output and transmission capacity as outlined in the Hurricane Harvey report by the North-American Electric Reliability Corporation \cite{NERC2018}.
+
+The rest of the article is organized as follows. Section \ref{lit_review} presents a brief review of the literature on power grid resilience, focusing on long-term (hardening type) decision making. Section \ref{model} presents the overview of the model development connecting the long-term planning problem with the specific formulations of the stochastic and robust optimization models introduced in \ref{per-storm-model}, which in turn details the mathematical notation, assumptions, and formulations. Section \ref{case_study} describes the case study for the Texas Gulf Coast and Section \ref{results} discusses the numerical results and reports several important insights from the results. We conclude with directions for future research in Section \ref{conclusions}.
+
+\section{Literature review} \label{lit_review}
+Power grid resilience to extreme events has been a topic of intense research recently \cite{framework_grid_resilience}. This includes studies on developing resilience metrics \cite{AHMADIAN2020106977, Panteli_metrics, hosseini2016review,golan_dimensions_2026}, methodological frameworks to enhance power grid resilience \cite{Panteli_framework, WINKLER2010323}, and approaches to risk analysis \cite{framework_5}. In addition, several mathematical models have been developed to aid decision-making in different stages of the resilience management cycle. These models can be categorized based on the planning phase they are developed for: mitigation, preparedness, response, and recovery. Since this paper focuses on mitigation investment planning for long-term weather uncertainty, we limit the review's focus to models that aid decision-making during the mitigation phase.
+
+The optimization models for mitigation generally differ based on two aspects: the method used for uncertainty quantification and decision modeling. To quantify the uncertainty about the weather, we first generate a set of scenarios using various models, such as statistics-based models, physics-based models, and expert opinions. Then, the decision-making model considers the impacts on the grid under each scenario to recommend decisions that minimize a certain risk measure. In the following subsections, we review both aspects. 
+
+\subsection{Scenario generation}
+Scenario generation is a common uncertainty quantification method for extreme weather. We divide scenario generation techniques into four categories. The first is based on fragility curves, each of which represents the failure probability of a component as a function of some loading parameter. For example, fragility curves for transmission components, particularly towers,  have been developed with respect to wind speeds \cite{MA2022108072}. Such curves have been used in various power grid resilience decision making studies \cite{seth_2021, Panteli_boosting}. The second is based on statistical methods. For example, in \cite{Staid2014}, the authors use historical hurricane and tropical storm data for developing a baseline scenario. The alternative scenarios are then developed by altering parameters from the historical data to simulate plausible changes to storm behavior. The third set of methods is based on physics-based models. A study based on a hydrological simulation tool, called WRF-Hydro, is presented in \cite{kyoung_paper,SOUTO2022107545} to generate flooding scenarios. The fourth category is based on combinatorial criteria like $N-k$, where each scenario represents a way in which $k$ out of $N$ components can fail. Such an example is \cite{9470975}.
+
+\subsection{Decision modeling} \label{decision_model}
+Several optimization models have been developed for transmission grid resilience decision-making against extreme weather events \cite{roald_power_2023}. These include models that can aid in decision-making about the upgrade of the power grid network through a combination of hardening existing components, adding redundant lines, switches, generators, and transformers \cite{9470975,9842364, 7540988}. However, hardening large parts of the power grid can be financially infeasible. In such a scenario, stockpiling power grid components in strategic locations enhances resilience by expediting network restoration after the disaster
+%To decide how stockpiling of components should be done, a two-stage stochastic mixed-integer program can be used where the first-stage decisions are about stockpiling power grid components and the second-stage decisions are about how to operate the power grid to minimize load-shed
+\cite{Coffrin2011}. Additionally, network reconfiguration before an imminent hurricane can also enhance resilience. The model proposed in \cite{Panteli_boosting} makes such decisions using grid islanding.
+
+\subsection{Research gap}
+The majority of the existing literature, including all of the cited work so far, has not explicitly addressed grid resilience planning against flood uncertainty, a focus of our study. We review the studies closest to our flooding focus to highlight the research gap. The models proposed in 
+%\cite{9960296} and 
+\cite{9695371} adopt a scenario-based approach to assess the impact of flooding on load loss, concentrating on resilience assessment. Another flood-focused study emphasizing resilience assessment in the context of long-term capacity expansion planning is in \cite{SAHIN2025110892}. In contrast, our models not only contribute to resilience assessment but also propose a substation protection plan. This plan aims to enhance grid resilience while considering flooding impact and its network-wide repercussions, achieved by embedding a power flow model within a larger decision-making framework. 
+
+The model proposed in \cite{Mohadese} suggests a substation protection strategy, but it lacks consideration for power flow physics in its recommendations. The authors addressed this limitation in \cite{10287582}, where, similar to our approach, they embedded a DC power flow model within a larger two-stage model. However, both \cite{Mohadese} and \cite{10287582} share a common limitation: They rely on fragility curves for individual substations in scenario generation, neglecting correlated aspects of floodin and they focus on short-term preparedness before an imminent hurricane's landfall. Other models, presented in \cite{9916992, austgen_iise_2025, yip_ieee_access_mobile}, address these issues by embedding a power flow model and generating spatially correlated scenarios. Similar to \cite{Mohadese} and \cite{10287582}, these models, however, focus on short-term preparedness such as deployment of temporary measures, i.e., decision making before an imminent but still uncertain flood event.
+
+The model presented in \cite{SOUTO2022107545} shares the same scope as ours, focusing on longer-term substation hardening for the transmission grid. Similar to our approach, \cite{SOUTO2022107545} uses spatially correlated scenarios and embeds a power flow model. However, the scenarios in their model are generated for a single hurricane (Harvey), whereas we consider a broader range of storms, storm characteristics, and scenarios based on NOAA's storm surge simulations. Additionally, we assess both the average and worst-case representations of uncertainty through two-stage stochastic and robust optimization models, respectively, and show the connections between the two models and their solutions. Furthermore, we analyze long-term decision making using the structure within our models, enabling streamlined estimation of the optimal budget for given expected number of storms during the planning horizon, the power restoration time, and the unit cost of load loss. \textcolor{blue}{Beyond the flood focused studies reviewed above, several recent works address power grid resilience planning using related but methodologically distinct approaches. For example, in \cite{WANG2025111202}, authors propose a two-stage stochastic framework that co-optimizes long-term generation and line hardening investment with vehicle to grid coordination of electric vehicle fleets under blizzard conditions, generating scenarios through an $N - K$ contingency process. Song et al. \cite{SONG11523060} introduce a grid resilience value curve, obtained through multi-parametric linear programming, to size continuous energy storage capacity under ice storm scenarios. In another study, Song et al. \cite{SONG11006430} propose a spatiotemporal coupled security region, also derived through a parametric linear programming approach, to characterize the safety margin of a given operating state before, during, and after an event. While each of these studies contributes methodological tools for resilience oriented decision making, they differ from our work along at least one of three dimensions: the hazard and scenario generation mechanism, the nature of the decision variables, and whether the goal is infrastructure investment or resource valuation and assessment. In particular, these studies do not embed spatially correlated, geoscience-based flood scenarios directly within a two-stage stochastic and robust mixed integer program for discrete substation hardening investment and they do not provide a mechanism to approximate the optimal long-term hardening budget from a single set of parameterized model solutions, both of which are central features of our approach.}
+
+\section{Model development overview} \label{model}
+
+Our model development aims to solve two versions of the long-term resilience investment planning problem: (1) minimize the storm-related costs due to power outages subject to a resilience investment budget to be used to harden substations, and (2) find an optimal resilience investment budget that will lead to minimization of the total combined costs of hardening and of storms' long-term damage on the grid, uncovering the tradeoff between the hardening spending and the storm-related costs. 
+
+Both problems are analyzed given the uncertainty and the potential damages of future storms predicted to occur during the planning horizon. For both problems, we first discuss how the costs across multiple storms during the planning horizon are linked to resilience investments and how minimizing the per-storm costs is equivalent to minimizing the total storm costs during the planning horizon. We then explain how we solve the second problem above using the parameterized solutions of the first problem. After this modeling overview, we detail the per-storm load shed minimizing stochastic and robust optimization models. 
+
+\subsection{Relationship between per-storm modeling and long-term planning} \label{overview}
+
+For the first problem of minimizing total storm-related damage costs, we make several assumptions: (1) We assume that the resilience investments are made now (in the so-called first stage of the problem) to mitigate the effects of storms in the planning horizon, which is assumed to be 5-10 years long. We use the given budget amount to make the resilience investments (i.e., protective hardening of substations against varying levels of flooding across storms that will occur during the planning horizon). (2) We assume that the natural processes that govern the storms do not change drastically during the planning horizon. This means that the storm intensities, speeds, and directions can vary and this variability is based on a steady-state stochastic process. We believe that this assumption is reasonable given the relatively short duration of the planning horizon with respect to the climatic processes that might affect the longer-term patterns of tropical storms and hurricanes. (3) We further assume that we can compute the expected number of storms during the planning horizon and the expected time per storm taken to restore the grid to normal operation. We denote the expected number of storms during the planning horizon as $\gamma$ and the expected restoration time per storm as $h$. \textcolor{red}{Here, $\gamma$ counts only the storms whose flood impacts are represented by the scenario set used in the per-storm models, i.e., storms of an intensity comparable to that of the retained flood scenarios (see Section \ref{case_study}).} (4) Finally, we assume that the unit cost of unsatisfied power demand (load shed) has been estimated based on past storms that have caused power outages. We denote the unit cost of load loss is $\$\delta$/MWh. We believe that these assumptions are reasonable, as we aim to consider the post-storm costs of a partially damaged grid without embedding a computationally expensive grid restoration model. This is an acceptable compromise in the mitigation phase of resilience planning and avoids detailed modeling of the recovery process. 
+
+Based on these assumptions, the total expected cost from load losses during the planning horizon is \textcolor{blue}{given by}
+\textcolor{blue}{
+\begin{equation}
+    TC_{SO} = \gamma h \delta \mathbb{E}[\mathcal{L}], \label{tc_so}
+\end{equation}
+}
+\noindent where $\mathcal{L}$ is the per-storm load shed computed for the steady-state demand per unit time (hour) and $\mathbb{E}[\mathcal{L}]$ denotes its expected value approximated across a sample of storm scenarios. This means that for a given planning horizon and storm-governing process assumed to be stable during the horizon, minimizing the expected load shed per storm is equivalent to minimizing the total expected storm-related load loss costs during the planning horizon. We note that in reality (and in our models below), $\mathcal{L}$ depends on the resilience investment (substation hardening) decisions, as well as on how the grid operates (flows power) using the unaffected and fortified components of the grid. This dependency will be made explicit in our model development below, which will link resilience investment decisions and grid's operational performance across the two stages of decision making. That is, the storm damage and hardening decision dependent operational performance of the grid will inform the optimization of hardening decisions. Given the relationship between the per-storm load shed and the total load shed costs during the planning horizon, the same resilience investment decisions will be optimal for the horizon.
+
+\textcolor{red}{Because $\mathbb{E}[\mathcal{L}]$ in \eqref{tc_so} is computed over a specific set of storm scenarios, $\gamma$ must count the storms that this set represents, so that the per-storm load shed and the storm frequency refer to the same population of storms. If storms of several intensity classes $c \in \mathcal{C}$ are of interest, each with its own scenario set $\mathcal{K}_c$, scenario probabilities $p_k^c$, and expected number of occurrences $\gamma_c$ during the planning horizon, then (assuming $h$ and $\delta$ do not depend on the intensity class) the total expected cost becomes
+\[
+    TC_{SO} = h \delta \sum_{c \in \mathcal{C}} \gamma_c \, \mathbb{E}[\mathcal{L} \mid c] = \gamma h \delta \sum_{c \in \mathcal{C}} \sum_{k \in \mathcal{K}_c} \frac{\gamma_c}{\gamma} \, p_k^c \, \mathcal{L}(x,k), \qquad \gamma = \sum_{c \in \mathcal{C}} \gamma_c,
+\]
+where $\mathcal{L}(x,k)$ is the load shed in scenario $k$ under hardening decision $x$, formally defined in Section \ref{SO_model}. This expression has the same form as \eqref{tc_so}, with the expectation taken over the union of the scenario sets and each scenario weighted by the relative frequency $\gamma_c/\gamma$ of its intensity class. Hence, the models in Section \ref{per-storm-model} apply without modification when multiple intensity classes are considered; only the scenario probabilities change. In our case study, all retained scenarios represent Category 5 storms (Section \ref{case_study}), so $\gamma$ should be interpreted as the expected number of storms producing Category 5 level storm surge flooding during the planning horizon. We discuss the implications of this interpretation for the values of $\gamma$ used in the case study in Section \ref{tradeoff}.}
+
+For the robust version of the first problem, we make a similar argument \textcolor{red}{on the same multi-storm basis. Suppose that each of the $\gamma$ storms in the planning horizon produces one of the flood scenarios, but no probability distribution over the scenarios is assumed, and the distribution may even differ from one storm to the next. For a given hardening decision, the total load shed cost during the planning horizon is then largest when every storm produces the scenario with the largest load shed, and this worst-case total cost is}
+\textcolor{red}{
+\begin{equation}
+    TC_{RO} = \gamma h \delta \mathcal{L_{\max}}, \label{tc_ro}
+\end{equation}
+}
+\noindent where $\mathcal{L_{\max}}$ is the maximum load shed from any storm, approximated across sampled scenarios. \textcolor{red}{The same value is obtained as the largest \emph{expected} total cost over all probability distributions that the storms may follow, including distributions that change from storm to storm. If the $t$-th storm follows distribution $p^t$ over the scenarios, then $\sum_{t=1}^{\gamma} \sum_{k} p_k^t \mathcal{L}(x,k) \leq \gamma \max_{k} \mathcal{L}(x,k)$, with equality when every $p^t$ places all its probability on a worst-case scenario. Hence, $TC_{RO}$ is the robust counterpart of $TC_{SO}$ over the same planning horizon: it replaces the expected cost under a single assumed distribution with the largest expected cost over all distributions, and it does not require the steady-state assumption (2) above. Since $\gamma h \delta$ is a positive constant,} similar to the expected load shed case, minimizing the worst-case \textcolor{red}{per-storm} load shed minimizes the worst-case total load shed costs during the planning horizon. Again, in the model development below, we capture dependency among the resilience investment decisions, the operational power flow decisions, and the maximum load shed. 
+
+In our model development in Section \ref{per-storm-model}, we focus on minimizing the per-storm expected load shed $\mathbb{E}[\mathcal{L}]$ and maximum load shed $\mathcal{L_{\max}}$ subject to a given investment budget $I$. \textcolor{blue}{Beyond providing average case and worst case investment recommendations, the robust model also serves a methodological purpose: because it requires no assumption about scenario probabilities, we use it in Section 6.2 to test the sensitivity of the stochastic model's recommendations based on the uniform distribution assumption described in Section 5.1.}
+%That is, for a given decision $x$, the maximum total disaster management cost due to load shedding during the planning horizon can be represented as:
+%\begin{equation}
+%    \mathbf{R}(x) = \omega L_\mathcal{RO}(x).
+%\end{equation}
+
+%\section{Model characteristics}\label{model_discussion}
+% Both SO and RO have a full deterministic equivalent (extensive form) which combines the two stages into a single mixed integer linear program. We solve the corresponding program using a state-of-the-art optimization solver (Gurobi) in Section \ref{case_study}. We refer to \cite{BirgLouv97} for a discussion on how a two-stage scenario-based stochastic or robust program can be reduced to its deterministic equivalent. 
+%In the following subsections, we highlight the key characteristics of the proposed models. Specifically, we describe how to use them to estimate the expected disaster cost incurred due to flooding of the transmission grid components during the planning horizon for a given hardening decision. Next,  how to use the proposed models to determine the optimal budget that should be allocated for substation hardening. Lastly, we describe how by solving just a few instances of the model, we can quickly approximate the optimal budget for substation hardening under different assumptions about the expected number of storms in the planning horizon, value of load loss, and the power restoration time.
+
+%\subsection{Determining the expected disaster cost for the entire planning horizon}
+
+%Notice that the objective function in the SO computes the expected load shed for a single flood event. 
+%Let us assume that, on average,  it takes $h$ hours to repair all the substations (and restore power to normal operation) starting immediately after a flood event. We believe this assumption is reasonable at the mitigation phase of the decision making process and avoids explicit and detailed modeling of the recovery process. Accordingly, let us also assume that, during this period the value of load loss is $\$\delta$/MWh. In this case, if the hardening decision is $x$, then, we can represent the expected disaster cost by  $h\delta L_\mathcal{SO}(x)$. 
+
+%We acknowledge that the values of both $h$ and $\delta$ can vary across different flood events and this information is unavailable during the planning phase. To account for this detail, we assume that, for each flood event in the planning horizon, the values of both $h$ and $\delta$ are sampled from the probability distribution of random variables $\boldsymbol{h}$ and $\boldsymbol{\delta}$, respectively. Furthermore, we assume that we know the mean of both the distributions. Therefore, the \textit{expected} cost of a single flood event can be represented by $\mathbb{E}[\boldsymbol{h \delta} L_\mathcal{SO}(x)]$. 
+
+%Similar to $\boldsymbol{h}$ and $\boldsymbol{\delta}$, if we assume that random variable $\boldsymbol{\gamma}$ represents the random number of storms that occur during the planning horizon, then the expected total disaster cost (for some hardening decision $x$) incurred during the entire planning horizon can be represented by $\mathbf{S}(x) = \mathbb{E}[\boldsymbol{\gamma}\mathbb{E}[\boldsymbol{h\delta} L_\mathcal{SO}(x)]]$. This expression can further be simplified as follows:
+%\begin{subequations}
+%\allowdisplaybreaks
+%\begin{align}
+%    \mathbf{S}(x) &= \mathbb{E}[\boldsymbol{\gamma}\mathbb{E}[\boldsymbol{h\delta} L_\mathcal{SO}(x)]],\\
+%    &= \mathbb{E}[\boldsymbol{\gamma}\mathbb{E}[\boldsymbol{h\delta}]][L_\mathcal{SO}(x)],\label{LSO_constant}\\
+%     &= \mathbb{E}[\boldsymbol{\gamma}]\mathbb{E}[\boldsymbol{h}]\mathbb{E}[\boldsymbol{\delta}][L_\mathcal{SO}(x)],\label{independence}\\
+%     &= \omega L_\mathcal{SO}(x),\label{single_parameter}
+%\end{align}
+%\end{subequations}
+%where Equation \eqref{LSO_constant} follows from the fact that $L_\mathcal{SO}(x)$ is a constant dependent only on the hardening decision $x$. Here, we want to highlight that while computing $L_\mathcal{SO}(x)$, we do assume that the probability distribution over the flood scenarios, and thus, the hurricanes causing them, does not significantly change over time. In practice, this is reasonable for planning horizons for which substation hardening is considered (5-10 years). Furthermore, if we assume that $\boldsymbol{\gamma}$, $\boldsymbol{h}$, and $\boldsymbol{\delta}$ are independent of each other then, Equation \eqref{independence} follows from the independence property of expectation. Lastly, Equation \eqref{single_parameter}, follows from the fact that we can replace the product of the three expected values with a single parameter $\omega$. 
+
+%We observe that Equation \eqref{single_parameter} holds true for all feasible $x$ including the optimal solution of the SO. Therefore, the optimal substation hardening plan to minimize the expected total disaster management cost is the same as the plan obtained by solving SO as it always equals the objective function of the SO multiplied by a positive constant. We can make a similar argument by linking RO with the maximum total disaster management cost. That is, for a given decision $x$, the maximum total disaster management cost due to load shedding during the planning horizon can be represented as:
+%\begin{equation}
+%    \mathbf{R}(x) = \omega L_\mathcal{RO}(x).
+%\end{equation}
+
+\subsection{Determining optimal resilience investment budget} \label{budget_section}
+
+In our discussion so far, we assume that the budget for substation hardening is given. Alternatively, one may be interested in determining an optimal budget that should be allocated for substation hardening to minimize the combined costs of hardening and of storm-related load shed during the planning horizon. \textcolor{blue}{We define this grand total, which we refer to as the total disaster management cost, as}
+\textcolor{blue}{
+\begin{equation}
+    TDMC(I) = Z(I) + I, \label{tdmc}
+\end{equation}
+}
+\noindent \textcolor{blue}{where}
+\textcolor{blue}{
+\begin{equation}
+    Z(I) = \gamma h \delta \, L_{\mathcal{SO}}^*(I) \label{z_of_i}
+\end{equation}
+}
+\noindent\textcolor{blue}{is the expected total load shed cost during the planning horizon, computed at the optimal per-storm load shed $L_{\mathcal{SO}}^*(I)$ obtained for investment budget $I$, and $I$ itself represents the cost of mitigation before any event, encompassing both the costs of mitigation before any event and the costs due to storms' impacts during the planning horizon.} The main difference between this problem and the problem considered above is that we do not have a predetermined budget that limits the amount of hardening made in the resilience investment stage, potentially leading to under- or over-investment before the effects of storm scenarios are considered. We parameterize the budget and solve multiple instances of our models with varying budget levels. This sensitivity analysis helps us to see a clearer picture of the impact of any additional dollars invested in flood mitigation. Moreover, we use the same set of budget-parameterized experiments to find the trade-off between mitigation spending and storm-related costs due to load shed. 
+%(We note that protective measures harden the substations to flooding risk and with higher investment budgets leading to more hardened substations would lead to lower storm-related load shed costs across multiple storms in the planning horizon). 
+This trade-off is then used to approximate the optimal budget needed to minimize the total disaster management cost. For the expected value problem, this means minimizing $ \gamma h \delta \mathbb{E}[\mathcal{L}] + I$ where $I$ is the planned or budgeted resilience investment. For the worst-case problem as considered in the robust version, this means minimizing \textcolor{red}{$\gamma h \delta \mathcal{L_{\max}}+I$}.
+%Therefore, the parameterized budget solutions will allow us to approximate the optimal budget that minimizes the corresponding total disaster management costs. 
+%In both the stochastic and robust versions, the dependency of investment spending on the resilience decisions will be made explicit in the models below. In summary, optimal budgeting can be achieved from the solutions of the parameterized budget-constrained problem. Moreover, as we will show, such solutions will provide the near optimal budget of more than one problem setting, showing the flexibility of our framework.
+
+%\begin{equation}\label{tdm_so_model}
+%\mathbf{S}^* = \displaystyle{\minimize  \, \, \omega \left (\sum_{k \in \mathcal{K}} p_k \, \mathcal{L}(x,k) \right) +  \sum_{i \in \mathcal{I}_f} f_iy_i + v_ix_i}: x_{i} \leq H_i y_i, \,\, \forall  i \in \mathcal{I}_f, 
+%\end{equation}
+%where $\mathbf{S}^*$ represents the minimum value of the combined cost of substation hardening and expected total disaster cost due to load shed. In this model, the value of $\omega$ is as determined in Equation \eqref{single_parameter}. Accordingly, the first term in the objective function financial cost associated with load loss and the later terms represent the budget allocated to substation hardening. Essentially, the optimal budget can be determined by just solving a relaxation of SO. Similarly, for RO, we compute the optimal investment budget by solving
+%\begin{equation}
+%    \mathbf{R}^* = \minimize  \, \omega \tau + \sum_{i \in \mathcal{I}_f} f_iy_i + v_ix_i: x_i \leq H_iy_i, \forall i \in \mathcal{I}, \tau \geq \mathcal{L}(x,k), \forall \, k \in \mathcal{K},
+%\end{equation}
+%where we refer to Equation \eqref{epigraph_constraint} for the description of the RO model.
+
+%\subsection{Approximating optimal budget for substation hardening}
+%To develop a method to quickly estimate the optimal substation hardening budget, we make the following observations.
+%\begin{itemize}
+%    \item If $\omega=0$, this implies that no financial loss is incurred due to the loss of load. Accordingly, in the optimal solution, we will have $\sum_{i \in \mathcal{I}_f} f_iy_i + v_ix_i = 0$ as allocating budget for substation hardening serves no incentives.
+%    \item Furthermore, there also exists some $\omega = \omega^{\text{critical}}$, where $\omega^{\text{critical}}$ represents the minimum value of $\omega$ for which it is optimal to harden substations such that there is no load loss (i.e $L_{\mathcal{SO}}^* = 0$). We compute this minimum budget by solving a slightly modified version of SO. Specifically, we first remove constraint \eqref{budget_constraint} from the formulation and replace the objective function with the minimization of the substation hardening expenditure (i.e., the left-hand-side of \eqref{budget_constraint}). We also force full satisfaction of demand by replacing constraint \eqref{supply_demand} with $s_{j}^k = D_j, \,\,\, \forall \, j \in \mathcal{J}.$ The optimal value to this modified version of SO is in turn the minimum hardening budget required for zero load shed. Let us represent this budget with $B^{\text{critical}}$.
+    
+%    \item For all other values of $\omega$ such that $0 \leq \omega \leq \omega^{\text{critical}}$, the optimal budget is a non-decreasing function of $\omega$. This is because as the value of $\omega$ increases, the cost of losing power increasing and thus it will be reasonable to allocate additional budget to avoid this. This additional budget allocated would be such that the amount of money invested in substation leads to higher financial savings for preventing the additional load loss that might have otherwise occurred.
+%\end{itemize}
+
+\section{Per-storm modeling: Load shed minimization for a given budget} \label{per-storm-model}
+
+%In this section, we present an overview of the per-storm load shed minimizing stochastic and robust optimization models. We then state the key assumptions, introduce the notation, and provide detailed mathematical formulations.
+
+\subsection{Overview of per-storm modeling}
+
+The two-stage stochastic optimization model is developed to address situations where the uncertainty about hurricane-induced flooding is modeled using a probability distribution. In this case, the model minimizes the expected unsatisfied power demand (load shed) due to the components' failures (i.e., flooded substations) over a set of scenarios. The two-stage robust model minimizes the maximum load shed in any scenario within the uncertainty set modeled with a set of scenarios. A general framework representative of both models is shown in Figure \ref{fig:schematic_only}. A flood scenario in the figure represents the water levels at different substations obtained from the flood simulation of a specific tropical storm or hurricane. Storms with different characteristics such as track direction, intensity, forward speed, etc.\ lead to different levels of flooding, generating different scenarios. These scenarios are representative of the flooding that the region of study can experience over the planning horizon (in the next 5-10 years). A distinguishing feature of the models is the way we generate the scenarios. We use flood simulations obtained by the state-of-the-art storm surge tool used by NOAA because they capture the effects of correlated flooding due to the event affecting the region. 
+%This is important because the failure of a substation within a power grid can have network effects on other parts of the grid.  
+
+The power grid is represented by a graph where the buses are represented by the nodes and the branches interconnecting the buses are represented by the edges. Substations and colocated components within them (buses and connected branches) are susceptible to flooding and need hardening above the level of flooding experienced in a scenario to be operational in that scenario. A damaged grid representative of a flood scenario is in Figure \ref{fig:damage_scenario}. 
+
+Decision making in both stochastic and robust models occurs in two stages. First-stage decisions determine which substations to harden and to what extent. We assess the performance of the first-stage decisions in dealing with the flood levels in the second stage. The second-stage assessment involves minimization of the load shed in multiple flood scenarios. For each of these scenarios, we overlay the power grid network on the flood map to identify parts of the network that are flooded. Given the flood height and the level of hardening at a substation, the model infers if a substation is operational or not in a particular scenario. If a substation is not operational (i.e., flooded above the hardening level), all the buses within the substation and the branches connected to those buses are considered to be out of order. Once the damaged state of the grid is determined, the second-stage assessment relying on a DC power flow model estimates the load shed. The first-stage decisions are made with these assessments in mind, i.e., second-stage power flow contingencies inform first-stage decisions. 
+%A simple schematic showing the decision making timeline is shown in Figure \ref{fig:dm_timeline}.
+
+
+\textcolor{blue}{The modeling choices described above, namely a DC power flow representation and a binary operational status for flooded substations, reflect the strategic, long-term nature of the investment decision under study rather than a real-time operational assessment. DC power flow is widely used in the transmission planning literature, since it captures the topology and thermal limit effects that dominate load shed outcomes at the planning stage while remaining tractable when embedded in a two-stage stochastic or robust optimization model solved across many flood scenarios \cite{9842364, Coffrin2011,austgen_impacts_2025}. Similarly, treating a flooded substation as fully out of service reflects both the physical reality that submerged high voltage equipment is generally taken out of service for safety reasons and the resolution of the underlying flood data, which specifies a single flood height per substation rather than component level damage states. We recognize that reactive power and voltage constraints, differences in local protection capability, partial equipment failure, and detailed restoration dynamics could refine the accuracy of the assessment for operational or short-term preparedness purposes. Extending the modeling framework to incorporate these factors is a natural direction for future work, and we return to this point in Section 7.}
+
+\begin{figure}[tbp]
+        \centering
+        \begin{minipage}[t]{0.45\textwidth}
+
+        \includegraphics[trim={0cm 1.2cm 0cm 0.8cm},clip,width=0.9\textwidth]{figures/new_schematic.pdf}
+        \caption{The overview of the decision making framework}
+        \label{fig:schematic_only}
+        \end{minipage}
+        \centering
+        \begin{minipage}[t]{0.45\textwidth}
+        \includegraphics[width=0.9\textwidth]{two-stage.png}
+        \caption{The damaged state of the grid for a particular flood scenario. Blue circles and lines show out-of-order buses and lines}
+        \label{fig:damage_scenario}
+        \end{minipage}
+        \centering
+%        \begin{minipage}[t]{0.3\textwidth}
+%        \includegraphics[trim={0cm 1.6cm 0cm 1.6cm},clip,width=0.9\textwidth]{timeline.pdf}
+%        \caption{Decision-making timeline}
+        \label{fig:dm_timeline}
+%        \end{minipage}
+\end{figure}
+
+
+%\subsection{Assumptions}
+%We make a few more assumptions to model the load shed minimization problem. First, we assume that a DC-based power flow approximation is acceptable for the long-term resilience analysis. For a detailed explanation and derivation of the DC power flow equations from the non-convex non-linear AC model, we refer to \cite{8635446}. This approximation has been widely used and is embedded within larger strategic decision-making problems such as long-term capacity planning and resilience planning. For the kind of models used in this paper, a detailed discussion on the difference in the quality of solutions obtained from different power flow approximation models is given in \cite{austgen_impacts_2025}. 
+%Second, we assume that we can model the substation hardening cost with fixed and variable parts. The fixed cost is incurred when a substation is chosen for hardening and can represent the cost of the foundation on which the protective structure is built and the cost associated with transporting resources to the substation site. The variable cost is a function of the height of flooding to which the substation is made resilient. In our case, we assume that the variable cost linearly depends on height. Third, we assume that each substation's hardening and flood levels are discrete and finite. In the formulations below, they are assumed to be non-negative integers. Lastly, we consider a steady-state load (i.e., demand) profile from each transmission load bus estimated to represent the demand from the distribution grid served by the load bus. The load shed is computed with respect to this demand profile. 
+
+\subsection{Notation}
+The stochastic and robust optimization models use the following notation. All the cost parameters are in dollars and all power grid parameters are in the per-unit system. Notation not defined in this section and appearing later is defined as introduced.
+\begin{singlespace}
+\noindent\textbf{Sets, Indices, and Parameters}
+\allowdisplaybreaks
+\begin{flalign*}
+    \mathcal{I} &: \text{Set of substations indexed by $i$} && \\
+    \mathcal{I}_f &: \text{Set of substations flooded in at least one scenario} && \\
+    \mathcal{J} &: \text{Set of buses indexed by $j$} && \\
+    \mathcal{B}_i &: \text{Set of buses at substation $i$} && \\
+    \mathcal{K} &: \text{Set of scenarios indexed by $k$} && \\
+    \mathcal{R} &: \text{Set of branches indexed by $r$} && \\
+    \mathcal{N}_j^{in} &: \text{Set of branches incident on bus $j$ with power flowing into bus $j$} && \\
+    \mathcal{N}_j^{out} &: \text{Set of branches incident on bus $j$ with power flowing out of bus $j$} && \\
+%\end{flalign*}
+%\noindent\textbf{Parameters}
+%\begin{flalign*}
+    M &: \text{An arbitrarily large constant} && \\
+    I &: \text{Total investment budget for substation hardening} && \\
+    f_i &: \text{Fixed cost of hardening at substation $i$} && \\
+    v_i &: \text{Variable cost of hardening at substation $i$} && \\
+    H_i &: \text{Maximum flood height to which substation $i$ can be hardened} && \\
+    \Delta_{i}^k &: \text{Flood height at substation $i$ in scenario $k$ (a non-negative integer value)} && \\
+    B_r &: \text{Susceptance of branch $r$} && \\
+    F_r &: \text{Maximum power that can flow in branch $r$} && \\
+    r.\mathrm{h}, r.\mathrm{t} &: \text{Head bus and tail bus of branch $r$} && \\
+    D_j &: \text{Load at bus $j$} && \\
+    \underline{G}_j, \overline{G}_j &: \text{Minimum and maximum generation at bus $j$} && \\
+    \beta &: \text{Index of the reference bus} && \\
+    p_k &: \text{Probability of scenario $k$} &&
+\end{flalign*}
+
+\noindent\textbf{Variables}
+\allowdisplaybreaks
+\begin{flalign*}
+    y_i &: \text{Binary variable indicating whether substation $i$ is chosen for permanent hardening} && \\
+    x_i &: \text{Non-negative integer variable indicating discrete height of hardening at substation $i$} && \\
+    z_{j}^k &: \text{Binary variable indicating if bus $j$ is operational in scenario $k$} && \\
+    s_{j}^k &: \text{Non-negative real variable, load satisfied at bus $j$ in scenario $k$} && \\
+    g_{j}^k &: \text{Non-negative real variable, power generated at bus $j$ in scenario $k$} && \\
+    u_{j}^k &: \text{Binary variable indicating if generator at bus $j$ is used in scenario $k$} && \\
+    \alpha_{j}^k &: \text{Real variable indicating voltage phase angle of bus $j$ in scenario $k$} && \\
+    e_{r}^k &: \text{Real variable indicating power flowing in branch $r$ in scenario $k$} &&
+\end{flalign*}
+%%%%%%%%%%%%%%%%%%%%%%%%%
+% Model Begins
+%%%%%%%%%%%%%%%%%%%%%%%%%
+\end{singlespace}
+
+\subsection{Stochastic optimization model}\label{SO_model}
+The two-stage stochastic optimization model (SO) is:
+\begin{subequations}
+\vspace{-.5cm}
+\begin{equation}\label{SO_problem}
+    L_{\mathcal{SO}}^* = \displaystyle{\minimize_{x \in \mathcal{X}}} \, \, L_{\mathcal{SO}}(x),  \text{and}
+\end{equation}
+\vspace{-1cm}
+\begin{equation}\label{SO_defination}
+    L_{\mathcal{SO}}(x) = \sum_{k \in \mathcal{K}} p_k\mathcal{L}(x,k).
+\end{equation}
+\end{subequations}
+The objective function \eqref{SO_problem} minimizes the expected load shed over the scenarios in set $\mathcal{K}$. Here, $\mathcal{X}$ is the set of feasible first-stage decisions:
+\begin{subequations}
+\vspace{-.5cm}
+\begin{equation}\label{budget_constraint}
+        \sum_{i \in \mathcal{I}_f} f_i y_{i} + v_i x_{i} \leq I,
+    \end{equation}
+    \vspace{-1cm}
+    \begin{equation}\label{constraint_tighetening}
+       x_{i} \leq H_i y_i, \quad \forall  i \in \mathcal{I}_f. 
+    \end{equation}
+\end{subequations}
+Note that the variables $x_i$ and $y_i$ are defined only for substations that are flooded in at least one scenario. Constraint (\ref{budget_constraint}) enforces that the sum of the fixed and variable costs incurred due to substation hardening does not exceed the investment budget. Constraints (\ref{constraint_tighetening}) place an upper bound on the extent of flooding to which the substation can be made resilient while linking variables $x_i$ and $y_i$ for each substation $i$. 
+%Such constraints represent engineering and practical challenges that may arise while building protective structures that are too tall.
+
+In \eqref{SO_defination}, $L_{\mathcal{SO}}(x)$ represents the expected load shed when the first-stage decision is $x$. Here, $\mathcal{L}(x,k)$ is the recourse function representing the minimum load shed when the first-stage decision is $x$ and scenario $k$ is realized. The recourse function is as follows:
+\begin{subequations}
+\vspace{-0.7cm}
+\begin{equation}
+    \mathcal{L}(x,k) = \minimize_{\textbf{$z^k$}, \textbf{$s^k$}, \textbf{$g^k$}, \textbf{$u^k$}, \textbf{$\alpha^k$}, \textbf{$e^k$}} \,\, \sum_{j \in \mathcal{J}} D_j - s_{j}^k,\label{objective}
+\end{equation}
+\vspace{-1.8cm}
+\allowdisplaybreaks
+\begin{align}
+    \text{subject to:} \quad & M(1-z_{j}^k) \geq \Delta_{i}^k - x_{i}, & \forall j \in \mathcal{B}_i, \quad \forall i \in \mathcal{I}_f, \label{linking_1} \\
+    & 2Mz_{j}^k \geq 1 - 2(\Delta_{i}^k - x_{i}), & \forall j \in \mathcal{B}_i, \quad \forall i \in \mathcal{I}_f, \label{linking_2} \\
+    & z_{j}^k = 1, & \forall j \in \mathcal{B}_i, \quad \forall i \in \mathcal{I} \setminus \mathcal{I}_f, \label{other_z} \\
+    & u_{j}^k \leq z_{j}^k, & \forall j \in \mathcal{J}, \label{flexible_generation}\\
+    & s_{j}^k \leq D_jz_{j}^k, &  \quad  \forall j \in \mathcal{J},\label{supply_demand}\\
+    & u_{j}^k\underline{G}_j \leq g_{j}^k \leq u_{j}^k\overline{G}_j, & \forall j \in \mathcal{J},\label{capacity_constraint}\\
+    & -z_{r.\mathrm{h}}^k F_r \leq e_{r}^k \leq z_{r.\mathrm{h}}^k F_r, & \forall r \in \mathcal{R},\label{edge_operational_1}\\
+    & -z_{r.\mathrm{t}}^k F_r \leq e_{r}^k \leq z_{r.\mathrm{t}}^k F_r,  &  \forall r \in \mathcal{R},\label{edge_operational_2}\\
+    & |e_{r}^k - B_r (\alpha_{r.\mathrm{h}}^k - \alpha_{r.\mathrm{t}}^k)|
+                   \leq M(1 - z_{r.\mathrm{h}}^kz_{r.\mathrm{t}}^k), & \forall r \in \mathcal{R},\label{phase_angle_constraint}\\
+    & \sum_{r \in \mathcal{N}_j^{out}}e_{r}^k - \sum_{r \in \mathcal{N}_j^{in}}e_{r}^k= g_{j}^k - s_{j}^k, & \forall j \in \mathcal{J}, \label{flow_balance}\\
+    & -\pi \leq \alpha_{j}^k \leq \pi, & \forall j \in \mathcal{J}, \label{phase_side_constraint}\\
+   & \alpha_{\beta }^k = 0, & \forall k \in \mathcal{K}. & \label{reference_bus}
+\end{align}
+\end{subequations}
+The objective function (\ref{objective}) minimizes the load shed over $z^k$, $s^k$, $g^k$, $u^k$, $\alpha^k$, and $e^k$. Here, $z^k = [z_1^k, \cdot \cdot \cdot, z_{|\mathcal{J}|}^k]$; other vectors are similarly defined over their indexed sets. Constraints (\ref{linking_1}) and (\ref{linking_2}) link the first-stage substation hardening decisions to the second-stage scenario-dependent power flow decisions. The protection level is compared against the flood height at that substation in a given scenario. Depending on whether the hardening level can withstand the flooding, we set the status of the corresponding bus as operational or not, indicated by $z_{j}^k$. For substations not flooded in any of the scenarios, the status of the corresponding buses is set to operational in constraints \eqref{other_z}.
+
+Constraints (\ref{flexible_generation}) capture generator dispatch decisions for operational generators. When $z_{j}^k = 0$, we cannot inject power to the network through bus $j$ and therefore set $u_{j}^k = 0$. If $z_{j}^k = 1$, we let the recourse problem decide if power generated at bus $j$ should be used or not. Constraints (\ref{supply_demand}) place an upper bound on the amount of power that can be supplied at bus $j$ (which is the demand at that bus). If bus $j$ is flooded, then $z_{j}^k = 0$ and no power can be supplied to the loads that are connected to the bus. Constraints (\ref{capacity_constraint}) place upper and lower bounds on the amount of power that can be generated at bus $j$. If bus $j$ is flooded, then $u_{j}^k = 0$ and thus $g_{j}^k = 0$. If bus $j$ is not flooded, the model determines the amount of power that should be generated at bus $j$. Constraints (\ref{edge_operational_1}) and (\ref{edge_operational_2}) place restrictions on the amount of power that can flow through branch $r$. If the bus at either end of a branch is flooded, then no power can flow through it. If buses at both ends of the branch are operational, then a maximum of $F_r$ power can flow through it in either direction. Constraints (\ref{phase_angle_constraint}) enforce an approximation to Ohm's Law. Specifically, they imply that if both ends are operational, then the amount of power in the branch is governed by 
+$B_r (\alpha_{r.\mathrm{h}}^k - \alpha_{r.\mathrm{t}}^k) = e_{r}^k, \quad \forall r \in \mathcal{R}.$ If the bus at either end of the branch is flooded, then the above equation need not hold. This is achieved by introducing big-$M$ values. Moreover, these constraints can be linearized using standard transformations. Constraints (\ref{flow_balance}) represent the flow balance: the net power injected into the network at bus $j$ is the difference between the power generated and consumed at the same bus. Constraints (\ref{phase_side_constraint}) impose limits on the bus phase angle values. 
+\textcolor{blue}{Lastly, constraints (\ref{reference_bus}) fix the phase angle at the reference bus $\beta$ to zero in every scenario, so that the remaining phase angle variables are uniquely determined.} 
+
+\subsection{Robust optimization model}\label{RO_model}
+In the two-stage robust optimization model (RO), we minimize the maximum unsatisfied power demand value across all scenarios. The problem is stated as follows:
+\begin{subequations}
+\vspace{-0.5cm}
+\begin{equation}\label{RO_problem}
+    L_{\mathcal{RO}}^* = \displaystyle{\minimize_{x \in \mathcal{X}}} \, \, L_{\mathcal{RO}}(x),  \text{and}
+\end{equation} 
+\begin{equation}\label{RO_defination}
+    L_{\mathcal{RO}}(x) = \displaystyle{\maximize_{k \in \mathcal{K}}} \, \, \mathcal{L}(x,k).
+\end{equation}
+\end{subequations}
+%The expression in  finds the maximum load shed. 
+%RO in \eqref{RO_problem} is reformulated with an epigraphical variable, $\tau$, as
+%\begin{equation}\label{epigraph_constraint}
+%\displaystyle{\minimize_{x \in \mathcal{X}}} \, \, \left\{\tau : \tau \geq \mathcal{L}(x,k), \quad \forall \,\, k \in \mathcal{K} \right\}.
+%\end{equation}
+
+RO provides an upper-bound for SO. The set of feasible first-stage solutions is same for both SO and RO. Further,  both models are bounded below with a minimum value of zero and have relatively complete recourse. Now, let $x_{\mathcal{R}}$ be a feasible solution to RO. Then,
+\begin{subequations}
+\allowdisplaybreaks
+%\vspace{-0.8cm}
+\begin{align}
+    L_\mathcal{SO}^* & = \displaystyle{\minimize_{x\in \mathcal{X}} L_\mathcal{SO}(x)} \\     
+    & \leq L_\mathcal{SO}(x_{\mathcal{R}}) \label{eq:robust_feasible}\\
+    %& = \sum_{k \in \mathcal{K}} p_k \, \mathcal{L}(x_{\mathcal{R}},k) \\
+    & \leq \sum_{k \in \mathcal{K}} p_k \, \displaystyle{\maximize_{k \in \mathcal{K}}} \, \mathcal{L}(x_{\mathcal{R}},k) \label{eq:equal_load_shed} \\
+    & = \displaystyle{\maximize_{k \in \mathcal{K}}} \,\, \mathcal{L}(x_{\mathcal{R}},k) \,\, \sum_{k \in \mathcal{K}} p_k\\
+    %& = \displaystyle{\maximize_{k \in \mathcal{K}}} \, \mathcal{L}(x_{\mathcal{R}},k) \\
+    & = L_\mathcal{RO}(x_{\mathcal{R}}).
+\end{align}
+\end{subequations}
+%\vspace{-0.6cm}
+The inequality \eqref{eq:robust_feasible} holding at equality if and only if $x_{\mathcal{R}}$ is optimal for SO and inequality \eqref{eq:equal_load_shed} holding at equality if and only if load shed values are equal across all scenarios in $\mathcal{K}$. These inequalities establish that the objective value of any feasible solution to RO provides an upper bound on the optimal objective function value of SO. Since any optimal solution to RO is also feasible, it acts as a valid upper bound: $L_\mathcal{SO}^* \leq L_\mathcal{RO}^*$
+
+\textcolor{red}{The robust model also has a distributional interpretation. For any first-stage decision $x$,
+\begin{equation}\label{dro_equivalence}
+    L_{\mathcal{RO}}(x) = \maximize_{k \in \mathcal{K}} \mathcal{L}(x,k) = \maximize_{p \in \mathcal{P}} \sum_{k \in \mathcal{K}} p_k \mathcal{L}(x,k), \qquad \mathcal{P} = \Big\{ p \in \mathbb{R}^{|\mathcal{K}|}_{+} : \sum_{k \in \mathcal{K}} p_k = 1 \Big\},
+\end{equation}
+because a linear function over the probability simplex $\mathcal{P}$ attains its maximum at a vertex, and each vertex places all probability on a single scenario. Therefore, $L_\mathcal{RO}^*$ is also the optimal value of a distributionally robust version of SO whose ambiguity set contains every probability distribution over $\mathcal{K}$. Consequently, if the RO optimal decision is implemented, its expected load shed under any weighting of the scenarios, whether by storm direction, forward speed, or any other storm characteristic, cannot exceed $L_\mathcal{RO}^*$. In Section \ref{uncertain prob}, we use this property to assess how sensitive the SO recommendations are to the uniform distribution assumption, and in Section \ref{sensitivity}, we complement it with sensitivity analyses under specific alternative weightings.}
+
+\vspace{-0.5cm}
+\section{Case study} \label{case_study}
+We now show how the load shed minimization models can be used for long-term grid resilience decision making using a case study for the coastal region of Texas. The two main inputs to the models are a set of scenarios that represent flood profiles for different storm scenarios and the network parameters for the DC power flow model. For flood profiles, we use storm-surge maps developed by NOAA \cite{MEOW}. For the electric grid, we use the ACTIVSg2000 dataset \cite{activsg2000}. %We further highlight that although we use the proposed models for storm surge-induced damages, they can be adopted for flooding of any kind as long as the corresponding flood scenarios are available. This could include scenarios for inland flooding as developed in \cite{kyoung_paper} and used for infrastructure resilience problems in \cite{SOUTO2022107545} and \cite{gizem_2022}. 
+%Both SO and RO have a full deterministic equivalent (extensive form) which combines the two stages into a single mixed integer linear program which can be solved via a state-of-the-art optimization solver. We refer to \cite{BirgLouv97} for a discussion on how a two-stage scenario-based stochastic or robust program can be reduced to its deterministic equivalent. 
+We solve the models using Gurobi \cite{gurobi}. 
+%We set the MIP-gap threshold to 0.5 percent and limit the solve time to 6 hours. The model is solved on an Apple M1 pro machine with 16 GB of memory. 
+
+\subsection{Flood scenarios}
+\begin{figure}[btp]
+        \centering
+        \includegraphics[trim={0cm 0cm 0cm 0cm},clip,width=0.5\textwidth]{figures/MEOW.pdf}
+        \caption{A sample MEOW generated using category 5 storms approaching the Texas Gulf Coast in the north-west direction with a forward speed of 5 mph}
+        \label{fig:MEOW}
+\end{figure}
+
+We use the storm-surge maps developed by NOAA using the Sea, Lake, and Overland Surges from Hurricanes (SLOSH) model as flood scenarios. SLOSH uses a simplified parametric wind field model that takes as input the parameters: storm track, the radius of the maximum wind speeds, and the pressure differential between the storm's central pressure and the ambient pressure. The simulated wind fields are used to compute surface stresses on the water beneath the hurricane, which are then used to determine the storm surge on the coast. 
+% Simulation studies developed using SLOSH have been extensively used to assist agencies like the Federal Emergency Management Administration (FEMA) and the U.S. Army Corps of Engineers (USACE).
+In addition to real-time storm-surge guidance for imminent hurricanes, NOAA has developed a composite product, Maximum Envelopes of Water (MEOW), to provide manageable datasets for long-term hurricane mitigation planning. To develop these datasets, hurricane simulations with different combinations of intensity, forward speed, direction, and tide levels are run in parallel using SLOSH for the region of interest represented as a mesh. Each run may yield different storm surge values for a cell in the mesh. A maximum over such values is taken to represent the MEOW value of that cell. The same process is repeated for each cell within the study region to construct a MEOW map. MEOW maps are used to incorporate the uncertainties associated with a given forecast and eliminate the possibility that a critical storm track with high storm surge is missed. In this study, we use the MEOW maps to represent flooding risks due to storm surge. An example MEOW map is in Figure \ref{fig:MEOW}. The main connection between the flood scenarios and the transmission grid is the flood height at the substations: the MEOW value of a cell in the SLOSH mesh serves as the the flood height at the substation(s) physically located in that cell. Recall that the flood height at substation $i$ in scenario $k$ is represented by $\Delta_{i}^k$. This flood height in each scenario is compared against the hardening level of the substation ($x_i$) via constraints (\ref{linking_1}) and (\ref{linking_2}) to assess the variable second stage grid topology that utilizes only the sufficiently protected or unflooded substations and the corresponding buses and transmission lines.
+
+The original MEOW dataset for the Texas coastal region comprises 192 flood maps which are constructed using eight different storm directions (west-south-west, west, west-north-west, north-west, north-north-west, north, north-north-east, and north-east), six different intensity categories (0-5), and four different forward speeds (5,10,15, and 25 mph). To demonstrate the usefulness of the proposed approach with a computationally tractable use case, we reduce the size of the problem by eliminating a subset of less severe scenarios. We first drop the MEOW maps corresponding to four directions (west-south-west, north, north-north-east, and northeast) as hurricanes belonging to these categories do not cause significant flooding in the Texas Gulf Coast. We also drop the MEOW maps corresponding to category 0-4 hurricanes. The storms belonging to category 5 are more intense versions of these storms. \textcolor{red}{As a result, all 16 retained scenarios (four directions and four forward speeds) represent Category 5 storms. This affects how the expected number of storms $\gamma$ in Section \ref{overview} should be interpreted, as we discuss in Section \ref{tradeoff}.}
+%Hence, the model ends up recommending decisions to prepare for worst-case situations (and thus implicitly prepares for category 0-4 hurricanes as well). 
+Moreover, in the mitigation phase, the decision-maker does not have information on any specific storm. Therefore, to model the uncertainty in the mitigation phase, we assume that all the remaining MEOW maps represent the flooding scenarios. In our case, they are considered equally likely for the stochastic model. This is based on the premise that the larger set of simulations that produced the MEOW maps were sampled according to some underlying distribution and, therefore, already reflects the distribution characteristics implicitly used by NOAA in developing the MEOW product. 
+
+\textcolor{blue}{The central methodological contribution of this study is the integration of spatially correlated storm surge flood maps with a power flow model, so that the network wide consequences of correlated substation failures can be captured, rather than treating substation failures as statistically independent events as is common in fragility curve based approaches. Constructing this integration requires a flood scenario set that preserves spatial correlation across substations, and the NOAA MEOW storm surge maps described above provide such scenarios. The storm surge maps do not specify a probability distribution over individual scenarios. In contrast, wind hazard studies benefit from decades of fragility curve calibration that support such distributions, but comparable calibration for storm surge scenarios of this correlated, spatially detailed form is currently not available. 
+Given this, we treat the retained scenarios as equally likely, which is consistent with a belief in which a set of scenarios is known, but no other side information is given (i.e., it is the maximum entropy distribution).  
+%This choice is consistent with the maximum entropy principle, under which, given only the support of a set of outcomes and no additional distributional information, the entropy maximizing and therefore least assumption laden distribution over that support is the uniform distribution. 
+To assess how sensitive our recommendations are to this assumption, Sections 4.4 and 6.2 present a robust, distribution-free counterpart to the stochastic model that requires no probability assumption\textcolor{red}{, and Section \ref{sensitivity} evaluates the stochastic model's recommendations under two alternative scenario weightings}.}
+
+\subsection{Transmission grid}
+
+To model the transmission grid for Texas, we start with the synthetic ACTIVSg2000 grid with 2000 buses (within 1250 substations) and 3206 branches. The grid, though synthetic, is designed to maintain statistical similarities with the actual Texas grid. We make two further modifications to the grid instance to focus on the coastal assets that are subject to storm surge flooding. First, we perform a network reduction on the original grid instance using the electrical equivalent (EEQV) feature in {PSS\textregistered E}. The reduction is such that the buses in the inland region not exposed to storm-surge flooding are aggregated with a smaller set of nodes. The coastal part of the grid, prone to storm surge, is retained almost as is. The effect of the network reduction is detailed in Table~\ref{tab:grid_before_and_after}. The topological changes are visualized in Figure \ref{fig:grid_reduction}. Second, we remap the synthetic substations to actual substation locations to better represent the risks of the simulated hurricanes on the actual power system components. That is, we remap the coordinates of the 1250 substations in the ACTIVSg2000 grid with the coordinates of substations obtained from the Homeland Infrastructure Foundation-Level Data (HIFLD) Electric Substations dataset \cite{HIFLD_Electric_Substations}. The HIFLD dataset contains information about real-world substations across the U.S. The remapping is done by solving an optimization problem that minimizes the total displacement due to remapping. Note that this process keeps the power grid's electrical structure intact and makes it more realistic using the real-world substation locations (closer to the actual Texas grid) and capturing their real-world flood risks via MEOW-based flood scenarios. Lastly, the fixed and variable costs for substation hardening are assumed to be \$25,000 and \$100,000 per foot, respectively. 
+%These values are derived from various utility reports.
+
+\begin{figure}[tb!]
+        \centering
+        \includegraphics[trim={0cm 0cm 0cm 0cm},clip, width=0.7\textwidth]{figures/grid.pdf}
+        \caption{(a) The ACTIVSg2000 Synthetic Grid for Texas. (b) The reduced coastal grid obtained after performing the network reduction. The red elements represent the new nodes and branches that were introduced as the artifacts of the reduction to maintain equivalence in the grid characteristics}
+        \label{fig:grid_reduction}
+\end{figure}
+
+\begin{table}[htp]
+    \centering
+    \caption{Grid characteristics before and after the electrically equivalent reduction}
+    \vspace{0.5em}
+    \begin{tabular}{|l|r|r|}
+        \hline
+        Grid Characteristic & Before & After \\
+        \hline
+        Substations (\#) & 1250 & 362 \\
+        Buses (\#) & 2000 & 663 \\
+        % Note: The grid data actually lists 861 transformers and 2345 transmission lines. However, the "transformer" that bridges buses 7161 and 7292 is actually a transmission line as those buses belong to separate substations. This issue was identified by Brent and confirmed by Vinicius via email on June 10, 2020.
+        % Note: The reduced grid has the same problem. It lists 359 transformers and 1150 transmission lines, but it is really 358 transformers and 1151 transmission lines.
+        Transformers (\#) & 860 & 358 \\
+        Transmission Lines (\#) & 2346 & 1151 \\
+        Generators (\#) & 544 & 254 \\
+        \hline
+        Generation Capacity (GW) & 96.29 & 50.98 \\
+        Load (GW) & 67.11 & 39.69 \\
+        \hline
+    \end{tabular}
+    \label{tab:grid_before_and_after}
+\end{table}
+
+\vspace{-0.5cm}
+\section{Results and Discussion} \label{results}
+We first compute the expected value of perfect information and the value of the stochastic solution for the different budget levels in subsection \ref{vssevpi}. 
+%Due to changing climate conditions and ocean temperature, the probabilities of different types of hurricanes can change over time. 
+In subsection \ref{uncertain prob}, we show how a decision-maker can use RO solutions to prepare for the worst-case. \textcolor{red}{In subsection \ref{sensitivity}, we examine how sensitive the SO recommendations are to the scenario probabilities.} We then show how the SO model is used to determine the budget for substation hardening in subsection \ref{tradeoff} (Further analysis of optimal budgeting for the long-term problem is in Appendix \ref{optimalbudget}). 
+%Finally, the last subsection is dedicated to the analysis of the distribution of load shed across scenarios for the solutions obtained from SO and RO.
+
+\subsection{Stochastic optimization results}
+\label{vssevpi}
+In this section, we analyze the quality of the solutions obtained from SO using two widely known concepts in stochastic programming: the value of the stochastic solution and the expected value of perfect information. In Figure \ref{fig:16_scenarios_bounds}, we plot the value of $L_{\mathcal{SO}}^*$ as a function of the investment budget, $I$. We first compute the minimum budget such that $L_{\mathcal{SO}}^* = 0$. This is computed by solving a slightly modified version of the SO formulation where we first remove the budget constraint \eqref{budget_constraint} and replace the objective function with the minimization of the substation hardening expenditure (i.e., the left-hand-side of \eqref{budget_constraint}) while forcing full satisfaction of all loads by replacing constraint \eqref{supply_demand} with $s_{j}^k = D_j, \,\,\, \forall \, j \in \mathcal{J}.$ The optimal value to this modified version of SO is in turn the minimum hardening budget required for zero load shed. For this case study, the corresponding budget turns out to be \$71.35M and we denote this $\hat{I}=\$71.35$M. Any additional budget beyond this will not improve the load shed objective. Using \$71.35M as the reference, in Figure \ref{fig:16_scenarios_bounds}, we increase the budget from \$0M (no hardening investment), in increments of \$10M, until the value exceeds \$71.35M. 
+%Note that the same budget values can be used for the RO parametric study. This is because the minimum budget required to achieve the zero expected load shed is the same as the budget needed to achieve zero load shed in all the scenarios.
+
+We also compute bounds on $L_{\mathcal{SO}}^*$ as shown in Figure \ref{fig:16_scenarios_bounds}. Consider the  expected value problem
+%\vspace{-0.5cm}
+\begin{equation}\label{ev}
+L_{\mathcal{EV}}^* = \displaystyle{\minimize_{x\in \mathcal{X}} \, \mathcal{L}(x,\bar{k})}.    
+\end{equation}
+Here, $\bar{k}$ represents a scenario where the flood level at each substation is the mean of the flood heights at that particular substation across all the scenarios. The optimal solution to this problem is called the expected (or mean) value solution, henceforth represented by $\bar{x}$. We note that the problem in \eqref{ev} is a single scenario problem and therefore much smaller in size. 
+%However, the reduction of scenarios leads to the loss of information about the substations that flood together. 
+To evaluate the quality of the first-stage substation hardening decisions $\bar{x}$ obtained by solving \eqref{ev}, we compute the expected load shed across all the scenarios by fixing the first-stage decisions to $\bar{x}$ and resolving this restricted SO, denoted by $L_{\mathcal{SO}}(\bar{x})$. This value serves as an upper bound on $L_{\mathcal{SO}}^*$. 
+%For a detailed explanation on this, we refer to \cite{BirgLouv97}. 
+We observe in Figure \ref{fig:16_scenarios_bounds} that the difference between $L_{\mathcal{SO}}(\bar{x})$ and $L_{\mathcal{SO}}^*$ increases with an increase in the budget. We refer to this difference as the value of the stochastic solution (VSS) as it represents the value of using a scenario-based representation of the uncertainty as opposed to the mean flood values, all calculated within the SO framework:
+\textcolor{blue}{
+\begin{equation}
+    VSS = L_{\mathcal{SO}}(\bar{x}) - L_{\mathcal{SO}}^*. \label{vss}
+\end{equation}
+}
+\noindent We highlight that when $\bar{x}$ is implemented, the load shed stops decreasing with an increase in the budget beyond \$50M. For the mean scenario, the model obtains zero load shed with \$50.15M and once the model achieves zero load shed in the mean scenario, there is no benefit to use additional funds. Recalling a minimum of \$71.35M is needed to achieve zero load shed across all the scenarios, we confirm that the value of using SO over the single-scenario expected value problem increases with the budget.
+
+%\begin{figure}[htbp]
+%        \centering
+%        \includegraphics[trim={0.25cm 0cm 0cm 0.7cm},clip, height=2in]{figures/bounds.pdf}
+%        \caption{The expected load shed for the mean value solution, the stochastic solution, and the wait-and-see solution as a function of the budget}
+%        \label{fig:16_scenarios_bounds}
+%\end{figure}
+
+\begin{figure}[htbp]
+    \centering
+    \begin{minipage}[t]{0.3\textwidth}
+        \includegraphics[trim={0.25cm 0cm 0cm 0.7cm},clip, height=2in]{figures/bounds.pdf}
+        \caption{The expected load shed for the mean value solution, the stochastic solution, and the wait-and-see solution as a function of the budget}
+        \label{fig:16_scenarios_bounds}
+    \end{minipage}
+    \hfill
+        \begin{minipage}[t]{0.3\textwidth}
+        \centering
+        \includegraphics[trim={0.25cm 0cm 0cm 0.7cm},clip, height=2.0in]{figures/robust_decision_bounds.pdf}
+        \caption{The objective function value for RO (i.e., the optimal maximum load shed) and the expected load sheds for robust and stochastic solutions}
+        \label{fig:robust_bound}
+    \end{minipage}
+    \hfill % Adds horizontal space between minipages
+    \begin{minipage}[t]{0.3\textwidth}
+        \centering
+       \includegraphics[trim={0.2cm 0.2cm 0.1cm 0.1cm},clip,width=2in,height=1.5in]{figures/TLSC_s10_h6_v1000.png}
+        \caption{The 10-year expected load shed cost ($\mathcal{Z}$) as a function of the budget for $\gamma=10$, $h=6$, and $\delta=\$1000$}
+        \label{fig:loadshedcostforgivenparams}
+    \end{minipage}
+\end{figure}
+    
+
+To compute a lower bound on $L_{\mathcal{SO}}^*$ for a given budget level, we assume perfect information about the flood levels. That is, perfect information allows the decision maker to make possibly different substation hardening decisions in each scenario to minimize the load shed in that particular scenario. These solutions are referred to as wait-and-see solutions. In this case, we compute
+
+%\vspace{-0.4cm}
+\begin{equation}
+    L_{\mathcal{WS}}^* = \sum_{k \in \mathcal{K}} p_k \, \left( 
+\displaystyle{\minimize_{x\in \mathcal{X}}\mathcal{L}(x,k)}
+    \right),
+%    \vspace{-0.4cm}
+\end{equation}
+
+\noindent where the first-stage decisions are scenario-dependent and the value $L_{\mathcal{WS}}^*$ is referred to as the wait-and-see bound. Due to the scenario-specific mitigation decisions, $L_{\mathcal{WS}}^*$ provides a lower bound on $L_{\mathcal{SO}}^*$. The difference in the values $L_{\mathcal{SO}}^*$ and $L_{\mathcal{WS}}^*$ is referred to as the expected value of perfect information:
+\textcolor{blue}{
+\begin{equation}
+    EVPI = L_{\mathcal{SO}}^* - L_{\mathcal{WS}}^*. \label{evpi}
+\end{equation}
+}
+\noindent Unless the flood model can make perfect predictions, which is usually not the case with the weather or flood models, then not accounting for uncertainty and using point estimates or mean values can lead to significantly inferior decisions. In fact, as it turns out in this case, the first-stage decisions obtained from SO, even with not-so-perfect forecasts, lead to a load shed performance that is close to what we would obtain from using a flood model that offers perfect prediction. That is, accounting for flood uncertainty, even with a few scenarios, improves performance and reduces the burden of getting perfect information.
+
+We also note that all bounds converge to the same expected value at the zero budget. This is because, no matter how well we represent the uncertainty or how good the predictions are, if we do not have any resources to use towards mitigation in the first stage, we cannot prevent load shed in the second stage with no protection towards flooding. The expected value of the load shed depends on the second-stage decisions (i.e., the best power flow the grid can deliver with flooded substations). Moreover, at a sufficiently high budget value, both $L_{\mathcal{SO}}^*$ and $L_{\mathcal{WS}}^*$ converge to zero. Even with poor predictions or uncertainty representation, we can prevent any load shed in any scenario with enough resources to harden all substations.
+
+\subsection{Robust optimization results}\label{uncertain prob}
+
+\textcolor{blue}{A key motivation for solving the robust model is to test whether our hardening recommendations depend on the uniform distribution assumption made in Section 5.1 for the stochastic model.
+%an assumption justified there by the maximum entropy principle in the absence of a calibrated storm surge probability distribution. 
+Since RO requires no distributional assumptions, comparing its recommendations against those from SO provides a check on the sensitivity to the distribution.} While framing the power grid resilience decision-making problem as a two-stage stochastic program, we assume that the probability distribution over the scenarios is known.
+%However, the probabilities that we assign to each scenario need not be constant with time. Changing climate oscillations and ocean temperatures routinely affect these probabilities. This is reflected in NOAA's annual hurricane season prediction categories: normal, above normal, and below normal. In this case, if probabilities over scenarios change as compared to what we planned for, the expected performance may deteriorate. 
+To hedge against the uncertainty in probabilities or the distribution, we consider solving RO and comparing the expected performance of the corresponding decisions. If the difference in the expected performance of decisions recommended by RO and SO is not significant, we advise adopting decisions as recommended by RO. In this way, irrespective of how the probabilities evolve with time, we know that the expected total cost due to the load shed will be less than or equal to the bound obtained in Section \ref{RO_model} if the optimal first-stage decisions as recommended by RO are adopted. This can be confirmed for the parameters assumed in the case study through Figure \ref{fig:robust_bound}. The robust solution refers to the value of the expected load shed when the first-stage hardening decisions as recommended by RO are adopted. Since these decisions are not necessarily optimal for the assumed probability distribution, they lead to a higher expected load shed as compared to the stochastic solution. However, for the RO first-stage decisions, the maximum load shed in any scenario is capped by $\tau$ as represented by the red curve. The difference in the expected value performance is almost trivial for investment budget values of \$40M and above. Therefore, in those cases, it makes sense to adopt decisions recommended by RO as opposed to those from SO to hedge against the change in probabilities due to factors like ocean temperature and climate oscillations. \textcolor{blue}{This convergence indicates that our substation hardening recommendations are not highly sensitive to the particular probability weighting placed on the retained flood scenarios. Even under the most conservative, distribution-free treatment represented by the robust model, the recommended investment level and the resulting load shed performance closely track the solution obtained from the stochastic model, with a uniform distribution over the scenarios.} In cases when the difference between the expected performance of SO and RO is significant, the decisions depend on the risk preference of the decision-maker.
+
+\textcolor{red}{We emphasize that the robust bound is informative rather than trivially loose. By \eqref{dro_equivalence}, $L^*_{\mathcal{RO}}$ bounds the expected load shed of the RO plan under every possible weighting of the scenarios. A bound with such broad coverage could, in principle, be too large to be useful; for example, the maximum load shed of the unhardened grid in any scenario is 5.60 GW. In our case study, however, at a budget of \$40M the RO plan guarantees an expected load shed of at most $L^*_{\mathcal{RO}} = 0.53$ GW under any weighting, only 0.05 GW above the best expected load shed achievable if the uniform distribution were known to be correct ($L^*_{\mathcal{SO}} = 0.48$ GW). At \$50M and \$60M, the guarantee is 0.25 GW and 0.06 GW, compared to $L^*_{\mathcal{SO}}$ values of 0.24 GW and 0.06 GW. By contrast, the SO plan, although optimal under the uniform distribution, sheds up to 0.75 GW in its worst scenario at \$40M and 0.39 GW at \$50M. Thus, for budgets of \$40M and above, the price of protection against every possible weighting of the scenarios is small.}
+
+\subsection{\textcolor{red}{Sensitivity of the recommendations to the scenario probabilities}}\label{sensitivity}
+
+\textcolor{red}{The analysis in Section \ref{uncertain prob} bounds the performance of the RO plan over every weighting of the scenarios. To complement this distribution-free guarantee, we now evaluate the SO recommendations under two specific alternatives to the uniform distribution. The first is the opposite extreme of the uniform (maximum entropy) distribution: a planner who is certain about which storm will occur. The second is a physically motivated shift in probability toward slower-moving storms. In both cases, we obtain a hardening plan under one weighting and evaluate its expected load shed under another by fixing the first-stage decisions and solving the second-stage problem in each of the 16 scenarios.}
+
+\textcolor{red}{\textbf{Certainty about a single scenario.} For each scenario $k \in \mathcal{K}$ and each budget, we place all probability on scenario $k$ and solve SO. This single-scenario problem is the one solved for each scenario in the wait-and-see computation of Section \ref{vssevpi}; we denote its optimal hardening plan by $x_k$ and, when several plans attain the optimal load shed, keep the least expensive one. In the wait-and-see calculation, $x_k$ is evaluated only on scenario $k$. Here, instead, we evaluate $x_k$ on all scenarios under the uniform distribution, i.e., we compute $L_{\mathcal{SO}}(x_k)$, exactly as we do for the mean value solution $\bar{x}$. This represents a planner who commits to a plan built for one storm when any of the storms can occur.}
+
+\begin{figure}[htbp]
+    \centering
+    \begin{minipage}[t]{0.45\textwidth}
+        \centering
+        % TODO: replace placeholder with certainty_results/full/certainty_bounds.pdf
+        %\includegraphics[height=2.2in]{figures/certainty_bounds.pdf}
+        \fbox{\parbox[c][2.2in][c]{0.9\textwidth}{\centering \textcolor{red}{[Figure placeholder: certainty\_bounds.pdf]}}}
+        \caption{\textcolor{red}{The expected load shed of plans built assuming certainty about a single scenario, evaluated under the uniform distribution over all 16 scenarios (mean over the 16 choices of the certain scenario, with the band showing the best and worst choices), compared with the mean value, stochastic, and wait-and-see solutions}}
+        \label{fig:certainty}
+    \end{minipage}
+    \hfill
+    \begin{minipage}[t]{0.45\textwidth}
+        \centering
+        % TODO: replace placeholder with slow_storm_results/full/fig_a_slow_bounds.pdf
+        %\includegraphics[height=2.2in]{figures/fig_a_slow_bounds.pdf}
+        \fbox{\parbox[c][2.2in][c]{0.9\textwidth}{\centering \textcolor{red}{[Figure placeholder: fig\_a\_slow\_bounds.pdf]}}}
+        \caption{\textcolor{red}{The expected load shed under slow-storm weights ($\lambda=1$) of the mean value, robust, and uniform-weight stochastic plans, the stochastic plan re-optimized under slow-storm weights, and the wait-and-see solution, together with the RO objective}}
+        \label{fig:slow_storm}
+    \end{minipage}
+\end{figure}
+
+\textcolor{red}{Figure \ref{fig:certainty} and Table \ref{tab:sensitivity} show that certainty about a single scenario leads to poor plans. Averaged over the 16 choices of the certain scenario, the expected load shed $L_{\mathcal{SO}}(x_k)$ nearly coincides with that of the mean value solution and levels off at about 2.17 GW from \$50M onward, because each certain planner stops investing once its own scenario is fully protected. More importantly, even the best of the 16 certain plans, which a planner could identify only in hindsight, is far worse than the SO plan. The best certain plan is the one built for the west-north-west storm with a forward speed of 10 mph at every budget from \$10M upward, and its expected load shed is 0.97 GW at \$40M and 0.64 GW at \$60M, compared to 0.48 GW and 0.06 GW for the SO plan. The worst certain plan, built for the west storm with a forward speed of 15 mph, sheds 3.59 GW from \$40M onward. The certain plans also harden different substations from the SO plan: at budgets of \$20M, \$40M, and \$60M, the average Jaccard similarity between the sets of substations hardened by $x_k$ and by the SO plan is only 0.51, 0.58, and 0.63, respectively. Hence, no matter which storm the planner is certain about, the resulting plan performs worse than the SO plan under the uniform distribution, and committing to the scenario that turns out to be the best choice in hindsight still roughly doubles the expected load shed at \$40M.}
+
+\begin{table}[htbp]
+    \centering
+    \caption{\textcolor{red}{Expected load shed (GW) under alternative scenario weightings. The certainty columns report $L_{\mathcal{SO}}(x_k)$ under the uniform distribution (mean, best, and worst over the 16 choices of $k$). The slow-storm columns report the expected load shed under slow-storm weights ($\lambda=1$) of the uniform-weight SO plan and of the re-optimized plan, and the Jaccard similarity between the sets of substations hardened by the two plans}}
+    \vspace{0.5em}
+    \textcolor{red}{
+    \begin{tabular}{|c|c|c|c|c|c|c|c|}
+        \hline
+         & & \multicolumn{3}{c|}{Certainty about one scenario} & \multicolumn{3}{c|}{Slow-storm weights} \\
+        \cline{3-8}
+        Budget (\$M) & $L^*_{\mathcal{SO}}$ & Mean & Best & Worst & Uniform plan & Re-optimized & Jaccard \\
+        \hline
+        10 & 2.220 & 3.089 & 2.590 & 3.738 & 2.263 & 2.261 & 1.00 \\
+        20 & 1.374 & 2.650 & 1.715 & 3.660 & 1.419 & 1.385 & 0.89 \\
+        30 & 0.830 & 2.415 & 1.265 & 3.595 & 0.848 & 0.839 & 0.97 \\
+        40 & 0.480 & 2.259 & 0.965 & 3.587 & 0.499 & 0.479 & 0.96 \\
+        50 & 0.235 & 2.188 & 0.728 & 3.587 & 0.249 & 0.233 & 0.93 \\
+        60 & 0.060 & 2.169 & 0.643 & 3.587 & 0.061 & 0.057 & 0.97 \\
+        70 & 0.002 & 2.168 & 0.633 & 3.587 & 0.002 & 0.002 & 0.97 \\
+        \hline
+    \end{tabular}
+    }
+    \label{tab:sensitivity}
+\end{table}
+
+\textcolor{red}{\textbf{Slower-moving storms.} Observational studies indicate that the forward speed of tropical cyclones has decreased in recent decades, and this trend may continue. To examine how a shift toward slower storms affects our recommendations, within each of the four storm directions, we move a fraction $\lambda \in [0,1]$ of the probability of the fastest scenario (25 mph) to the slowest scenario (5 mph), while the scenarios with forward speeds of 10 and 15 mph keep their probability of 1/16 and each direction keeps a total probability of 1/4. At $\lambda = 1$, each 5 mph scenario has probability 2/16 and each 25 mph scenario has probability zero. In the MEOW maps, slower storms flood some substations more deeply and others less, and on balance this shift increases the expected load shed of the unhardened grid from 4.46 GW to 4.65 GW. For each budget, we re-solve SO under the $\lambda = 1$ weights with the same solver settings and compare the resulting plan with the uniform-weight SO plan.}
+
+\textcolor{red}{Figure \ref{fig:slow_storm} and Table \ref{tab:sensitivity} show that the SO recommendations are insensitive to this shift with respect to load shed, the hardening plan, and the long-term budget. First, keeping the uniform-weight plan when storms are slower increases the expected load shed by at most 0.034 GW (at \$20M) relative to the re-optimized plan, and over the whole range $\lambda \in [0,1]$, the expected load shed of the uniform-weight plan increases by at most 0.045 GW for budgets of \$10M and above. At \$20M, the uniform-weight SO solve terminated at the time limit with a 4.7\% optimality gap, and the re-optimized plan is slightly better even under uniform weights (1.366 GW versus 1.374 GW), so part of the 0.034 GW difference reflects this gap. Second, the re-optimized plans harden nearly the same substations as the uniform-weight plans: the Jaccard similarity is between 0.89 and 1.00, and the number of hardened substations differs by at most one. The differences are mostly hardening height adjustments of 1--2 ft at substations that flood more deeply in either slow or fast storms. Third, using the approach of Section \ref{tradeoff} with $\gamma = 10$, $h \in \{6, 12, 24, 48\}$ hours, and $\delta \in \{\$250, \$500, \$1000, \$3000, \$5000\}$ per MWh, the near-optimal budget is identical under uniform and slow-storm weights in 19 of the 20 combinations; the exception is $h = 6$ and $\delta = \$3000$, where it decreases from \$70M to \$60M. Adopting the uniform-weight budget when storms are slower increases the total disaster management cost by at most \$0.9M, on totals of \$40M--\$75M. Finally, for every value of $\lambda$ and every budget, the expected load shed of the RO plan remains below $L^*_{\mathcal{RO}}$, as guaranteed by \eqref{dro_equivalence}. Since all retained scenarios represent Category 5 storms, intensity weights cannot be varied within this scenario set; Section \ref{overview} describes how multiple intensity classes can be incorporated through the scenario probabilities.}
+
+\textcolor{red}{Together with Section \ref{uncertain prob}, these results bracket the uniform distribution assumption from both sides. Moving from the uniform distribution toward certainty about a single scenario markedly degrades the hardening plan, whereas a physically plausible reweighting, and even the worst-case weighting, changes the recommended plans and their performance only slightly.}
+
+
+%\begin{figure}[htbp]
+%        \centering
+%        \includegraphics[trim={0.25cm 0cm 0cm 0.7cm},clip, height=2.0in]{figures/robust_decision_bounds.pdf}
+%        \caption{The objective function value for RO (i.e., the optimal maximum load shed) and the expected load sheds for the robust and the stochastic solutions as a function of the budget}
+%        \label{fig:robust_bound}
+%\end{figure}
+
+\subsection{Total disaster management costs and near-optimal budgeting} \label{tradeoff}
+
+Subsection \ref{vssevpi} demonstrates how SO is used for per-storm load shed minimization for a given resilience investment budget for substation hardening. As discussed in Section \ref{overview}, the same hardening solution is optimal to minimize the total storm-related costs due to load shed during the planning horizon for the hardening budget. For the parameterized version of the budget-constrained SO, let $L_\mathcal{SO}^*(I)$ denote the minimum per-storm load shed. Then, for a given investment budget $I$, the total expected cost due to load losses over many storms during the planning horizon is a multiple of this per-storm load shed. \textcolor{blue}{More precisely, this cost is $\mathcal{Z} = Z(I)$ as defined in Equation \eqref{z_of_i} of Section \ref{budget_section}.} The budget parameterized solutions of SO provides additional insights into the sensitivity of the load shed. As shown in Figure \ref{fig:loadshedcostforgivenparams}, $\mathcal{Z}$ as a function of $I$ is a scaled version of $L_\mathcal{SO}^*$ drawn in Figure \ref{fig:16_scenarios_bounds} (scaled with $\gamma, h,$ and $\delta$). With such analysis, we see how much reduction in load shed costs is achieved with more funds.
+
+%\begin{figure}[htbp]
+%        \centering
+%        \includegraphics[trim={0.2cm 0.2cm 0.1cm 0.1cm},clip,width=3.6in,height=2in]{figures/TLSC_s10_h6_v1000.png}
+%        \caption{The total expected load shed cost ($\mathcal{Z}$) as a function of the budget for a 10-year planning horizon for $\gamma=10$ storms, $h=6$ hours of restoration time, and $\delta=\$1000$ per MWh of load shed}
+%        \label{fig:loadshedcostforgivenparams}
+%\end{figure}
+
+Interestingly, the same solutions can alternatively be used to capture the trade-off between the hardening costs (that is the proactive investment amount) and the storm-related load loss costs. This trade-off leads to a method to decide the (approximate) optimal value of the investment budget that minimizes the so-called total disaster management cost over the resilience planning horizon. In a way, this grand total includes both the one-time investment in the form of substation hardening and the recurring costs of load losses experienced through a variety of storms during the planning horizon. We illustrate the trade-off between mitigation costs and the load shed costs through our numerical study and show the optimal budget numerically for given values of $\gamma$, $h$, and $\delta$ in Figure \ref{fig:totaldisastermanagementcostforgivenparams}. Here, we use $L_{\mathcal{SO}}^*(I)$ for $I \in \{0,10,20...70\}$ as computed in Section \ref{vssevpi}, we compute the the total disaster management cost $\mathcal{Z} + I$ \textcolor{blue}{(Equation \eqref{tdmc})} for each $I$, for given values of $\gamma, h,$ and $\delta$. The figure confirms that for given values of $\gamma$, $h$, and $\delta$, increasing the hardening budget drastically reduces the load shed cost, but the total disaster management cost that includes both the investment cost and the load shed cost during the planning horizon is minimum at different budget levels depending on these parameters. For example, with $\gamma=10$ and $h=6$, the best hardening budget out of the tried values of $I$ is \$20M for $\delta=250$ (relatively low), \$40M for $\delta=500$, and \$60M for $\delta=1000$ (relatively high), where the latter hardening spending is close the zero-load shed budget of $\hat{I}$. We note that although each bar in the figure is drawn from a specific optimal solution to SO for a given budget, we call the best budget levels to minimize the total disaster management costs ``near optimal'' for a combination of $\gamma$, $h$, and $\delta$ due to the discrete levels of the budget tested (in \$10M increments). One can decrease the increment to improve the quality of the ``near optimal'' budgets, particularly around the budget values that result in the lowest total costs. 
+
+\begin{figure}[btp]
+        \centering
+        \includegraphics[trim={0.1cm 0.1cm 0.1cm 0.1cm},clip,height=1.3in]{figures/TDMC_s10_h6_v250.png}
+        \includegraphics[trim={0.1cm 0.1cm 0.1cm 0.1cm},clip,height=1.3in]{figures/TDMC_s10_h6_v500.png}
+        \includegraphics[trim={0.1cm 0.1cm 0.1cm 0.1cm},clip,height=1.3in]{figures/TDMC_s10_h6_v1000.png}
+        \caption{The total disaster management cost ($\mathcal{Z}+I$) for parameterized values of the hardening budget for the 10-year horizon for $\gamma=10$ storms, $h=6$ hours of restoration time, and $\delta=\$250$ per MWh of load shed (left), $\delta=\$500$ (middle), $\delta=\$1000$ (right).}
+        \label{fig:totaldisastermanagementcostforgivenparams}
+\end{figure}
+
+To see how the ``near optimal'' budget levels change with varying levels of the long-term problem parameters ($\gamma$, $h$, and $\delta$), we plot the minimum values of the expected total disaster management costs $\mathcal{Z}+I$ in Figure \ref{fig:nearoptimaltdmcvoll}. We assume on average $\gamma=10$ storms hit the Texas Gulf Coast during the planning horizon. This average is in line with the trends of such storms causing power outages in Texas, which has averaged about 1 per year in recent years, leading to a value of 10 for a hypothetical 10-year planning horizon. \textcolor{red}{This frequency counts outage-causing hurricanes and tropical storms of all intensities, whereas our per-storm load shed is computed from Category 5 scenarios. Following the interpretation of $\gamma$ in Section \ref{overview}, $\gamma = 10$ therefore represents a conservative, upper-end case in which every outage-causing storm is assumed to produce Category 5 level storm surge flooding. Since the near-optimal budget is non-decreasing in $\gamma$ (see the Appendix), the budgets reported below for $\gamma = 10$ are upper-end estimates. An intensity-consistent value of $\gamma$ is considerably smaller, since no Category 5 hurricane has made landfall on the Texas coast in the historical record. Because $\gamma$, $h$, and $\delta$ enter the problem only through their product $\omega = \gamma h \delta$ (see the Appendix), results for any other value of $\gamma$ follow directly from the same SO solutions, without re-solving the model. For example, with one Category 5 level storm over a 10-year horizon ($\gamma = 1$) and $\delta = \$1000$ per MWh, the near-optimal budget is \$10M for $h = 6$ hours and \$30M for $h = 24$ hours. With $\delta = \$6000$ per MWh, the ERCOT estimate of the value of lost load discussed below, it is \$40M for $h = 6$ hours and \$60M for $h = 24$ hours. Thus, under an intensity-consistent storm frequency, the recommended budgets are lower than for $\gamma = 10$, but a substantial hardening investment remains optimal when the unit cost of load loss is high. We present the results for $\gamma = 10$ below as the upper-end case, and the Appendix provides the near-optimal budget over a range of $\gamma$ values.} Furthermore, for sensitivity analysis, we consider two different values of power restoration time: $h=6$, or 24 hours. For the unit cost of load shed, we consider 3 different values: $\delta = \$250$, \$500, or \$1000 per MWh. Given the observations from Figure \ref{fig:totaldisastermanagementcostforgivenparams} showing the necessity of close-to-full flood protection even in milder conditions, testing with higher values of $h$ or $\delta$ than tested is not needed. We observe from the figure that when $\delta$ is low and the restoration time is short (\$250 and 6 hours, respectively), the total disaster management cost is relatively low. Furthermore, the model recommends investing only a quarter of the zero-load shed budget for substation hardening. This is because the cost associated with losing power is quite low and the outage does not last long. Even then it is optimal to spend $\sim$20M on mitigative measures before the storms' uncertainties are resolved, leading to a strong indication not to leave all substations unprotected to flooding given the considered scenarios. When both $\delta$ and $h$ are at their high levels considered (\$1000 and 24 hours, respectively), the model recommends investing the maximum tried budget \$70M for substation hardening, avoiding practically any costs due to load loss. Since the costs associated with power loss are high, it is optimal to make significant mitigation investments in substation hardening to have nearly zero load shed. 
+
+\begin{figure}[btp]
+        \centering
+        \includegraphics[trim={0.1cm 0.1cm 0.1cm 0.1cm},clip,height=2.0in]{figures/TDMC_s10_h6_voll_optI.png}
+        \includegraphics[trim={0.1cm 0.1cm 0.1cm 0.1cm},clip,height=2.0in]{figures/TDMC_s10_h24_voll_optI.png}
+        \caption{The ``minimum'' total disaster management costs ($\mathcal{Z}+I$) for the 10-year horizon as a function of the unit cost of load shed for $h=6$ (left) and $h=24$ (right). Each bar is obtained from SO optimal solution when investing ``near-optimal'' budget for hardening, for $\gamma=10$, with varying levels of $\delta=\$250, \$500, \$1000$. The near-optimal budget $I$ is shown as the hardening cost (in blue) and the corresponding optimal load shed cost $\mathcal{Z}=\gamma h \delta L_\mathcal{SO}^*(I)$ is in red.}
+        \label{fig:nearoptimaltdmcvoll}
+\end{figure}
+
+For other combinations of $h$ and $\delta$, both the total expected disaster management cost and its composition vary. For a given restoration time $h$, increasing the cost of load loss $\delta$ leads to higher (near-optimal) spending on hardening as expected. Similarly, for a given unit cost of load loss, longer restoration times lead to more hardening spending. Interpreted in another way, one can see the effects of shortening power restoration times (from 24 hours to 6), which reduces the reliance on mitigation investments and could be important to consider if there is significant uncertainty about the predicted impacts of the flood events. For example, one could spend up to $\sim$\$13M to shorten the power restoration time from 24 hours to 6 hours when $\delta = \$500$. One does not need a very long restoration time or very high unit cost of load shed to have full flood protection to be optimal. Even when $h=24$ hours and $\delta=\$1000$, it is optimal to invest close to the full budget of \$71.35M. 
+%With longer restoration times and higher unit costs of load shed, it is optimal to fully protect all assets to achieve zero load shed in any storm. 
+Based on a study undertaken by the Electric Reliability Council of Texas, the economic value of load loss (VOLL) was estimated to be around \$6000 per MWh for Texas \cite{ercot_voll}. If we take VOLL as an analogue to our unit cost of load shed, our results suggest making all the hardening investments to achieve near-zero load shed even if restoration times are as short as 6 hours\textcolor{red}{, when $\gamma = 10$. With the intensity-consistent value $\gamma = 1$, the near-optimal budget at this unit cost of load loss is \$40M for $h = 6$ hours and \$60M for $h = 24$ hours, as noted above}.
+
+%\begin{figure}[!t]
+%        \centering
+%        \includegraphics[trim={0cm 0cm 0cm 0cm},clip, height=2.5in]{figures/voll-analysis.pdf}
+%        \caption{Total disaster management cost as a function of the unit cost of load loss for different restoration times. Each bar shows the minimum of the total disaster management cost $\mathcal{Z}+I$ out of all optimal SO solutions to the budget parameterized problems. Here the investment budget $I$ is shown as the hardening cost (in blue) and the optimal storm-related costs $\mathcal{Z}=\gamma h \delta L_\mathcal{SO}^*(I)$ due to load losses from $\gamma=10$ storms, subject to that investment budget $I$ is shown in orange.}
+%        \label{fig:voll_plot}
+%\end{figure}
+
+%\vspace{-0.5cm}
+\section{Conclusions}\label{conclusions}
+
+In this study, we consider an integrated framework supported by two scenario-based optimization models for transmission grid resilience decision making against extreme flooding events. The models recommend an optimal substation hardening plan by integrating the predictions generated from a state-of-the-art geoscience model simulating storm surge-induced flooding with a DC optimal power flow model. Using a case study for Texas, specifically the coastal region prone to storm surge flooding, we demonstrate how the proposed models can be used to address a wide variety of insight-seeking questions related to power grid resilience decision-making. Specifically, we show that using a scenario-based representation of flood uncertainty can offer significant value over mean flood forecasts. 
+Furthermore, we show how we can estimate the expected value of perfect information from near-perfect flood forecasts. For the case study, we observe that by using a scenario-based representation of uncertainty, the decision-makers can reduce their burden of having perfect forecasts. We further show how one can use the two-stage framework to determine the optimal investment budget for substation hardening that will minimize the total long-term costs of disaster management including substation hardening and total load loss costs over multiple storms in a planning horizon. Lastly, we explain how we can use the robust optimization model when the probability distribution of the flood scenarios is unavailable. \textcolor{red}{We show that the robust model bounds the expected load shed under every weighting of the scenarios, that the stochastic model's recommendations change only slightly under a physically motivated shift toward slower-moving storms, and that plans built assuming certainty about any single storm scenario perform substantially worse than the stochastic plan.}
+
+For future research, we suggest four directions. First is the development of scenarios that consider precipitation-induced inland flooding in addition to storm-surge. Second is to account for considerations such as storage systems while making substation-hardening decisions. Third is developing models that take into account preparedness measures while making longer-term mitigation decisions, leading to three-stage optimization models. \textcolor{blue}{Related to this, incorporating reactive power and voltage constraints, partial equipment failure modes, differences in local protection capability, and explicit post-disaster restoration dynamics would extend the current planning-level assessment toward operational and short-term preparedness applications.} Fourth is the development of decomposition techniques to solve such models in a reasonable time. 
+%These challenges form the basis of our ongoing research.
+
+
+
+% \section{Data availability}
+% The data that support the findings of this study are available from the corresponding author upon reasonable request.
+
+%\section*{Acknowledgments}
+%The authors acknowledge the support from The University of Texas at Austin's Energy Institute.
+
+\singlespacing
+\bibliographystyle{elsarticle-num} 
+\bibliography{cas-refs}
+
+%\vspace{-0.5cm}
+\section*{Appendix: Generalization of optimal budgeting for the long term problem} \label{optimalbudget}
+
+We observe in Figure \ref{fig:nearoptimaltdmcvoll} that the solution corresponding to $\delta=\$1000$ per MWh and $h=6$ hours is the same as the solution with $\delta=\$250$ per MWh and $h=24$ hours. This is expected because in $\gamma h \delta L_\mathcal{SO}^*(I)+I$, both sets of parameters lead to the same optimization problem, making the same investment solution optimal and the same investment budget near optimal for both settings. In fact, it is worth noting that within the decision-making framework that we consider, the three key factors, namely, the expected number of storms in the planning horizon $\gamma$, the average time to restore power after the storm $h$, and the expected unit cost of load shed per hour $\delta$ can be combined into a single parameter, say $\omega = \gamma h \delta$ for this analysis.
+
+\textcolor{blue}{
+\begin{equation}
+    \omega = \gamma h \delta. \label{omega_def}
+\end{equation}
+}
+
+\noindent We believe that these parameters are the key factors that influence the optimal substation hardening budget for the long term problem. We can characterize certain properties between $\omega$ and the near-optimal value of the investment budget that minimizes the total disaster management cost $\mathcal{Z}+I$. First, the optimal budget value for the admittedly unrealistic case of $\omega = 0$ is 0, meaning one would not invest in any protective measures if the grid restoration was instantaneous in every storm, no storm was observed during the long planning horizon, or the unit cost of load loss was negligible. Second, there is some $\omega = \hat{\omega}$, where $\hat{\omega}$ represents the minimum value of $\omega$ over which it is optimal to harden substations such that there is zero expected load loss (i.e., $L_{\mathcal{SO}}^* = 0$). As discussed before, this minimum budget is calculated by solving a slightly modified version of SO and we represent this budget with $\hat{I}$. For our case study, $\hat{I}=\$71.35M$. For all other values of $\omega$ such that $0 \leq \omega \leq \hat{\omega}$, the optimal budget is between 0 and $\hat{I}$ and is non-decreasing in $\omega$. The latter is valid because as $\omega$ increases, the cost of losing power goes up, and allocating additional investment budget for protective measures to avoid load shed becomes optimal. This amount of extra money invested in substation hardening would save more in load shed costs across multiple storms during the planning horizon by preventing the load loss that might otherwise occur.  
+
+From these observations, we note that for any investment budget value between 0 and $\hat{I}$=\$71.35M, there exists a unique $\omega$ for which the corresponding budget is optimal. We use this insight to approximate the optimal investment budget for any combination of ($\delta$, $h$, and $\gamma$). Again, using $L_{\mathcal{SO}}^*(I)$ for $I \in \{0,10,20...80\}$ from Section \ref{vssevpi}, we calculate $\mathcal{Z} + I$ for each $I$, for given values of $\gamma, h,$ and $\delta$. The value of $I$ for which $\mathcal{Z} + I$ is the lowest is the best approximation for the optimal investment budget for $\omega$. 
+
+\begin{figure}
+        \centering
+        %\includegraphics[trim={0cm 0cm 0cm 0cm},clip, height=2.5in]{figures/voll_quick_rule.eps}
+         \includegraphics[height=1.4in]{figures/voll_quick_ytitle.png}
+        \includegraphics[height=1.4in]{figures/voll_quick_part1.png}
+        \includegraphics[height=1.4in]{figures/voll_quick_part2.png}
+         \includegraphics[height=0.2in]{figures/voll_quick_xtitle.png}
+        \caption{Total disaster management cost $\mathcal{Z}+I$ for select values of $\omega=\gamma h \delta$}
+        \label{fig:voll_quick}
+\end{figure}
+
+Figure \ref{fig:voll_quick} shows the value of $\mathcal{Z} + I$ for several plausible values of $\omega$: 15000, 30000, 60000 and 180000. These values can be derived from realistic $\gamma, h,$ and $\delta$ values, such as the ones used in Figure \ref{fig:nearoptimaltdmcvoll}. For example, when $\gamma=10$, $h=6$, and $\delta=250$, $\omega=15000$. The figure not only shows how the total disaster management cost changes as a function of the budget, but also specifies the (approximate) optimal budget from the parameterized budget values to minimize the total disaster management cost for a given value of $\omega$. For example, when $\omega = 15000$, the optimal budget can be approximated from the figure as \$20M. The figure also shows explicitly what we observed before that the optimal budget goes up as $\omega$ increases, shown with the red dashed lines (from \$20M for $\omega=15000$ to \$70M for $\omega=180000$). 
+
+Even with a limited number of parameterized budget runs, one could visualize the sensitivity of the optimal budget in a chart similar to Figure \ref{fig:para_analysis}, which shows how the near-optimal mitigation budget changes with $\delta$, $h$, and $\gamma$ that make up $\omega$, or what the optimal budget should be for a given combination of the three parameters. The areas where a budget level is optimal are approximate because of the limited number of budget levels used in the experiments but this can be improved with more runs of the appropriate model with more granular budget levels. Such a tool is useful to see the effects of different trends affecting the power grid, for example, longer restoration times due to slow-moving storms, higher unit costs of load loss due to electrification, or an increasing number of storms due to climate change.
+
+\begin{figure}[hbt!]
+        \centering
+        %\includegraphics[trim={2.2cm 0cm 0cm 2.6cm},clip, height=3in]{figures/parametric_analysis.pdf}
+        \includegraphics[height=2.3in]{figures/parametric_analysis_chart.png}
+        \includegraphics[height=0.5in]{figures/parametric_analysis_legend.png}
+        \caption{Near-optimal substation hardening budget for the expected total disaster management cost $\mathcal{Z}+I$ as a function of the unit cost of load shed ($\delta$, shown here as VOLL), the grid restoration time ($h$), and the number of storms in the planning horizon ($\gamma$)}
+        \label{fig:para_analysis}
+\end{figure}
+
+
+\end{document}

@@ -1,0 +1,40 @@
+
+Gurobi 13.0.3 (mac64[arm]) logging started Sat Sep 26 12:17:10 2026
+
+Set parameter LogFile to value "/Users/ashutosh/Desktop/Two-stage-Model/certainty_results/full/solves/w_5_10_70M_phase1.log"
+Gurobi Optimizer version 13.0.3 build v13.0.3rc0 (mac64[arm] - Darwin 27.0.0 26A428)
+
+CPU model: Apple M1 Pro
+Thread count: 10 physical cores, 10 logical processors, using up to 10 threads
+
+Non-default parameters:
+TimeLimit  21600
+MIPGap  0.005
+Method  2
+LogToConsole  0
+
+Optimize a model with 13533 rows, 5548 columns and 38105 nonzeros (Min)
+Model fingerprint: 0x434394c5
+Model has 663 linear objective coefficients and an objective constant of 396.859633
+Variable types: 3498 continuous, 2050 integer (1688 binary)
+Coefficient statistics:
+  Matrix range     [1e-03, 1e+05]
+  Objective range  [1e+00, 1e+00]
+  Bounds range     [1e+00, 3e+00]
+  RHS range        [1e-02, 7e+07]
+
+Loaded user MIP start with objective -3.41061e-13
+MIP start from previous solve did not produce a new incumbent solution
+
+Presolve removed 12272 rows and 3966 columns
+Presolve time: 0.05s
+Presolved: 1261 rows, 1582 columns, 5568 nonzeros
+Variable types: 1378 continuous, 204 integer (204 binary)
+
+Explored 0 nodes (0 simplex iterations) in 0.08 seconds (0.07 work units)
+Thread count was 10 (of 10 available processors)
+
+Solution count 1: -3.41061e-13 
+
+Optimal solution found (tolerance 5.00e-03)
+Best objective -3.410605131648e-13, best bound -3.410605131648e-13, gap 0.0000%

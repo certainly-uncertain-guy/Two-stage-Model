@@ -1,0 +1,105 @@
+
+Gurobi 13.0.3 (mac64[arm]) logging started Sat Sep 26 12:54:08 2026
+
+Set parameter LogFile to value "/Users/ashutosh/Desktop/Two-stage-Model/slow_storm_results/eval_logs/MV_50M.log"
+Gurobi Optimizer version 13.0.3 build v13.0.3rc0 (mac64[arm] - Darwin 27.0.0 26A428)
+
+CPU model: Apple M1 Pro
+Thread count: 10 physical cores, 10 logical processors, using up to 10 threads
+
+Non-default parameters:
+TimeLimit  21600
+Method  2
+LogToConsole  0
+
+Optimize a model with 212165 rows, 77908 columns and 590482 nonzeros (Min)
+Model fingerprint: 0x3d7a6c43
+Model has 10608 linear objective coefficients and an objective constant of 396.859633
+Variable types: 55968 continuous, 21940 integer (21578 binary)
+Coefficient statistics:
+  Matrix range     [1e-03, 1e+05]
+  Objective range  [6e-02, 6e-02]
+  Bounds range     [1e+00, 3e+00]
+  RHS range        [1e-02, 5e+07]
+
+MIP start from previous solve did not produce a new incumbent solution
+MIP start from previous solve violates constraint R220166 by 1.000000000
+
+Presolve removed 198071 rows and 56344 columns
+Presolve time: 0.14s
+Presolved: 14094 rows, 21564 columns, 68602 nonzeros
+Variable types: 19022 continuous, 2542 integer (2542 binary)
+Performing another presolve...
+Presolve removed 3817 rows and 5628 columns
+Presolve time: 0.72s
+Found heuristic solution: objective 39.0260090
+Root barrier log...
+
+Ordering time: 0.02s
+
+Barrier statistics:
+ AA' NZ     : 6.582e+04
+ Factor NZ  : 3.350e+05 (roughly 13 MB of memory)
+ Factor Ops : 1.783e+07 (less than 1 second per iteration)
+ Threads    : 10
+
+                  Objective                Residual
+Iter       Primal          Dual         Primal    Dual     Compl     Time
+   0  -2.05925448e+04 -1.14738041e+05  1.21e+02 1.68e-01  2.78e+01     1s
+   1  -2.23696288e+03 -6.26740634e+04  1.35e+01 5.92e-02  4.25e+00     1s
+   2  -8.79586420e+01 -1.55917990e+04  1.28e+00 2.53e-04  6.13e-01     1s
+   3   1.02256104e+02 -2.40704425e+03  1.59e-01 6.88e-15  8.18e-02     1s
+   4   9.42939837e+01 -7.27785371e+02  1.04e-02 6.66e-14  2.44e-02     1s
+   5   6.16789101e+01 -3.94053812e+02  3.08e-03 3.51e-14  1.34e-02     1s
+   6   4.20400845e+01 -1.13152311e+02  1.17e-03 1.09e-14  4.57e-03     1s
+   7   3.22346831e+01 -6.08800340e+01  6.30e-04 6.66e-15  2.74e-03     1s
+   8   2.65645561e+01 -8.78705637e+00  2.97e-04 2.22e-15  1.04e-03     1s
+   9   2.34150924e+01  6.44091903e+00  1.15e-04 1.11e-15  4.99e-04     1s
+  10   2.23954405e+01  1.46473966e+01  6.08e-05 4.44e-16  2.28e-04     1s
+  11   2.19160437e+01  1.71885309e+01  3.58e-05 4.44e-16  1.39e-04     1s
+  12   2.16425559e+01  1.94336374e+01  2.09e-05 4.44e-16  6.50e-05     1s
+  13   2.15314135e+01  1.99036455e+01  1.55e-05 4.44e-16  4.79e-05     1s
+  14   2.14373156e+01  2.03959631e+01  1.11e-05 2.22e-16  3.07e-05     1s
+  15   2.13326193e+01  2.07917028e+01  6.41e-06 4.44e-16  1.59e-05     1s
+  16   2.12892169e+01  2.09285468e+01  4.52e-06 2.22e-16  1.06e-05     1s
+  17   2.12308709e+01  2.10577681e+01  2.04e-06 4.44e-16  5.10e-06     1s
+  18   2.12149936e+01  2.11099580e+01  1.40e-06 4.44e-16  3.09e-06     1s
+  19   2.12009460e+01  2.11406177e+01  8.41e-07 4.44e-16  1.78e-06     1s
+  20   2.11930434e+01  2.11609385e+01  5.43e-07 4.44e-16  9.47e-07     1s
+  21   2.11859133e+01  2.11708677e+01  2.78e-07 4.44e-16  4.44e-07     1s
+  22   2.11831596e+01  2.11745405e+01  1.80e-07 2.22e-16  2.55e-07     1s
+  23   2.11807972e+01  2.11764327e+01  9.61e-08 2.22e-16  1.29e-07     1s
+  24   2.11788404e+01  2.11775601e+01  2.74e-08 4.44e-16  3.78e-08     1s
+  25   2.11782408e+01  2.11778242e+01  6.86e-09 4.44e-16  1.23e-08     1s
+  26   2.11781016e+01  2.11779338e+01  2.24e-09 2.22e-16  4.94e-09     1s
+  27   2.11780401e+01  2.11779951e+01  3.93e-10 2.22e-16  1.32e-09     1s
+  28   2.11780296e+01  2.11780232e+01  3.55e-10 4.44e-16  1.89e-10     1s
+  29   2.11780293e+01  2.11780289e+01  3.68e-10 1.32e-15  1.36e-11     1s
+
+Barrier solved model in 29 iterations and 1.50 seconds (1.89 work units)
+Optimal objective 2.11780293e+01
+
+Crossover time: 0.12 seconds (0.12 work units)
+
+Root relaxation: objective 2.117803e+01, 1210 iterations, 0.32 seconds (0.35 work units)
+
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+
+     0     0   21.17803    0   13   39.02601   21.17803  45.7%     -    1s
+H    0     0                      35.6704541   21.17803  40.6%     -    1s
+H    0     0                      35.6650788   21.17803  40.6%     -    1s
+H    0     0                      35.6253921   21.17803  40.6%     -    1s
+     0     0   21.17803    0   13   35.62539   21.17803  40.6%     -    1s
+H    0     0                      22.8670719   21.17803  7.39%     -    3s
+H    0     0                      22.8670697   21.17803  7.39%     -    3s
+     0     0   21.17810    0    2   22.86707   21.17810  7.39%     -    3s
+H    0     0                      21.1784352   21.17810  0.00%     -    3s
+
+Explored 1 nodes (1351 simplex iterations) in 3.21 seconds (3.91 work units)
+Thread count was 10 (of 10 available processors)
+
+Solution count 6: 21.1784 22.8671 35.6254 ... 39.026
+
+Optimal solution found (tolerance 1.00e-04)
+Best objective 2.117843520986e+01, best bound 2.117810423578e+01, gap 0.0016%

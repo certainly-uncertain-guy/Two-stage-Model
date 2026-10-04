@@ -1,0 +1,89 @@
+
+Gurobi 13.0.3 (mac64[arm]) logging started Sat Sep 26 12:22:27 2026
+
+Set parameter LogFile to value "/Users/ashutosh/Desktop/Two-stage-Model/certainty_results/full/eval_logs/w_5_15_50M_tb.log"
+Gurobi Optimizer version 13.0.3 build v13.0.3rc0 (mac64[arm] - Darwin 27.0.0 26A428)
+
+CPU model: Apple M1 Pro
+Thread count: 10 physical cores, 10 logical processors, using up to 10 threads
+
+Non-default parameters:
+TimeLimit  21600
+MIPGap  0.005
+Method  2
+LogToConsole  0
+
+Optimize a model with 212165 rows, 77908 columns and 590482 nonzeros (Min)
+Model fingerprint: 0xb3593de4
+Model has 10608 linear objective coefficients and an objective constant of 396.859633
+Variable types: 55968 continuous, 21940 integer (21578 binary)
+Coefficient statistics:
+  Matrix range     [1e-03, 1e+05]
+  Objective range  [6e-02, 6e-02]
+  Bounds range     [1e+00, 3e+00]
+  RHS range        [1e-02, 5e+07]
+
+MIP start from previous solve produced solution with objective 35.8716 (0.67s)
+MIP start from previous solve produced solution with objective 35.8716 (0.69s)
+Loaded MIP start from previous solve with objective 35.8716
+
+Presolve removed 181295 rows and 41849 columns
+Presolve time: 0.09s
+Presolved: 30870 rows, 36059 columns, 112117 nonzeros
+Variable types: 33845 continuous, 2214 integer (2214 binary)
+Performing another presolve...
+Presolve removed 21372 rows and 20966 columns
+Presolve time: 0.50s
+Root barrier log...
+
+Ordering time: 0.02s
+
+Barrier statistics:
+ AA' NZ     : 5.647e+04
+ Factor NZ  : 2.687e+05 (roughly 12 MB of memory)
+ Factor Ops : 1.200e+07 (less than 1 second per iteration)
+ Threads    : 10
+
+                  Objective                Residual
+Iter       Primal          Dual         Primal    Dual     Compl     Time
+   0  -1.96216650e+04 -8.89689619e+04  2.46e+02 9.79e-02  2.57e+01     1s
+   1  -1.91014161e+03 -4.13730403e+04  2.72e+01 1.33e-15  3.49e+00     1s
+   2   6.37528212e+01 -9.72366732e+03  1.73e+00 5.93e-14  3.97e-01     1s
+   3   1.50157813e+02 -1.38702620e+03  2.65e-01 6.49e-15  5.36e-02     1s
+   4   1.17496581e+02 -4.17394026e+02  4.16e-02 1.96e-15  1.73e-02     1s
+   5   8.26898425e+01 -1.34836693e+02  1.13e-02 7.22e-16  6.94e-03     1s
+   6   6.20081497e+01 -2.94422635e+01  5.48e-03 4.44e-16  2.91e-03     1s
+   7   5.18777932e+01 -6.75850296e+00  3.40e-03 4.44e-16  1.87e-03     1s
+   8   4.20257361e+01  8.54418439e+00  1.32e-03 4.44e-16  1.06e-03     1s
+   9   3.93841232e+01  2.01285353e+01  7.40e-04 4.44e-16  6.11e-04     1s
+  10   3.77580011e+01  2.68876509e+01  3.55e-04 4.44e-16  3.45e-04     1s
+  11   3.68949524e+01  3.07326758e+01  1.76e-04 4.44e-16  1.95e-04     1s
+  12   3.63799212e+01  3.27248261e+01  7.56e-05 4.44e-16  1.16e-04     1s
+  13   3.62144064e+01  3.34460173e+01  4.83e-05 4.44e-16  8.75e-05     1s
+  14   3.61408281e+01  3.42564889e+01  3.70e-05 4.44e-16  5.96e-05     1s
+  15   3.60771676e+01  3.45268633e+01  2.78e-05 4.44e-16  4.90e-05     1s
+  16   3.60322066e+01  3.48275504e+01  2.14e-05 4.44e-16  3.81e-05     1s
+  17   3.60205471e+01  3.50498198e+01  1.98e-05 2.22e-16  3.07e-05     1s
+  18   3.59770980e+01  3.52690508e+01  1.40e-05 2.22e-16  2.24e-05     1s
+  19   3.59411649e+01  3.54849874e+01  9.22e-06 4.44e-16  1.44e-05     1s
+  20   3.59112762e+01  3.56147313e+01  5.34e-06 2.22e-16  9.38e-06     1s
+  21   3.58857643e+01  3.57537006e+01  2.12e-06 4.44e-16  4.18e-06     1s
+
+Barrier performed 21 iterations in 1.47 seconds (1.86 work units)
+Objective cutoff exceeded
+
+
+Root relaxation: interrupted, 0 iterations, 0.13 seconds (0.16 work units)
+
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+
+     0     0          -    0        35.87162   35.75370  0.33%     -    1s
+
+Explored 1 nodes (0 simplex iterations) in 1.48 seconds (1.86 work units)
+Thread count was 10 (of 10 available processors)
+
+Solution count 1: 35.8716 
+
+Optimal solution found (tolerance 5.00e-03)
+Best objective 3.587162245767e+01, best bound 3.575370055048e+01, gap 0.3287%

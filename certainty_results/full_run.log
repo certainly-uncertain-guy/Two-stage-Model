@@ -1,0 +1,405 @@
+Set parameter Username
+Set parameter LicenseID to value 2867316
+Academic license - for non-commercial use only - expires 2027-09-24
+[full] 16 scenarios x 9 budgets -> /Users/ashutosh/Desktop/Two-stage-Model/certainty_results/full
+Set parameter LogToConsole to value 0
+Set parameter LogToConsole to value 0
+Set parameter LogToConsole to value 0
+Set parameter LogToConsole to value 0
+Set parameter LogToConsole to value 0
+Set parameter LogToConsole to value 0
+Set parameter LogToConsole to value 0
+Set parameter LogToConsole to value 0
+Set parameter LogToConsole to value 0
+Set parameter LogToConsole to value 0
+Set parameter LogToConsole to value 0
+[full] baseline ready (52s)
+Set parameter LogToConsole to value 0
+[solve] w_5_05_0M: L_in=43.1601 spend raw/tb=0.00/0.00M t=0+0s
+[solve] w_5_05_10M: L_in=10.1067 spend raw/tb=9.95/9.95M t=1+1s
+[solve] w_5_05_20M: L_in=4.3354 spend raw/tb=20.00/20.00M t=1+1s
+[solve] w_5_05_30M: L_in=1.4344 spend raw/tb=29.60/29.60M t=1+0s
+[solve] w_5_05_40M: L_in=0.1233 spend raw/tb=39.75/39.75M t=0+0s
+[solve] w_5_05_50M: L_in=-0.0000 spend raw/tb=45.55/43.33M t=0+0s
+[solve] w_5_05_60M: L_in=-0.0000 spend raw/tb=45.55/43.33M t=0+0s
+[solve] w_5_05_70M: L_in=-0.0000 spend raw/tb=45.55/43.33M t=0+0s
+[solve] w_5_05_80M: L_in=-0.0000 spend raw/tb=45.55/43.33M t=0+0s
+Set parameter LogToConsole to value 0
+[solve] w_5_10_0M: L_in=37.2073 spend raw/tb=0.00/0.00M t=0+0s
+[solve] w_5_10_10M: L_in=7.6954 spend raw/tb=10.00/10.00M t=1+1s
+[solve] w_5_10_20M: L_in=2.9799 spend raw/tb=19.88/19.88M t=1+1s
+[solve] w_5_10_30M: L_in=0.5035 spend raw/tb=29.95/29.95M t=0+0s
+[solve] w_5_10_40M: L_in=-0.0000 spend raw/tb=39.05/38.30M t=0+0s
+[solve] w_5_10_50M: L_in=-0.0000 spend raw/tb=39.12/38.30M t=0+0s
+[solve] w_5_10_60M: L_in=-0.0000 spend raw/tb=39.12/38.30M t=0+0s
+[solve] w_5_10_70M: L_in=-0.0000 spend raw/tb=39.12/38.30M t=0+0s
+[solve] w_5_10_80M: L_in=-0.0000 spend raw/tb=40.23/38.30M t=0+0s
+Set parameter LogToConsole to value 0
+[solve] w_5_15_0M: L_in=27.8911 spend raw/tb=0.00/0.00M t=0+0s
+[solve] w_5_15_10M: L_in=5.1579 spend raw/tb=9.95/9.72M t=1+0s
+[solve] w_5_15_20M: L_in=1.4344 spend raw/tb=19.95/19.95M t=0+0s
+[solve] w_5_15_30M: L_in=0.0208 spend raw/tb=29.48/29.48M t=0+0s
+[solve] w_5_15_40M: L_in=-0.0000 spend raw/tb=30.57/30.50M t=0+0s
+[solve] w_5_15_50M: L_in=-0.0000 spend raw/tb=30.57/30.50M t=0+0s
+[solve] w_5_15_60M: L_in=-0.0000 spend raw/tb=31.27/30.50M t=0+0s
+[solve] w_5_15_70M: L_in=-0.0000 spend raw/tb=31.27/30.50M t=0+0s
+[solve] w_5_15_80M: L_in=-0.0000 spend raw/tb=31.27/30.50M t=0+0s
+Set parameter LogToConsole to value 0
+[solve] w_5_25_0M: L_in=32.9048 spend raw/tb=0.00/0.00M t=0+0s
+[solve] w_5_25_10M: L_in=6.0770 spend raw/tb=9.90/9.90M t=1+1s
+[solve] w_5_25_20M: L_in=2.3926 spend raw/tb=19.90/19.90M t=1+1s
+[solve] w_5_25_30M: L_in=0.3244 spend raw/tb=29.98/29.98M t=0+0s
+[solve] w_5_25_40M: L_in=-0.0000 spend raw/tb=35.80/35.60M t=0+0s
+[solve] w_5_25_50M: L_in=-0.0000 spend raw/tb=35.80/35.60M t=0+0s
+[solve] w_5_25_60M: L_in=-0.0000 spend raw/tb=35.80/35.60M t=0+0s
+[solve] w_5_25_70M: L_in=-0.0000 spend raw/tb=36.80/35.60M t=0+0s
+[solve] w_5_25_80M: L_in=-0.0000 spend raw/tb=36.80/35.60M t=0+0s
+Set parameter LogToConsole to value 0
+[solve] wnw_5_05_0M: L_in=47.9428 spend raw/tb=0.00/0.00M t=0+0s
+[solve] wnw_5_05_10M: L_in=16.8677 spend raw/tb=9.95/9.95M t=2+2s
+[solve] wnw_5_05_20M: L_in=8.2055 spend raw/tb=19.95/19.82M t=2+1s
+[solve] wnw_5_05_30M: L_in=4.0177 spend raw/tb=29.98/29.98M t=1+1s
+[solve] wnw_5_05_40M: L_in=1.4604 spend raw/tb=39.90/39.90M t=1+1s
+[solve] wnw_5_05_50M: L_in=0.1657 spend raw/tb=49.80/49.80M t=1+0s
+[solve] wnw_5_05_60M: L_in=-0.0000 spend raw/tb=55.30/54.00M t=0+0s
+[solve] wnw_5_05_70M: L_in=-0.0000 spend raw/tb=55.30/54.00M t=0+0s
+[solve] wnw_5_05_80M: L_in=-0.0000 spend raw/tb=55.30/54.00M t=0+0s
+Set parameter LogToConsole to value 0
+[solve] wnw_5_10_0M: L_in=53.8829 spend raw/tb=0.00/0.00M t=0+0s
+[solve] wnw_5_10_10M: L_in=22.1163 spend raw/tb=9.93/9.93M t=3+2s
+[solve] wnw_5_10_20M: L_in=11.2602 spend raw/tb=19.82/19.82M t=5+3s
+[solve] wnw_5_10_30M: L_in=5.9675 spend raw/tb=29.85/29.85M t=2+1s
+[solve] wnw_5_10_40M: L_in=3.0381 spend raw/tb=39.90/39.90M t=3+2s
+[solve] wnw_5_10_50M: L_in=0.8830 spend raw/tb=49.65/49.65M t=2+1s
+[solve] wnw_5_10_60M: L_in=0.0584 spend raw/tb=59.15/59.15M t=1+0s
+[solve] wnw_5_10_70M: L_in=-0.0000 spend raw/tb=63.15/61.70M t=0+0s
+[solve] wnw_5_10_80M: L_in=-0.0000 spend raw/tb=63.15/61.70M t=0+0s
+Set parameter LogToConsole to value 0
+[solve] wnw_5_15_0M: L_in=53.9489 spend raw/tb=0.00/0.00M t=0+0s
+[solve] wnw_5_15_10M: L_in=17.6291 spend raw/tb=9.90/9.90M t=3+3s
+[solve] wnw_5_15_20M: L_in=8.5809 spend raw/tb=19.95/19.95M t=4+3s
+[solve] wnw_5_15_30M: L_in=4.4735 spend raw/tb=30.00/30.00M t=3+2s
+[solve] wnw_5_15_40M: L_in=1.8584 spend raw/tb=39.95/39.95M t=2+2s
+[solve] wnw_5_15_50M: L_in=0.2755 spend raw/tb=49.73/49.73M t=2+1s
+[solve] wnw_5_15_60M: L_in=-0.0000 spend raw/tb=56.42/55.05M t=0+0s
+[solve] wnw_5_15_70M: L_in=-0.0000 spend raw/tb=56.42/55.05M t=0+0s
+[solve] wnw_5_15_80M: L_in=-0.0000 spend raw/tb=56.42/55.05M t=0+0s
+Set parameter LogToConsole to value 0
+[solve] wnw_5_25_0M: L_in=43.4077 spend raw/tb=0.00/0.00M t=0+0s
+[solve] wnw_5_25_10M: L_in=11.9398 spend raw/tb=9.93/9.93M t=2+2s
+[solve] wnw_5_25_20M: L_in=5.4028 spend raw/tb=20.00/20.00M t=1+1s
+[solve] wnw_5_25_30M: L_in=2.2936 spend raw/tb=29.98/29.98M t=1+1s
+[solve] wnw_5_25_40M: L_in=0.3906 spend raw/tb=39.95/39.95M t=1+0s
+[solve] wnw_5_25_50M: L_in=-0.0000 spend raw/tb=47.77/46.50M t=0+0s
+[solve] wnw_5_25_60M: L_in=-0.0000 spend raw/tb=47.77/46.50M t=0+0s
+[solve] wnw_5_25_70M: L_in=-0.0000 spend raw/tb=47.77/46.50M t=0+0s
+[solve] wnw_5_25_80M: L_in=-0.0000 spend raw/tb=48.27/46.50M t=0+0s
+Set parameter LogToConsole to value 0
+[solve] nw_5_05_0M: L_in=47.8479 spend raw/tb=0.00/0.00M t=0+0s
+[solve] nw_5_05_10M: L_in=16.7885 spend raw/tb=9.97/9.97M t=2+2s
+[solve] nw_5_05_20M: L_in=7.9301 spend raw/tb=20.00/20.00M t=3+1s
+[solve] nw_5_05_30M: L_in=3.6184 spend raw/tb=29.98/29.98M t=1+1s
+[solve] nw_5_05_40M: L_in=1.1950 spend raw/tb=39.88/39.73M t=1+1s
+[solve] nw_5_05_50M: L_in=0.0376 spend raw/tb=49.77/49.77M t=1+0s
+[solve] nw_5_05_60M: L_in=-0.0000 spend raw/tb=52.15/51.00M t=0+0s
+[solve] nw_5_05_70M: L_in=-0.0000 spend raw/tb=52.15/51.00M t=0+0s
+[solve] nw_5_05_80M: L_in=-0.0000 spend raw/tb=52.15/51.00M t=0+0s
+Set parameter LogToConsole to value 0
+[solve] nw_5_10_0M: L_in=56.0346 spend raw/tb=0.00/0.00M t=0+0s
+[solve] nw_5_10_10M: L_in=22.8814 spend raw/tb=9.95/9.95M t=3+3s
+[solve] nw_5_10_20M: L_in=12.3976 spend raw/tb=20.00/20.00M t=5+3s
+[solve] nw_5_10_30M: L_in=6.5499 spend raw/tb=29.93/29.93M t=3+2s
+[solve] nw_5_10_40M: L_in=3.2598 spend raw/tb=40.00/40.00M t=3+2s
+[solve] nw_5_10_50M: L_in=1.1340 spend raw/tb=49.85/49.85M t=3+1s
+[solve] nw_5_10_60M: L_in=0.0584 spend raw/tb=59.65/59.65M t=1+0s
+[solve] nw_5_10_70M: L_in=-0.0000 spend raw/tb=63.38/61.80M t=0+0s
+[solve] nw_5_10_80M: L_in=-0.0000 spend raw/tb=63.38/61.80M t=0+0s
+Set parameter LogToConsole to value 0
+[solve] nw_5_15_0M: L_in=53.4576 spend raw/tb=0.00/0.00M t=0+0s
+[solve] nw_5_15_10M: L_in=20.0027 spend raw/tb=9.90/9.90M t=3+2s
+[solve] nw_5_15_20M: L_in=10.6830 spend raw/tb=19.98/19.98M t=7+3s
+[solve] nw_5_15_30M: L_in=5.3646 spend raw/tb=29.93/29.93M t=3+2s
+[solve] nw_5_15_40M: L_in=2.4208 spend raw/tb=40.00/39.77M t=3+1s
+[solve] nw_5_15_50M: L_in=0.4685 spend raw/tb=49.75/49.75M t=2+1s
+[solve] nw_5_15_60M: L_in=-0.0000 spend raw/tb=58.80/56.92M t=1+0s
+[solve] nw_5_15_70M: L_in=-0.0000 spend raw/tb=58.80/56.92M t=0+0s
+[solve] nw_5_15_80M: L_in=-0.0000 spend raw/tb=58.80/56.92M t=0+0s
+Set parameter LogToConsole to value 0
+[solve] nw_5_25_0M: L_in=41.7091 spend raw/tb=0.00/0.00M t=0+0s
+[solve] nw_5_25_10M: L_in=12.3405 spend raw/tb=9.90/9.90M t=2+2s
+[solve] nw_5_25_20M: L_in=5.3901 spend raw/tb=20.00/20.00M t=1+2s
+[solve] nw_5_25_30M: L_in=2.2170 spend raw/tb=29.95/29.95M t=1+1s
+[solve] nw_5_25_40M: L_in=0.3227 spend raw/tb=39.92/39.92M t=1+0s
+[solve] nw_5_25_50M: L_in=-0.0000 spend raw/tb=46.52/45.17M t=0+0s
+[solve] nw_5_25_60M: L_in=-0.0000 spend raw/tb=46.52/45.17M t=0+0s
+[solve] nw_5_25_70M: L_in=-0.0000 spend raw/tb=46.73/45.17M t=0+0s
+[solve] nw_5_25_80M: L_in=-0.0000 spend raw/tb=46.73/45.17M t=0+0s
+Set parameter LogToConsole to value 0
+[solve] nnw_5_05_0M: L_in=46.4969 spend raw/tb=0.00/0.00M t=0+0s
+[solve] nnw_5_05_10M: L_in=12.4710 spend raw/tb=10.00/10.00M t=1+2s
+[solve] nnw_5_05_20M: L_in=5.1691 spend raw/tb=19.93/19.93M t=1+1s
+[solve] nnw_5_05_30M: L_in=1.8954 spend raw/tb=29.93/29.93M t=1+1s
+[solve] nnw_5_05_40M: L_in=0.1233 spend raw/tb=39.92/39.92M t=1+0s
+[solve] nnw_5_05_50M: L_in=-0.0000 spend raw/tb=43.05/42.00M t=0+0s
+[solve] nnw_5_05_60M: L_in=-0.0000 spend raw/tb=43.05/42.00M t=0+0s
+[solve] nnw_5_05_70M: L_in=-0.0000 spend raw/tb=43.05/42.00M t=0+0s
+[solve] nnw_5_05_80M: L_in=-0.0000 spend raw/tb=43.15/42.00M t=0+0s
+Set parameter LogToConsole to value 0
+[solve] nnw_5_10_0M: L_in=50.2777 spend raw/tb=0.00/0.00M t=0+0s
+[solve] nnw_5_10_10M: L_in=15.5137 spend raw/tb=10.00/10.00M t=5+2s
+[solve] nnw_5_10_20M: L_in=7.4288 spend raw/tb=20.00/20.00M t=3+3s
+[solve] nnw_5_10_30M: L_in=3.2598 spend raw/tb=29.85/29.85M t=2+1s
+[solve] nnw_5_10_40M: L_in=0.7754 spend raw/tb=39.92/39.92M t=3+1s
+[solve] nnw_5_10_50M: L_in=-0.0000 spend raw/tb=49.20/47.85M t=1+0s
+[solve] nnw_5_10_60M: L_in=-0.0000 spend raw/tb=49.20/47.85M t=0+0s
+[solve] nnw_5_10_70M: L_in=-0.0000 spend raw/tb=49.20/47.85M t=0+0s
+[solve] nnw_5_10_80M: L_in=-0.0000 spend raw/tb=49.40/47.85M t=0+0s
+Set parameter LogToConsole to value 0
+[solve] nnw_5_15_0M: L_in=39.6678 spend raw/tb=0.00/0.00M t=0+0s
+[solve] nnw_5_15_10M: L_in=12.8444 spend raw/tb=9.90/9.90M t=4+3s
+[solve] nnw_5_15_20M: L_in=5.3236 spend raw/tb=19.90/19.90M t=2+1s
+[solve] nnw_5_15_30M: L_in=1.9459 spend raw/tb=29.88/29.88M t=2+1s
+[solve] nnw_5_15_40M: L_in=0.1309 spend raw/tb=39.80/39.80M t=1+0s
+[solve] nnw_5_15_50M: L_in=-0.0000 spend raw/tb=43.62/42.17M t=0+0s
+[solve] nnw_5_15_60M: L_in=-0.0000 spend raw/tb=43.62/42.17M t=0+0s
+[solve] nnw_5_15_70M: L_in=-0.0000 spend raw/tb=43.73/42.17M t=0+0s
+[solve] nnw_5_15_80M: L_in=-0.0000 spend raw/tb=43.73/42.17M t=0+0s
+Set parameter LogToConsole to value 0
+[solve] nnw_5_25_0M: L_in=38.1961 spend raw/tb=0.00/0.00M t=0+0s
+[solve] nnw_5_25_10M: L_in=7.6367 spend raw/tb=9.95/9.95M t=2+1s
+[solve] nnw_5_25_20M: L_in=2.8514 spend raw/tb=19.80/19.80M t=1+1s
+[solve] nnw_5_25_30M: L_in=0.3892 spend raw/tb=30.00/30.00M t=1+0s
+[solve] nnw_5_25_40M: L_in=-0.0000 spend raw/tb=36.10/34.95M t=0+0s
+[solve] nnw_5_25_50M: L_in=-0.0000 spend raw/tb=36.10/34.95M t=0+0s
+[solve] nnw_5_25_60M: L_in=-0.0000 spend raw/tb=36.10/34.95M t=0+0s
+[solve] nnw_5_25_70M: L_in=-0.0000 spend raw/tb=36.10/34.95M t=0+0s
+[solve] nnw_5_25_80M: L_in=-0.0000 spend raw/tb=36.10/34.95M t=0+0s
+[full] solves done (244s)
+Set parameter LogToConsole to value 0
+[eval] w_5_05_0M_tb: L_SO(x_k)=44.6206 t=3s
+[eval] w_5_05_10M_tb: L_SO(x_k)=33.2733 t=2s
+[eval] w_5_05_20M_tb: L_SO(x_k)=30.1171 t=2s
+[eval] w_5_05_30M_tb: L_SO(x_k)=28.9173 t=2s
+[eval] w_5_05_40M_tb: L_SO(x_k)=27.9839 t=3s
+[eval] w_5_05_50M_tb: L_SO(x_k)=27.7983 t=3s
+[eval] w_5_05_50M_raw: L_SO(x_k)=27.8082 t=1s
+[eval] w_5_05_60M_tb: L_SO(x_k)=27.7983 t=3s
+[eval] w_5_05_60M_raw: L_SO(x_k)=27.8082 t=1s
+[eval] w_5_05_70M_tb: L_SO(x_k)=27.7983 t=3s
+[eval] w_5_05_70M_raw: L_SO(x_k)=27.8082 t=1s
+[eval] w_5_05_80M_tb: L_SO(x_k)=27.7983 t=3s
+[eval] w_5_05_80M_raw: L_SO(x_k)=27.8082 t=1s
+[eval] w_5_10_0M_tb: L_SO(x_k)=44.6206 t=3s
+[eval] w_5_10_10M_tb: L_SO(x_k)=33.9836 t=3s
+[eval] w_5_10_20M_tb: L_SO(x_k)=31.9757 t=3s
+[eval] w_5_10_30M_tb: L_SO(x_k)=30.7448 t=2s
+[eval] w_5_10_40M_tb: L_SO(x_k)=30.2960 t=2s
+[eval] w_5_10_40M_raw: L_SO(x_k)=30.3195 t=3s
+[eval] w_5_10_50M_tb: L_SO(x_k)=30.2960 t=2s
+[eval] w_5_10_50M_raw: L_SO(x_k)=30.3195 t=3s
+[eval] w_5_10_60M_tb: L_SO(x_k)=30.2960 t=2s
+[eval] w_5_10_60M_raw: L_SO(x_k)=30.3195 t=3s
+[eval] w_5_10_70M_tb: L_SO(x_k)=30.2960 t=2s
+[eval] w_5_10_70M_raw: L_SO(x_k)=30.3195 t=3s
+[eval] w_5_10_80M_tb: L_SO(x_k)=30.2960 t=2s
+[eval] w_5_10_80M_raw: L_SO(x_k)=30.2753 t=1s
+[eval] w_5_15_0M_tb: L_SO(x_k)=44.6206 t=3s
+[eval] w_5_15_10M_tb: L_SO(x_k)=37.3813 t=2s
+[eval] w_5_15_10M_raw: L_SO(x_k)=37.3364 t=3s
+[eval] w_5_15_20M_tb: L_SO(x_k)=36.6013 t=3s
+[eval] w_5_15_30M_tb: L_SO(x_k)=35.9476 t=2s
+[eval] w_5_15_40M_tb: L_SO(x_k)=35.8716 t=3s
+[eval] w_5_15_50M_tb: L_SO(x_k)=35.8716 t=1s
+[eval] w_5_15_60M_tb: L_SO(x_k)=35.8716 t=1s
+[eval] w_5_15_60M_raw: L_SO(x_k)=35.8436 t=3s
+[eval] w_5_15_70M_tb: L_SO(x_k)=35.8716 t=4s
+[eval] w_5_15_70M_raw: L_SO(x_k)=35.8436 t=3s
+[eval] w_5_15_80M_tb: L_SO(x_k)=35.8716 t=4s
+[eval] w_5_15_80M_raw: L_SO(x_k)=35.8436 t=3s
+[eval] w_5_25_0M_tb: L_SO(x_k)=44.6206 t=3s
+[eval] w_5_25_10M_tb: L_SO(x_k)=35.4970 t=3s
+[eval] w_5_25_20M_tb: L_SO(x_k)=33.6163 t=2s
+[eval] w_5_25_30M_tb: L_SO(x_k)=32.3249 t=3s
+[eval] w_5_25_40M_tb: L_SO(x_k)=31.9505 t=4s
+[eval] w_5_25_40M_raw: L_SO(x_k)=31.9505 t=4s
+[eval] w_5_25_50M_tb: L_SO(x_k)=31.9505 t=3s
+[eval] w_5_25_50M_raw: L_SO(x_k)=31.9505 t=4s
+[eval] w_5_25_60M_tb: L_SO(x_k)=31.9505 t=4s
+[eval] w_5_25_60M_raw: L_SO(x_k)=31.9505 t=3s
+[eval] w_5_25_70M_tb: L_SO(x_k)=31.9505 t=3s
+[eval] w_5_25_70M_raw: L_SO(x_k)=31.8724 t=3s
+[eval] w_5_25_80M_tb: L_SO(x_k)=31.9505 t=4s
+[eval] w_5_25_80M_raw: L_SO(x_k)=31.8724 t=3s
+[eval] wnw_5_05_0M_tb: L_SO(x_k)=44.6206 t=3s
+[eval] wnw_5_05_10M_tb: L_SO(x_k)=27.5088 t=2s
+[eval] wnw_5_05_20M_tb: L_SO(x_k)=22.6353 t=3s
+[eval] wnw_5_05_20M_raw: L_SO(x_k)=22.6452 t=2s
+[eval] wnw_5_05_30M_tb: L_SO(x_k)=19.6216 t=2s
+[eval] wnw_5_05_40M_tb: L_SO(x_k)=17.0959 t=1s
+[eval] wnw_5_05_50M_tb: L_SO(x_k)=15.9216 t=2s
+[eval] wnw_5_05_60M_tb: L_SO(x_k)=15.6261 t=2s
+[eval] wnw_5_05_60M_raw: L_SO(x_k)=15.6261 t=2s
+[eval] wnw_5_05_70M_tb: L_SO(x_k)=15.6261 t=2s
+[eval] wnw_5_05_70M_raw: L_SO(x_k)=15.6261 t=2s
+[eval] wnw_5_05_80M_tb: L_SO(x_k)=15.6261 t=2s
+[eval] wnw_5_05_80M_raw: L_SO(x_k)=15.6261 t=2s
+[eval] wnw_5_10_0M_tb: L_SO(x_k)=44.6206 t=3s
+[eval] wnw_5_10_10M_tb: L_SO(x_k)=25.8986 t=3s
+[eval] wnw_5_10_20M_tb: L_SO(x_k)=17.1486 t=2s
+[eval] wnw_5_10_30M_tb: L_SO(x_k)=12.6451 t=2s
+[eval] wnw_5_10_40M_tb: L_SO(x_k)=9.6535 t=2s
+[eval] wnw_5_10_50M_tb: L_SO(x_k)=7.2801 t=2s
+[eval] wnw_5_10_60M_tb: L_SO(x_k)=6.4261 t=2s
+[eval] wnw_5_10_70M_tb: L_SO(x_k)=6.3318 t=2s
+[eval] wnw_5_10_70M_raw: L_SO(x_k)=6.3355 t=2s
+[eval] wnw_5_10_80M_tb: L_SO(x_k)=6.3318 t=2s
+[eval] wnw_5_10_80M_raw: L_SO(x_k)=6.3355 t=2s
+[eval] wnw_5_15_0M_tb: L_SO(x_k)=44.6206 t=3s
+[eval] wnw_5_15_10M_tb: L_SO(x_k)=26.2116 t=3s
+[eval] wnw_5_15_20M_tb: L_SO(x_k)=19.6163 t=3s
+[eval] wnw_5_15_30M_tb: L_SO(x_k)=16.1453 t=2s
+[eval] wnw_5_15_40M_tb: L_SO(x_k)=13.6261 t=2s
+[eval] wnw_5_15_50M_tb: L_SO(x_k)=12.1398 t=2s
+[eval] wnw_5_15_60M_tb: L_SO(x_k)=11.9085 t=2s
+[eval] wnw_5_15_60M_raw: L_SO(x_k)=11.9014 t=2s
+[eval] wnw_5_15_70M_tb: L_SO(x_k)=11.9085 t=2s
+[eval] wnw_5_15_70M_raw: L_SO(x_k)=11.9014 t=2s
+[eval] wnw_5_15_80M_tb: L_SO(x_k)=11.9085 t=2s
+[eval] wnw_5_15_80M_raw: L_SO(x_k)=11.9014 t=2s
+[eval] wnw_5_25_0M_tb: L_SO(x_k)=44.6206 t=3s
+[eval] wnw_5_25_10M_tb: L_SO(x_k)=30.8218 t=3s
+[eval] wnw_5_25_20M_tb: L_SO(x_k)=27.2499 t=2s
+[eval] wnw_5_25_30M_tb: L_SO(x_k)=25.3735 t=3s
+[eval] wnw_5_25_40M_tb: L_SO(x_k)=23.4351 t=3s
+[eval] wnw_5_25_50M_tb: L_SO(x_k)=22.9694 t=4s
+[eval] wnw_5_25_50M_raw: L_SO(x_k)=22.5343 t=3s
+[eval] wnw_5_25_60M_tb: L_SO(x_k)=22.9694 t=4s
+[eval] wnw_5_25_60M_raw: L_SO(x_k)=22.5343 t=3s
+[eval] wnw_5_25_70M_tb: L_SO(x_k)=22.9694 t=4s
+[eval] wnw_5_25_70M_raw: L_SO(x_k)=22.5343 t=3s
+[eval] wnw_5_25_80M_tb: L_SO(x_k)=22.9694 t=4s
+[eval] wnw_5_25_80M_raw: L_SO(x_k)=22.5547 t=3s
+[eval] nw_5_05_0M_tb: L_SO(x_k)=44.6206 t=3s
+[eval] nw_5_05_10M_tb: L_SO(x_k)=28.1236 t=2s
+[eval] nw_5_05_20M_tb: L_SO(x_k)=23.4950 t=3s
+[eval] nw_5_05_30M_tb: L_SO(x_k)=20.0518 t=2s
+[eval] nw_5_05_40M_tb: L_SO(x_k)=17.6602 t=2s
+[eval] nw_5_05_40M_raw: L_SO(x_k)=17.7789 t=2s
+[eval] nw_5_05_50M_tb: L_SO(x_k)=17.0428 t=2s
+[eval] nw_5_05_60M_tb: L_SO(x_k)=16.9950 t=2s
+[eval] nw_5_05_60M_raw: L_SO(x_k)=16.9940 t=2s
+[eval] nw_5_05_70M_tb: L_SO(x_k)=16.9950 t=2s
+[eval] nw_5_05_70M_raw: L_SO(x_k)=16.9940 t=2s
+[eval] nw_5_05_80M_tb: L_SO(x_k)=16.9950 t=2s
+[eval] nw_5_05_80M_raw: L_SO(x_k)=16.9940 t=2s
+[eval] nw_5_10_0M_tb: L_SO(x_k)=44.6206 t=3s
+[eval] nw_5_10_10M_tb: L_SO(x_k)=26.9247 t=2s
+[eval] nw_5_10_20M_tb: L_SO(x_k)=18.2755 t=4s
+[eval] nw_5_10_30M_tb: L_SO(x_k)=12.7495 t=2s
+[eval] nw_5_10_40M_tb: L_SO(x_k)=9.8326 t=2s
+[eval] nw_5_10_50M_tb: L_SO(x_k)=7.6762 t=2s
+[eval] nw_5_10_60M_tb: L_SO(x_k)=6.4541 t=2s
+[eval] nw_5_10_70M_tb: L_SO(x_k)=6.4168 t=2s
+[eval] nw_5_10_70M_raw: L_SO(x_k)=6.4227 t=2s
+[eval] nw_5_10_80M_tb: L_SO(x_k)=6.4168 t=2s
+[eval] nw_5_10_80M_raw: L_SO(x_k)=6.4227 t=2s
+[eval] nw_5_15_0M_tb: L_SO(x_k)=44.6206 t=3s
+[eval] nw_5_15_10M_tb: L_SO(x_k)=26.4932 t=3s
+[eval] nw_5_15_20M_tb: L_SO(x_k)=19.0488 t=2s
+[eval] nw_5_15_30M_tb: L_SO(x_k)=15.4534 t=2s
+[eval] nw_5_15_40M_tb: L_SO(x_k)=12.6393 t=2s
+[eval] nw_5_15_40M_raw: L_SO(x_k)=12.6334 t=2s
+[eval] nw_5_15_50M_tb: L_SO(x_k)=10.5356 t=2s
+[eval] nw_5_15_60M_tb: L_SO(x_k)=10.1926 t=2s
+[eval] nw_5_15_60M_raw: L_SO(x_k)=10.1885 t=2s
+[eval] nw_5_15_70M_tb: L_SO(x_k)=10.1926 t=2s
+[eval] nw_5_15_70M_raw: L_SO(x_k)=10.1885 t=2s
+[eval] nw_5_15_80M_tb: L_SO(x_k)=10.1926 t=2s
+[eval] nw_5_15_80M_raw: L_SO(x_k)=10.1885 t=2s
+[eval] nw_5_25_0M_tb: L_SO(x_k)=44.6206 t=3s
+[eval] nw_5_25_10M_tb: L_SO(x_k)=30.7622 t=2s
+[eval] nw_5_25_20M_tb: L_SO(x_k)=27.0529 t=3s
+[eval] nw_5_25_30M_tb: L_SO(x_k)=25.1785 t=1s
+[eval] nw_5_25_40M_tb: L_SO(x_k)=23.8722 t=3s
+[eval] nw_5_25_50M_tb: L_SO(x_k)=23.5940 t=3s
+[eval] nw_5_25_50M_raw: L_SO(x_k)=23.3301 t=3s
+[eval] nw_5_25_60M_tb: L_SO(x_k)=23.5940 t=3s
+[eval] nw_5_25_60M_raw: L_SO(x_k)=23.3301 t=3s
+[eval] nw_5_25_70M_tb: L_SO(x_k)=23.5940 t=3s
+[eval] nw_5_25_70M_raw: L_SO(x_k)=23.3226 t=3s
+[eval] nw_5_25_80M_tb: L_SO(x_k)=23.5940 t=3s
+[eval] nw_5_25_80M_raw: L_SO(x_k)=23.3226 t=3s
+[eval] nnw_5_05_0M_tb: L_SO(x_k)=44.6206 t=3s
+[eval] nnw_5_05_10M_tb: L_SO(x_k)=33.8531 t=2s
+[eval] nnw_5_05_20M_tb: L_SO(x_k)=30.9443 t=3s
+[eval] nnw_5_05_30M_tb: L_SO(x_k)=29.6619 t=3s
+[eval] nnw_5_05_40M_tb: L_SO(x_k)=29.0097 t=3s
+[eval] nnw_5_05_50M_tb: L_SO(x_k)=28.9598 t=3s
+[eval] nnw_5_05_50M_raw: L_SO(x_k)=28.9590 t=3s
+[eval] nnw_5_05_60M_tb: L_SO(x_k)=28.9598 t=3s
+[eval] nnw_5_05_60M_raw: L_SO(x_k)=28.9590 t=3s
+[eval] nnw_5_05_70M_tb: L_SO(x_k)=28.9598 t=3s
+[eval] nnw_5_05_70M_raw: L_SO(x_k)=28.9590 t=3s
+[eval] nnw_5_05_80M_tb: L_SO(x_k)=28.9598 t=3s
+[eval] nnw_5_05_80M_raw: L_SO(x_k)=28.9585 t=3s
+[eval] nnw_5_10_0M_tb: L_SO(x_k)=44.6206 t=3s
+[eval] nnw_5_10_10M_tb: L_SO(x_k)=29.1684 t=2s
+[eval] nnw_5_10_20M_tb: L_SO(x_k)=23.1994 t=3s
+[eval] nnw_5_10_30M_tb: L_SO(x_k)=20.7836 t=3s
+[eval] nnw_5_10_40M_tb: L_SO(x_k)=18.9535 t=3s
+[eval] nnw_5_10_50M_tb: L_SO(x_k)=18.5478 t=2s
+[eval] nnw_5_10_50M_raw: L_SO(x_k)=18.5440 t=2s
+[eval] nnw_5_10_60M_tb: L_SO(x_k)=18.5478 t=2s
+[eval] nnw_5_10_60M_raw: L_SO(x_k)=18.5440 t=2s
+[eval] nnw_5_10_70M_tb: L_SO(x_k)=18.5478 t=2s
+[eval] nnw_5_10_70M_raw: L_SO(x_k)=18.5440 t=2s
+[eval] nnw_5_10_80M_tb: L_SO(x_k)=18.5478 t=2s
+[eval] nnw_5_10_80M_raw: L_SO(x_k)=18.5416 t=2s
+[eval] nnw_5_15_0M_tb: L_SO(x_k)=44.6206 t=3s
+[eval] nnw_5_15_10M_tb: L_SO(x_k)=31.7301 t=3s
+[eval] nnw_5_15_20M_tb: L_SO(x_k)=27.7435 t=3s
+[eval] nnw_5_15_30M_tb: L_SO(x_k)=26.1163 t=3s
+[eval] nnw_5_15_40M_tb: L_SO(x_k)=25.0893 t=3s
+[eval] nnw_5_15_50M_tb: L_SO(x_k)=24.9387 t=2s
+[eval] nnw_5_15_50M_raw: L_SO(x_k)=24.5571 t=2s
+[eval] nnw_5_15_60M_tb: L_SO(x_k)=24.9387 t=2s
+[eval] nnw_5_15_60M_raw: L_SO(x_k)=24.5571 t=2s
+[eval] nnw_5_15_70M_tb: L_SO(x_k)=24.9387 t=2s
+[eval] nnw_5_15_70M_raw: L_SO(x_k)=24.5559 t=3s
+[eval] nnw_5_15_80M_tb: L_SO(x_k)=24.9387 t=2s
+[eval] nnw_5_15_80M_raw: L_SO(x_k)=24.5559 t=4s
+[eval] nnw_5_25_0M_tb: L_SO(x_k)=44.6206 t=3s
+[eval] nnw_5_25_10M_tb: L_SO(x_k)=36.6322 t=2s
+[eval] nnw_5_25_20M_tb: L_SO(x_k)=35.3111 t=2s
+[eval] nnw_5_25_30M_tb: L_SO(x_k)=34.6821 t=2s
+[eval] nnw_5_25_40M_tb: L_SO(x_k)=34.5189 t=3s
+[eval] nnw_5_25_40M_raw: L_SO(x_k)=34.3970 t=3s
+[eval] nnw_5_25_50M_tb: L_SO(x_k)=34.5189 t=3s
+[eval] nnw_5_25_50M_raw: L_SO(x_k)=34.3970 t=3s
+[eval] nnw_5_25_60M_tb: L_SO(x_k)=34.5189 t=3s
+[eval] nnw_5_25_60M_raw: L_SO(x_k)=34.3970 t=3s
+[eval] nnw_5_25_70M_tb: L_SO(x_k)=34.5189 t=3s
+[eval] nnw_5_25_70M_raw: L_SO(x_k)=34.3970 t=3s
+[eval] nnw_5_25_80M_tb: L_SO(x_k)=34.5189 t=3s
+[eval] nnw_5_25_80M_raw: L_SO(x_k)=34.3970 t=3s
+[full] evaluations done (527s)
+ budget  n_scenarios     L_WS_star     mean_L_in    L_SO_star  L_SO_star_gap  L_SO_xbar  L_SO_xk_mean  L_SO_xk_min  L_SO_xk_max  regret_mean  cost_of_certainty  cost_of_certainty_pct  overconfidence_mean  worst_case_L_SO  worst_case_L_xk_mean best_scenario worst_scenario  n_regret_flags  n_ws_mismatch  n_diag_mismatch  n_tie_break_changed
+      0           16  4.463055e+01  4.462708e+01 4.462125e+01       0.000017  44.620605     44.620605    44.620605    44.620605    -0.000645          -0.000645              -0.001446            -0.006472        56.034613             56.034613        w_5_05         w_5_05               0              0                0                    0
+     10           16  1.362931e+01  1.362931e+01 2.220144e+01       0.017708  31.212185     30.891467    25.898594    37.381272     8.690025           8.690025              39.141713            17.262154        32.498377             48.582539      wnw_5_10         w_5_15               0              0                0                    1
+     20           16  6.360350e+00  6.360350e+00 1.374453e+01       0.047076  26.404120     26.501950    17.148565    36.601337    12.757423          12.757423              92.818207            20.141600        21.793279             46.504612      wnw_5_10         w_5_15               0              0                0                    1
+     30           16  2.767224e+00  2.767241e+00 8.302299e+00       0.000000  23.523906     24.149835    12.645122    35.947568    15.847536          15.847536             190.881300            21.382594        11.496140             45.475150      wnw_5_10         w_5_15               0              0                0                    0
+     40           16  9.433319e-01  9.436856e-01 4.796114e+00       0.003465  22.004056     22.593017     9.653532    35.871622    17.796903          17.796903             371.069192            21.649332         7.467070             44.811716      wnw_5_10         w_5_15               0              0                0                    4
+     50           16  1.852669e-01  1.852669e-01 2.351514e+00       0.000129  21.178435     21.877566     7.280084    35.871622    19.526053          19.526053             830.360976            21.692299         3.944320             44.396714      wnw_5_10         w_5_15               0              0                0                    8
+     60           16  7.301250e-03  7.301250e-03 6.042750e-01       0.000000  21.152050     21.690463     6.426129    35.871622    21.086188          21.086188            3489.501919            21.683161         0.617100             44.220442      wnw_5_10         w_5_15               0              0                0                   12
+     70           16 -3.410605e-13 -3.410605e-13 2.082000e-02       0.000000  21.152049     21.682234     6.331764    35.871622    21.661414          21.661414          104041.371844            21.682234         0.020820             44.216599      wnw_5_10         w_5_15               0              0                0                   15
+     80           16 -3.410605e-13 -3.410605e-13 1.023182e-12       0.000000  21.152049     21.682234     6.331764    35.871622    21.682234          21.682234                    NaN            21.682234         0.000000             44.216599      wnw_5_10         w_5_15               0              0                0                   15
+ budget  ws_le_so  so_le_min_xk  min_le_mean_xk  mean_L_in_eq_ws
+      0      True          True            True             True
+     10      True          True            True             True
+     20      True          True            True             True
+     30      True          True            True             True
+     40      True          True            True             True
+     50      True          True            True             True
+     60      True          True            True             True
+     70      True          True            True             True
+     80      True          True            True             True
